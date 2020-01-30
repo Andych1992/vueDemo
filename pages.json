@@ -39,6 +39,18 @@
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
+		},
+		{
+			"path": "pages/mecompany/mecompany",
+			"style": {
+				"navigationBarTitleText": "单位管理"
+			}
+		},
+		{
+			"path": "pages/mecompany/mecompanydes",
+			"style": {
+				"navigationBarTitleText": "单位详情"
+			}
 		}
 	],
 	"easycom": {
