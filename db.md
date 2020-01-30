@@ -9,8 +9,7 @@
 ```
 user
 {
-    _id: "", // string，自生成
-    guid: "", // string 用户唯一标识，注册时生成无法修改
+    _id: "", // string，自生成 用户唯一标识，注册时生成无法修改
     username: "", // string 用户
 	company:"",//string 所属单位
 	section:""//所属部门
@@ -34,8 +33,7 @@ user
 ```
 company
 {
-    _id: "", // string，自生成
-    compid: "", // string 单位ID
+    _id: "", // string，自生成  单位ID
     compname: "", // string 单位名称
 	address: {country: 0, province: 0, city: 0, district: 0, street: ""}
     create_time: 0,// 时间戳 GMT
@@ -76,7 +74,7 @@ department
 {
     _id: "", // string，自生成
     compid: "", // string 单位ID
-	sectionid:""//部门id
+	section:""//部门名称
 }
 ```
 
