@@ -2,7 +2,9 @@
 	font-family: uniicons;
 	font-weight: normal;
 	font-style: normal;
+
 	src: url('~@/static/uni.ttf') format('truetype');
+
 }
 
 /*通用 */
@@ -386,7 +388,10 @@ radio-group label, checkbox-group label{
 	padding: 22upx 30upx;
 }
 .uni-list-cell-left {
+<<<<<<< HEAD
     white-space: nowrap;
+=======
+>>>>>>> bf0cbbcae98ee161e5140c237303c79015c7cc9a
 	font-size:28upx;
 	padding: 0 30upx;
 }
@@ -396,7 +401,11 @@ radio-group label, checkbox-group label{
 }
 .uni-list-cell::after {
 	position: absolute;
+<<<<<<< HEAD
 	z-index: 3;
+=======
+  z-index: 3;
+>>>>>>> bf0cbbcae98ee161e5140c237303c79015c7cc9a
 	right: 0;
 	bottom: 0;
 	left: 30upx;

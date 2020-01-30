@@ -8,184 +8,135 @@
 			<view>开始愉快的体验uniCloud吧！</view>
 		</view>
 		<view class="btn-list">
-			<button type="primary" @click="add">新增一条数据</button>
+			<button type="primary" @click="inindex">到主页</button>
+			
+			<button type="primary" @click="addtest">我自己增加的一个函数</button>
 			<button type="primary" @click="remove">删除一条数据</button>
 			<button type="primary" @click="update">修改数据</button>
-			<button type="primary" @click="get">查询前10条数据</button>
+			<button type="primary" @click="gettest">查询前10条数据</button>
 			<button type="primary" @click="upload">上传文件</button>
 			<image class="upload-preview" :src="imageSrc" mode="widthFix"></image>
 		</view>
+		
+	<!-- 带描述信息 -->
+	<uni-list>
+		<block v-for="(item, Index) in testuser" :key="Index">
+	    <uni-list-item :title=item.name :note=item._id></uni-list-item>
+	   </block>
+	</uni-list>	
+		
+		<view >
+			我是分割 -----------------------------------
+		</view>
+		<!-- <uni-list-item title="标题文字" note="描述信息" :show-badge="true" badge-text="12"></uni-list-item> -->
+		
+	<uni-list>
+	    <uni-list-item title="标题文字" :show-arrow="false"></uni-list-item>
+	    <uni-list-item title="标题文字"></uni-list-item>
+	    <uni-list-item title="标题文字" :show-badge="true" badge-text="12"></uni-list-item>
+	    <uni-list-item title="禁用状态" :disabled="true" :show-badge="true" badge-text="12"></uni-list-item>
+	</uni-list>	
+	
+	<!-- 带描述信息 -->
+	<uni-list>
+		
+	    <uni-list-item title="标题文字" note="描述信息"></uni-list-item>
+	    <uni-list-item title="标题文字" note="描述信息" :show-badge="true" badge-text="12"></uni-list-item>
+	</uni-list>
+	
+	<!-- 包含图片 -->
+	<uni-list>
+	    <uni-list-item title="标题文字" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png"></uni-list-item>
+	</uni-list>
+	
+	<!-- 包含图标 -->
+	<uni-list>
+	    <uni-list-item title="标题文字" :show-extra-icon="true" :extra-icon="{color: '#4cd964',size: '22',type: 'spinner'}"></uni-list-item>
+	</uni-list>
+	
+	<!-- 显示Switch -->
+	<uni-list>
+	    <uni-list-item title="标题文字" :show-switch="true" :show-arrow="false"></uni-list-item>
+	</uni-list>
+		
 	</view>
 </template>
-
 <script>
+	const myCloud = uniCloud.init({provider: 'aliyun',spaceId: '9ff5d7ec-21aa-40c9-b744-7d99f7b2f94d',clientSecret: 'HkSIujHTvGg6/K5LghniCA=='});
+// import uniList from "@/components/uni-list/uni-list.vue"
+// import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+var _self;		
 	export default {
 		data() {
 			return {
-				imageSrc: ''
+				imageSrc: '',
+				testuser:[]
 			}
 		},
+		onLoad:function(){
+		    _self = this;
+		},
 		methods: {
-			add() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'add',
+			//增加的自己的函数
+			addtest(){
+				uni.showLoading({title: '显示处理中...'})
+				myCloud.callFunction({
+					name: 'fengtest',
 					data: {
-						name: 'DCloud',
-						subType: 'uniCloud',
+						name: '张三',
+						subType: '12',
 						createTime: Date.now()
 					}
 				}).then((res) => {
 					uni.hideLoading()
-					uni.showModal({
-						content: `成功添加一条数据，文档id为：${res.result.id}`,
-						showCancel: false
-					})
+					uni.showToast({
+					    title: '成功添加一条数据，文档id为：${res.result.id}',
+					    duration: 1000
+					});
 					console.log(res)
 				}).catch((err) => {
 					uni.hideLoading()
 					uni.showModal({
-						content: `添加数据失败，错误信息为：${err.message}`,
+						content: `失败，错误信息为：${err.message}`,
 						showCancel: false
 					})
 					console.error(err)
 				})
-			},
-			remove() {
-				uni.showLoading({
-					title: '处理中...'
+				},
+		gettest(){
+			uni.showLoading({title: '获取中...'})
+			myCloud.callFunction({
+				name: 'gettest',
+				data: {
+					userid: '1123424556',
+					createTime: Date.now()
+				}
+			}).then((res)=>{
+				uni.hideLoading();
+				_self.testuser = res.result.data;
+				//获了成功
+				uni.showModal({
+					content: ` 成功` + JSON.stringify(res.result.data),
+					showCancel: false
 				})
-				uniCloud.callFunction({
-					name: 'remove'
-				}).then((res) => {
+			}).catch((err) => {
 					uni.hideLoading()
-					uni.showModal({
-						content: res.result.msg,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `删除失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
+					uni.showModal({content: `失败，错误信息为：${err.message}`,showCancel: false})
 				})
-			},
-			update() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'update',
-					data: {
-						name: 'DCloud',
-						subType: 'html 5+',
-						createTime: Date.now()
-					}
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: res.result.msg,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `更新操作执行失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			get() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'get'
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询成功，获取数据列表为：${JSON.stringify(res.result.data)}`,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			logTest() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'log'
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询成功，获取数据列表为：${JSON.stringify(res.result.data)}`,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			upload() {
-				new Promise((resolve, reject) => {
-					uni.chooseImage({
-						chooseImage: 1,
-						success: res => {
-							const path = res.tempFilePaths[0]
-							const options = {
-								filePath: path
-							}
-							resolve(options)
-						},
-						fail: () => {
-							reject(new Error('Fail_Cancel'))
-						}
-					})
-				}).then((options) => {
-					uni.showLoading({
-						title: '文件上传中...'
-					})
-					return uniCloud.uploadFile(options)
-				}).then(res => {
-					uni.hideLoading()
-					console.log(res);
-					uni.showModal({
-						content: '图片上传成功，已在下方展示',
-						showCancel: false
-					})
-					this.imageSrc = res.fileID
-				}).catch((err) => {
-					uni.hideLoading()
-					console.log(err);
-					if (err.message !== 'Fail_Cancel') {
-						uni.showModal({
-							content: `图片上传失败，错误信息为：${err.message}`,
-							showCancel: false
-						})
-					}
-				})
-			}
+		},
+		//进入主页
+		inindex(){
+			uni.switchTab({
+			    url: '/pages/mainindex/mainindex'
+			});
 		}
+		
+				
+		
+			
+		
+		}
+	//components: {uniList,uniListItem}
 	}
 </script>
 
