@@ -4034,14 +4034,20 @@ async function login(event) {
 		console.log('userInDB>>>>', userInDB);
 
 		if (userInDB.data && userInDB.data.length === 0) {
-			userUpdateResult = await db.collection('user').add({
-				username,
-				tokenSecret,
-				exp: Date.now() + tokenExp
-			});
+			// 用户不存在
+			// userUpdateResult = await db.collection('user').add({
+			// 	username,
+			// 	tokenSecret,
+			// 	exp: Date.now() + tokenExp
+			// })
+			return {
+				success: false,
+				code: -1,
+				msg: '用户不存在'
+			}
 		} else {
+			// 用户存在，更新tokenSecret
 			userUpdateResult = await db.collection('user').doc(userInDB.data[0]._id).set({
-				username,
 				tokenSecret,
 				exp: Date.now() + tokenExp
 			});
