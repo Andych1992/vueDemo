@@ -84,7 +84,15 @@ materModel
 	unit:"",//单位
 }
 ```
-
+#### 物资状态表
+```
+materout_tions
+{
+    _id: "", // string，自生成
+    tions: "", // int 状态编号 1，2，3，4，0
+	tionname:""//状态名称，已申请，已发放，采购中，已结束
+}
+```
 
 #### 物资领取表
 ```
@@ -96,6 +104,7 @@ materout
 	matincomp:""//领取单位
 	matname:""//物资名称
 	matimg:""//物资封图
+	materout_tions:1//状态
 	outnumber:0//领取数量
 	outuserid:""//下发人
 	outmatcomp:""下发单位
