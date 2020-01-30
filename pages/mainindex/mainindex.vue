@@ -6,10 +6,10 @@
 			
 		</view>
 		<view class="conview">
-			<uni-grid :column="3" class="mygrid" :show-border=bor >
-				<uni-grid-item  >
+			<uni-grid :column="3" class="mygrid" :show-border=bor>
+				<uni-grid-item>
 					<image class="gridimg" src="../../static/logo.png"></image>
-					<text class="gridtext">物资入库</text>
+						<text class="gridtext">物资入库</text>
 				</uni-grid-item>
 				<uni-grid-item>
 					<image class="gridimg" src="../../static/logo.png"></image>

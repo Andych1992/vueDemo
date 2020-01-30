@@ -27,6 +27,12 @@
 				// "navigationStyle": "custom" ,//导航栏样式自定义
 				"enablePullDownRefresh": true //开启下拉刷新
 			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登陆"
+			}
 		}
 	],
 	"easycom": {
