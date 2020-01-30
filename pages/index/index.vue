@@ -10,134 +10,117 @@
 		<view class="btn-list">
 			<button type="primary" @click="inindex">到主页</button>
 			<button type="primary" @click="$util.navigateTo('/pages/login/index')">登录测试</button>
-			
-			<button type="primary" @click="addtest">我自己增加的一个函数</button>
-			<button type="primary" @click="remove">删除一条数据</button>
-			<button type="primary" @click="update">修改数据</button>
-			<button type="primary" @click="gettest">查询前10条数据</button>
-			<button type="primary" @click="upload">上传文件</button>
-			<image class="upload-preview" :src="imageSrc" mode="widthFix"></image>
+			<button type="primary" @click="inlogin">去登陆页面</button>
 		</view>
 		
 	<!-- 带描述信息 -->
-	<uni-list>
-		<block v-for="(item, Index) in testuser" :key="Index">
-	    <uni-list-item :title=item.name :note=item._id></uni-list-item>
-	   </block>
-	</uni-list>	
+
 		
 		<view >
 			我是分割 -----------------------------------
 		</view>
-		<!-- <uni-list-item title="标题文字" note="描述信息" :show-badge="true" badge-text="12"></uni-list-item> -->
-		
-	<uni-list>
-	    <uni-list-item title="标题文字" :show-arrow="false"></uni-list-item>
-	    <uni-list-item title="标题文字"></uni-list-item>
-	    <uni-list-item title="标题文字" :show-badge="true" badge-text="12"></uni-list-item>
-	    <uni-list-item title="禁用状态" :disabled="true" :show-badge="true" badge-text="12"></uni-list-item>
-	</uni-list>	
 	
-	<!-- 带描述信息 -->
-	<uni-list>
-		
-	    <uni-list-item title="标题文字" note="描述信息"></uni-list-item>
-	    <uni-list-item title="标题文字" note="描述信息" :show-badge="true" badge-text="12"></uni-list-item>
-	</uni-list>
-	
-	<!-- 包含图片 -->
-	<uni-list>
-	    <uni-list-item title="标题文字" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png"></uni-list-item>
-	</uni-list>
-	
-	<!-- 包含图标 -->
-	<uni-list>
-	    <uni-list-item title="标题文字" :show-extra-icon="true" :extra-icon="{color: '#4cd964',size: '22',type: 'spinner'}"></uni-list-item>
-	</uni-list>
-	
-	<!-- 显示Switch -->
-	<uni-list>
-	    <uni-list-item title="标题文字" :show-switch="true" :show-arrow="false"></uni-list-item>
-	</uni-list>
+
 		
 	</view>
 </template>
 <script>
 	const myCloud = uniCloud.init({provider: 'aliyun',spaceId: '9ff5d7ec-21aa-40c9-b744-7d99f7b2f94d',clientSecret: 'HkSIujHTvGg6/K5LghniCA=='});
-// import uniList from "@/components/uni-list/uni-list.vue"
-// import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+
 var _self;		
 	export default {
 		data() {
 			return {
-				imageSrc: '',
-				testuser:[]
+				imageSrc: ''
 			}
 		},
 		onLoad:function(){
 		    _self = this;
+		
+		
+			
 		},
 		methods: {
-			//增加的自己的函数
-			addtest(){
-				uni.showLoading({title: '显示处理中...'})
-				myCloud.callFunction({
-					name: 'fengtest',
-					data: {
-						name: '张三',
-						subType: '12',
-						createTime: Date.now()
-					}
+			//用户登陆
+			wxloginall(){
+				
+				uni.showLoading({
+					title: '加载中...'
+				})
+				_self.wxlogin().then((code) => {
+					console.log('code', code);
+					return _self.$cloud.callFunction({
+						name: 'wxlogin',
+						data: {
+							code
+						}
+					})
 				}).then((res) => {
 					uni.hideLoading()
-					uni.showToast({
-					    title: '成功添加一条数据，文档id为：${res.result.id}',
-					    duration: 1000
-					});
-					console.log(res)
-				}).catch((err) => {
+					console.log(res);
+					if (res.result.status !== 0) {
+						return Promise.reject(new Error(res.result.msg))
+					}
+					uni.setStorageSync('token', res.result.token)
+					if (isAgreementConfirmed) {
+						uni.showModal({
+							content: '1111',
+							showCancel: false
+						})
+						// uni.redirectTo({
+						// 	url: '/pages/report/report'
+						// })
+					} else {
+						uni.showModal({
+							content: '222',
+							showCancel: false
+						})
+						// uni.redirectTo({
+						// 	url: '/pages/agreement/agreement'
+						// })
+					}
+				}).catch((e) => {
 					uni.hideLoading()
 					uni.showModal({
-						content: `失败，错误信息为：${err.message}`,
+						content: '出现错误，请稍后再试',
 						showCancel: false
 					})
-					console.error(err)
 				})
-				},
-		gettest(){
-			uni.showLoading({title: '获取中...'})
-			myCloud.callFunction({
-				name: 'gettest',
-				data: {
-					userid: '1123424556',
-					createTime: Date.now()
-				}
-			}).then((res)=>{
-				uni.hideLoading();
-				_self.testuser = res.result.data;
-				//获了成功
-				uni.showModal({
-					content: ` 成功` + JSON.stringify(res.result.data),
-					showCancel: false
+				
+			},
+			wxlogin() {
+				return new Promise((resolve, reject) => {
+					uni.login({
+						provider: 'weixin',
+						success(e) {
+							if (e.code) {
+								resolve(e.code)
+							} else {
+								reject(new Error('微信登录失败'))
+							}
+						},
+						fail(e) {
+							reject(new Error('微信登录失败'))
+						}
+					})
 				})
-			}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({content: `失败，错误信息为：${err.message}`,showCancel: false})
-				})
-		},
+			},
 		//进入主页
 		inindex(){
 			uni.switchTab({
 			    url: '/pages/mainindex/mainindex'
 			});
+		},
+		//进入登陆页面
+		inlogin(){
+		
+			uni.navigateTo({
+			    url: '/pages/login/login'
+			});
 		}
 		
-				
-		
-			
-		
 		}
-	//components: {uniList,uniListItem}
+
 	}
 </script>
 

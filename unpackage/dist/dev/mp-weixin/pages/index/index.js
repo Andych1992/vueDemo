@@ -95,36 +95,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
-var components = {
-  "uni-list": () =>
-    __webpack_require__.e(/*! import() | components/uni-list/uni-list */ "components/uni-list/uni-list").then(__webpack_require__.bind(null, /*! @/components/uni-list/uni-list.vue */ 58)),
-  "uni-list-item": () =>
-    __webpack_require__.e(/*! import() | components/uni-list-item/uni-list-item */ "components/uni-list-item/uni-list-item").then(__webpack_require__.bind(null, /*! @/components/uni-list-item/uni-list-item.vue */ 65))
-}
+var components
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  var a0 = {
-    color: "#4cd964",
-    size: "22",
-    type: "spinner"
-  }
-
   if (!_vm._isMounted) {
     _vm.e0 = function($event) {
       return _vm.$util.navigateTo("/pages/login/index")
     }
   }
-
-  _vm.$mp.data = Object.assign(
-    {},
-    {
-      $root: {
-        a0: a0
-      }
-    }
-  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -184,105 +164,85 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var myCloud = uniCloud.init({ provider: 'aliyun', spaceId: '9ff5d7ec-21aa-40c9-b744-7d99f7b2f94d', clientSecret: 'HkSIujHTvGg6/K5LghniCA==' });
-// import uniList from "@/components/uni-list/uni-list.vue"
-// import uniListItem from "@/components/uni-list-item/uni-list-item.vue"
+
 var _self;var _default =
 {
   data: function data() {
     return {
-      imageSrc: '',
-      testuser: [] };
+      imageSrc: '' };
 
   },
   onLoad: function onLoad() {
     _self = this;
+
+
+
   },
   methods: {
-    //增加的自己的函数
-    addtest: function addtest() {
-      uni.showLoading({ title: '显示处理中...' });
-      myCloud.callFunction({
-        name: 'fengtest',
-        data: {
-          name: '张三',
-          subType: '12',
-          createTime: Date.now() } }).
+    //用户登陆
+    wxloginall: function wxloginall() {
 
-      then(function (res) {
+      uni.showLoading({
+        title: '加载中...' });
+
+      _self.wxlogin().then(function (code) {
+        console.log('code', code);
+        return _self.$cloud.callFunction({
+          name: 'wxlogin',
+          data: {
+            code: code } });
+
+
+      }).then(function (res) {
         uni.hideLoading();
-        uni.showToast({
-          title: '成功添加一条数据，文档id为：${res.result.id}',
-          duration: 1000 });
-
         console.log(res);
-      }).catch(function (err) {
+        if (res.result.status !== 0) {
+          return Promise.reject(new Error(res.result.msg));
+        }
+        uni.setStorageSync('token', res.result.token);
+        if (isAgreementConfirmed) {
+          uni.showModal({
+            content: '1111',
+            showCancel: false });
+
+          // uni.redirectTo({
+          // 	url: '/pages/report/report'
+          // })
+        } else {
+          uni.showModal({
+            content: '222',
+            showCancel: false });
+
+          // uni.redirectTo({
+          // 	url: '/pages/agreement/agreement'
+          // })
+        }
+      }).catch(function (e) {
         uni.hideLoading();
         uni.showModal({
-          content: "\u5931\u8D25\uFF0C\u9519\u8BEF\u4FE1\u606F\u4E3A\uFF1A".concat(err.message),
+          content: '出现错误，请稍后再试',
           showCancel: false });
 
-        console.error(err);
       });
+
     },
-    gettest: function gettest() {
-      uni.showLoading({ title: '获取中...' });
-      myCloud.callFunction({
-        name: 'gettest',
-        data: {
-          userid: '1123424556',
-          createTime: Date.now() } }).
+    wxlogin: function wxlogin() {
+      return new Promise(function (resolve, reject) {
+        uni.login({
+          provider: 'weixin',
+          success: function success(e) {
+            if (e.code) {
+              resolve(e.code);
+            } else {
+              reject(new Error('微信登录失败'));
+            }
+          },
+          fail: function fail(e) {
+            reject(new Error('微信登录失败'));
+          } });
 
-      then(function (res) {
-        uni.hideLoading();
-        _self.testuser = res.result.data;
-        //获了成功
-        uni.showModal({
-          content: " \u6210\u529F" + JSON.stringify(res.result.data),
-          showCancel: false });
-
-      }).catch(function (err) {
-        uni.hideLoading();
-        uni.showModal({ content: "\u5931\u8D25\uFF0C\u9519\u8BEF\u4FE1\u606F\u4E3A\uFF1A".concat(err.message), showCancel: false });
       });
     },
     //进入主页
@@ -290,15 +250,14 @@ var _self;var _default =
       uni.switchTab({
         url: '/pages/mainindex/mainindex' });
 
-    } }
+    },
+    //进入登陆页面
+    inlogin: function inlogin() {
 
+      uni.navigateTo({
+        url: '/pages/login/login' });
 
-
-
-
-
-  //components: {uniList,uniListItem}
-};exports.default = _default;
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/uni-cloud/dist/index.js */ 24)["default"], __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
