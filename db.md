@@ -31,7 +31,7 @@ user
 ```
 #### 单位列表
 ```
-user
+company
 {
     _id: "", // string，自生成
     compid: "", // string 单位ID
