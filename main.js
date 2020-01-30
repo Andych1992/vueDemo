@@ -1,10 +1,22 @@
 import Vue from 'vue'
 import App from './App'
 
-Vue.config.productionTip = false
 
 import config from "./common/config.js"
+import Utils from '@/utils/Utils' // Common util
+import HandleError from '@/utils/HandleError' // Handle error
+
+/**
+ * @name Mounted func
+ */
 Vue.prototype.config=config
+Vue.prototype.$util = Utils // Mounted common utils
+Vue.prototype.$handleError = HandleError // Mounted handle error
+
+/**
+ * @name Libs config
+ */
+Vue.config.productionTip = false
 
 App.mpType = 'app'
 

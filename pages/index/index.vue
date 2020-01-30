@@ -9,6 +9,7 @@
 		</view>
 		<view class="btn-list">
 			<button type="primary" @click="inindex">到主页</button>
+			<button type="primary" @click="$util.navigateTo('/pages/login/index')">登录测试</button>
 			
 			<button type="primary" @click="addtest">我自己增加的一个函数</button>
 			<button type="primary" @click="remove">删除一条数据</button>
