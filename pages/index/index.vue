@@ -10,6 +10,7 @@
 		<view class="btn-list">
 			<button type="primary" @click="inindex">到主页</button>
 			<button type="primary" @click="inlogin">去登陆页面</button>
+			<button type="primary" @click="btnlist('comps')">去单位管理</button>
 			
 		</view>
 		
@@ -117,6 +118,18 @@ var _self;
 			uni.navigateTo({
 			    url: '/pages/login/login'
 			});
+		},
+		btnlist(e){
+			switch (e){
+				case 'comps':
+				//去我的单位
+					uni.navigateTo({
+						url: '/pages/mecompany/mecompany'
+					});
+					break;
+				default:
+					break;
+			}
 		}
 		
 		}

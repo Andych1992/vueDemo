@@ -44,6 +44,9 @@
 		methods: {
 			//账号密码登陆
 			lonin(){
+				
+				
+				
 				uni.switchTab({
 				    url: '/pages/mainindex/mainindex'
 				});

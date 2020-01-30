@@ -33,7 +33,20 @@
 			"style": {
 				"navigationBarTitleText": "登陆"
 			}
+		},
+		{
+			"path": "pages/mecompany/mecompany",
+			"style": {
+				"navigationBarTitleText": "单位管理"
+			}
+		},
+		{
+			"path": "pages/mecompany/mecompanydes",
+			"style": {
+				"navigationBarTitleText": "单位详情"
+			}
 		}
+	
 	],
 	"easycom": {
 	  "autoscan": true
