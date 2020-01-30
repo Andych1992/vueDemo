@@ -8,30 +8,17 @@
 	
 		
 	<view class="uni-row" >
-		<view class="uni-label fl">单位名称</view>
+		<view class="uni-label fl">部门名称</view>
 		<view class="fl inp">
 			<input type="text" placeholder="请输入单位名称" />
 		</view>
 	</view>
-	
-	<view class="uni-row" >
-		<view class="uni-label fl">单位简称</view>
-		<view class="fl inp">
-			<input type="text"  placeholder="请输入单位简称" />
-		</view>
-	</view>
+
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">备注说明</view>
 		<view class="fl inp">
 			<input type="text"  placeholder="备注说明" />
-		</view>
-	</view>	
-	
-	<view class="uni-row" >
-		<view class="uni-label fl">单位LOGO</view>
-		<view class="fl inp">
-			<input type="text"  placeholder="单位LOGO" />
 		</view>
 	</view>	
 		

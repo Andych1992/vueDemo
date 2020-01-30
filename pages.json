@@ -52,7 +52,15 @@
 				"navigationBarTitleText": "单位详情"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/medepartment/medepartment",
+            "style" : {"navigationBarTitleText": "部门管理"}
+        },
+		{
+            "path" : "pages/medepartment/medepartmentdes",
+            "style" : {"navigationBarTitleText": "部门详情"}
+        }
+    ],
 	"easycom": {
 		"autoscan": true
 	},
