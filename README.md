@@ -11,5 +11,6 @@
 
 物资库存：查看物资剩余库存
 
-#### 界面及其细节
-[初步设计界面](https://free.modao.cc/app/587de5304407459d3e4b163cd97ae854d56bb7ab)
+#### 界面及其详细功能细节
+
+[初步详细设计界面](https://free.modao.cc/app/587de5304407459d3e4b163cd97ae854d56bb7ab)
