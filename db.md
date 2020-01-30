@@ -24,6 +24,7 @@ user
     photo: "", // string 图片url地址
     status: 0, // int 0正常 1冻结
     permission: 0, int 默认2，0超级管理员, 1普通管理员, 2普通
+	power:"" //string 权限。（"1，3，4，5"）权限字符
     create_time: 0,// 时间戳 GMT
     create_ip: "",// 注册 ip
 	
@@ -45,9 +46,33 @@ company
 }
 ```
 
+#### 权限表
+```
+powerlist
+{
+    _id: "", // string，自生成
+    powerid: "", // int 权限标识ID
+    powername: "", // string 权限名称
+	
+}
+```
+
+#### 审批表
+```
+approvallist
+{
+    _id: "", // string，自生成
+    guidid: "", // int 用户标识ID
+    materoutid: "", // string 物资id
+}
+```
+
+
+
+
 #### 单位部门表
 ```
-user
+department
 {
     _id: "", // string，自生成
     compid: "", // string 单位ID
@@ -105,6 +130,8 @@ materout
 	matname:""//物资名称
 	matimg:""//物资封图
 	materout_tions:1//状态
+	approval:""//物资审批
+	approvalcount:""//审批人数
 	outnumber:0//领取数量
 	outuserid:""//下发人
 	outmatcomp:""下发单位
