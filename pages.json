@@ -29,27 +29,20 @@
 			}
 		},
 		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登陆"
-			}
-		},
-		{
-			"path": "pages/mecompany/mecompany",
-			"style": {
-				"navigationBarTitleText": "单位管理"
-			}
-		},
-		{
-			"path": "pages/mecompany/mecompanydes",
-			"style": {
-				"navigationBarTitleText": "单位详情"
+				"navigationBarTitleText": "登录"
 			}
 		}
-	
 	],
 	"easycom": {
-	  "autoscan": true
+		"autoscan": true
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

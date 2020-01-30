@@ -9,9 +9,11 @@
 		</view>
 		<view class="btn-list">
 			<button type="primary" @click="inindex">到主页</button>
+			<button type="primary" @click="$util.navigateTo('/pages/login/index')">登录测试</button>
 			<button type="primary" @click="inlogin">去登陆页面</button>
+
 			<button type="primary" @click="btnlist('comps')">去单位管理</button>
-			
+
 		</view>
 		
 	<!-- 带描述信息 -->
