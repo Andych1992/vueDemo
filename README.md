@@ -1,37 +1,13 @@
 # 物资管理系统
+项目负责人：常州-_陈默
 
 #### 介绍
-抗疫相关物料的管理系统，领用、派发记录，库存查询统计。
+新型冠状病毒疫情期间抗疫相关物料的管理系统，领用、派发记录，库存查询统计。
 
-#### 软件架构
-软件架构说明
+#### 功能
+物资入库：包括捐赠物资、上级下拨物资、自行采购物资
+物资发放：物资直接发放、物资发放型号、数量、领取时间、领取人信息
+物资库存：查看物资剩余库存
 
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 码云特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+#### 界面及其细节
+[初步设计界面](https://free.modao.cc/app/587de5304407459d3e4b163cd97ae854d56bb7ab)
