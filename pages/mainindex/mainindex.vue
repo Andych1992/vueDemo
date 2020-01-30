@@ -61,5 +61,5 @@
 .conview{background-color: #FEFEFE; width: 550rpx;height: 380rpx;border: #C0C0C0 solid 1rpx;  border-radius: 5rpx; position: absolute;left: 100rpx; top: 350rpx;}
 .gridimg{width: 100rpx;height: 100rpx;margin: auto;}
 .gridtext{text-align: center;font-size: 28rpx;}
-.mygrid{border: none;}
+
 </style>
