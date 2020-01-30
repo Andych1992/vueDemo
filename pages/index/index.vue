@@ -128,6 +128,7 @@ var _self;
 					uni.navigateTo({
 						url: '/pages/mecompany/mecompany'
 					});
+					
 					break;
 				default:
 					break;
