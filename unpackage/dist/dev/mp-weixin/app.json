@@ -4,7 +4,8 @@
     "pages/mainindex/mainindex",
     "pages/mainstroage/mainstroage",
     "pages/mainme/mainme",
-    "pages/login/index"
+    "pages/login/index",
+    "pages/login/login"
   ],
   "subPackages": [],
   "window": {
@@ -39,6 +40,5 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap51.json"
+  "usingComponents": {}
 }
