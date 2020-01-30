@@ -7,7 +7,13 @@
 			}
 		},
 		{
-			"path": "pages/storage/storage",
+			"path": "pages/mainindex/mainindex",
+			"style": {
+				"navigationBarTitleText": "新冠-物资管理系统"
+			}
+		},
+		{
+			"path": "pages/mainstroage/mainstroage",
 			"style": {
 				"navigationBarTitleText": "发放",
 				// "navigationStyle": "custom" ,//导航栏样式自定义
@@ -15,14 +21,29 @@
 			}
 		},
 		{
-			"path": "pages/me/me",
+			"path": "pages/mainme/mainme",
 			"style": {
 				"navigationBarTitleText": "我的",
 				// "navigationStyle": "custom" ,//导航栏样式自定义
 				"enablePullDownRefresh": true //开启下拉刷新
 			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
 		}
 	],
+	"easycom": {
+		"autoscan": true
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "物资管理系统",
@@ -35,19 +56,19 @@
 		"borderStyle": "black",
 		"backgroundColor": "#FFFFFF",
 		"list": [{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/mainindex/mainindex",
 				"text": "首页",
 				"iconPath": "static/tabbar/indexpage.png",
 				"selectedIconPath": "static/tabbar/indexpage_fill.png"
 			},
 			{
-				"pagePath": "pages/storage/storage",
+				"pagePath": "pages/mainstroage/mainstroage",
 				"text": "发放",
 				"iconPath": "static/tabbar/add.png",
 				"selectedIconPath": "static/tabbar/add_fill.png"
 			},
 			{
-				"pagePath": "pages/me/me",
+				"pagePath": "pages/mainme/mainme",
 				"text": "我的",
 				"iconPath": "static/tabbar/me.png",
 				"selectedIconPath": "static/tabbar/me_fill.png"

@@ -8,184 +8,119 @@
 			<view>开始愉快的体验uniCloud吧！</view>
 		</view>
 		<view class="btn-list">
-			<button type="primary" @click="add">新增一条数据</button>
-			<button type="primary" @click="remove">删除一条数据</button>
-			<button type="primary" @click="update">修改数据</button>
-			<button type="primary" @click="get">查询前10条数据</button>
-			<button type="primary" @click="upload">上传文件</button>
-			<image class="upload-preview" :src="imageSrc" mode="widthFix"></image>
+			<button type="primary" @click="inindex">到主页</button>
+			<button type="primary" @click="$util.navigateTo('/pages/login/index')">登录测试</button>
+			<button type="primary" @click="inlogin">去登陆页面</button>
 		</view>
+		
+	<!-- 带描述信息 -->
+
+		
+		<view >
+			我是分割 -----------------------------------
+		</view>
+	
+
+		
 	</view>
 </template>
-
 <script>
+	const myCloud = uniCloud.init({provider: 'aliyun',spaceId: '9ff5d7ec-21aa-40c9-b744-7d99f7b2f94d',clientSecret: 'HkSIujHTvGg6/K5LghniCA=='});
+
+var _self;		
 	export default {
 		data() {
 			return {
 				imageSrc: ''
 			}
 		},
+		onLoad:function(){
+		    _self = this;
+		
+		
+			
+		},
 		methods: {
-			add() {
+			//用户登陆
+			wxloginall(){
+				
 				uni.showLoading({
-					title: '处理中...'
+					title: '加载中...'
 				})
-				uniCloud.callFunction({
-					name: 'add',
-					data: {
-						name: 'DCloud',
-						subType: 'uniCloud',
-						createTime: Date.now()
-					}
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `成功添加一条数据，文档id为：${res.result.id}`,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `添加数据失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			remove() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'remove'
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: res.result.msg,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `删除失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			update() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'update',
-					data: {
-						name: 'DCloud',
-						subType: 'html 5+',
-						createTime: Date.now()
-					}
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: res.result.msg,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `更新操作执行失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			get() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'get'
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询成功，获取数据列表为：${JSON.stringify(res.result.data)}`,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			logTest() {
-				uni.showLoading({
-					title: '处理中...'
-				})
-				uniCloud.callFunction({
-					name: 'log'
-				}).then((res) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询成功，获取数据列表为：${JSON.stringify(res.result.data)}`,
-						showCancel: false
-					})
-					console.log(res)
-				}).catch((err) => {
-					uni.hideLoading()
-					uni.showModal({
-						content: `查询失败，错误信息为：${err.message}`,
-						showCancel: false
-					})
-					console.error(err)
-				})
-			},
-			upload() {
-				new Promise((resolve, reject) => {
-					uni.chooseImage({
-						chooseImage: 1,
-						success: res => {
-							const path = res.tempFilePaths[0]
-							const options = {
-								filePath: path
-							}
-							resolve(options)
-						},
-						fail: () => {
-							reject(new Error('Fail_Cancel'))
+				_self.wxlogin().then((code) => {
+					console.log('code', code);
+					return _self.$cloud.callFunction({
+						name: 'wxlogin',
+						data: {
+							code
 						}
 					})
-				}).then((options) => {
-					uni.showLoading({
-						title: '文件上传中...'
-					})
-					return uniCloud.uploadFile(options)
-				}).then(res => {
+				}).then((res) => {
 					uni.hideLoading()
 					console.log(res);
-					uni.showModal({
-						content: '图片上传成功，已在下方展示',
-						showCancel: false
-					})
-					this.imageSrc = res.fileID
-				}).catch((err) => {
-					uni.hideLoading()
-					console.log(err);
-					if (err.message !== 'Fail_Cancel') {
+					if (res.result.status !== 0) {
+						return Promise.reject(new Error(res.result.msg))
+					}
+					uni.setStorageSync('token', res.result.token)
+					if (isAgreementConfirmed) {
 						uni.showModal({
-							content: `图片上传失败，错误信息为：${err.message}`,
+							content: '1111',
 							showCancel: false
 						})
+						// uni.redirectTo({
+						// 	url: '/pages/report/report'
+						// })
+					} else {
+						uni.showModal({
+							content: '222',
+							showCancel: false
+						})
+						// uni.redirectTo({
+						// 	url: '/pages/agreement/agreement'
+						// })
 					}
+				}).catch((e) => {
+					uni.hideLoading()
+					uni.showModal({
+						content: '出现错误，请稍后再试',
+						showCancel: false
+					})
 				})
-			}
+				
+			},
+			wxlogin() {
+				return new Promise((resolve, reject) => {
+					uni.login({
+						provider: 'weixin',
+						success(e) {
+							if (e.code) {
+								resolve(e.code)
+							} else {
+								reject(new Error('微信登录失败'))
+							}
+						},
+						fail(e) {
+							reject(new Error('微信登录失败'))
+						}
+					})
+				})
+			},
+		//进入主页
+		inindex(){
+			uni.switchTab({
+			    url: '/pages/mainindex/mainindex'
+			});
+		},
+		//进入登陆页面
+		inlogin(){
+		
+			uni.navigateTo({
+			    url: '/pages/login/login'
+			});
 		}
+		
+		}
+
 	}
 </script>
 

@@ -1,0 +1,9 @@
+
+.mlogo{width: 160rpx;height: 160rpx;margin: auto;}
+.mlogo image{width: 160rpx;height: 160rpx;border-radius: 20rpx;}
+.uni-row{margin-top: 20rpx;}
+.inpus{border: #D8D8D8 solid 1rpx;height: 80rpx;background-color: #FEFEFE;border-radius: 10rpx;}
+.inpus input{height: 60rpx;line-height: 60rpx;padding: 10rpx;}
+.wxlogin{width: 160rpx;height: 160rpx;margin: auto;}
+.wxlogin image{width: 160rpx;height: 160rpx;border-radius: 80rpx;}
+
