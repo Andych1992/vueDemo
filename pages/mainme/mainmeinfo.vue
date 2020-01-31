@@ -4,12 +4,29 @@
 		<view class="uni-row u-f-ac">
 			基本信息
 		</view>
+		
+		<!-- <view class="uni-row utit" >
+			基本信息 
+		</view>
+		<view class="uni-row" >
+			<view class="uni-label fl">部门名称</view>
+			<view class="fl inp">
+				<input type="text" placeholder="请输入单位名称" />
+			</view>
+		</view> -->
+		
 		<uni-list>
-			<uni-list-item title="列表右侧带箭头" />
-			<uni-list-item title="列表右侧带箭头" />
-			<uni-list-item title="列表右侧带箭头" />
-			<uni-list-item title="列表右侧带箭头" />
+			
+			<!-- <uni-list-item :show-badge="true" title="列表右侧带箭头 + 角标" badge-text="AAA" badge-type="ss" rightText="bbb"/> -->
+			<uni-list-item :show-arrow="true" title="工号" rightText="1001"/>
+			<uni-list-item :show-arrow="true" title="名称" rightText="_陈默"/>
+			<uni-list-item :show-arrow="true" title="手机" rightText="1340****071"/>
+			<uni-list-item :show-arrow="true" title="性别" rightText="男"/>
+			<uni-list-item :show-arrow="true" title="部门" rightText="儿保科"/>
+			<uni-list-item :show-arrow="true" title="单位" rightText="XXX医院"/>
+			<uni-list-item :show-arrow="true" title="备注" rightText="暂无备注信息"/>
 		</uni-list>
+		
 	</view>
 </template>
 
