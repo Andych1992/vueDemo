@@ -6,12 +6,12 @@
 		<view class="head">
 			<view class="u-f u-f-ac">
 				<view class="headpic">
-					<image src="../../static/logo.png" lazy-load></image>
+					<image :src="userinfo.headpic" mode="widthFix" lazy-load></image>
 				</view>
 				<view class="headinfo u-f-column">
-					<view>_陈默</view>
-					<view>2020-01-20</view>
-					<view>隶属部门 xxx 医院</view>
+					<view>{{userinfo.name}}</view>
+					<view>{{userinfo.regDate}}</view>
+					<view>隶属部门 {{userinfo.company}} {{userinfo.dept}}</view>
 				</view>
 			</view>
 		</view>
@@ -31,7 +31,11 @@
 		data() {
 			return {
 				userinfo:{
-					
+					headpic:'../../static/logo.png',
+					name:'_陈默',
+					regDate:'2020-01-30',
+					company:'xxx医院',
+					dept:'妇产科'
 				},
 				listinfo:[
 					{
