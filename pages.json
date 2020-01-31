@@ -60,6 +60,12 @@
             "path" : "pages/medepartment/medepartmentdes",
             "style" : {"navigationBarTitleText": "部门详情"}
         }
+        ,{
+            "path" : "pages/mainme/mainmeinfo",
+            "style" : {
+				"navigationBarTitleText": "个人资料"
+			}
+        }
     ],
 	"easycom": {
 		"autoscan": true
