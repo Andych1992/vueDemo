@@ -48,8 +48,8 @@
 {
     name: 'login',
     data: {
-        username: '13800000000',
-        password: '123456'
+        username: '', // 大陆手机号码
+        password: ''  // 注册密码
     }
 }
 ```
@@ -61,11 +61,11 @@
     "success": true,
     "code": 200,
     "data": {
-        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjEzODAwMDAwMDAwIiwiZGF0ZSI6MTU4MDQ3NzM2Nzk3M30.bTi9uobu9JjfJ_ECCad_prcbHGqg8IsdbBBSrGnFZP4", // token
+        "token": "", // token
         "userInfo": {
-            "_id": "5e342af2568a850053eedcf1",
-            "create_time": 1580477170656,
-            "username": "13800000000",
+            "_id": "",
+            "create_time": ,
+            "username": "",
             "permission": 0,
             "status": 0
         } // 用户信息
