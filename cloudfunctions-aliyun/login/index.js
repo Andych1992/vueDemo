@@ -4054,6 +4054,8 @@ async function login(event) {
 				}
 				
 			}else{
+				
+				
 				return {
 					success: false,
 					code: -1,
@@ -4074,14 +4076,27 @@ async function login(event) {
 		
 		console.log('userUpdateResult>>>>', userUpdateResult);
 		if (userUpdateResult.id || userUpdateResult.affectedDocs === 1) {
-			return {
-				success: true,
-				code: 200,
-				data: {
-					token,'types':'1'
-				},
-				msg: '登陆成功'
-			}
+				if(username=="13800138000"){
+					return {
+						success: true,
+						code: 200,
+						data: {
+							token,'types':'6'
+						},
+						msg: '登陆成功'
+					}
+				}else{
+					return {
+						success: true,
+						code: 200,
+						data: {
+							token,'types':'1'
+						},
+						msg: '登陆成功'
+					}
+				}
+			
+			
 		}
 	}
 }

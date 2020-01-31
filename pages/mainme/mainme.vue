@@ -10,11 +10,13 @@
 				</view>
 				<view class="headinfo u-f-column">
 					<view>{{userinfo.name}}</view>
-					<view>{{userinfo.regDate}}</view>
-					<view>隶属部门 {{userinfo.company}} {{userinfo.dept}}</view>
+					<view>单位:{{userinfo.company}}</view>
+					<!-- <view>{{userinfo.regDate}}</view> -->
+					<view>部门: {{userinfo.dept}}</view>
 				</view>
 			</view>
 		</view>
+		
 		<view class="listinfo">
 			<uni-list>
 				<block v-for="(item,index) in listinfo" :key="index">
@@ -27,36 +29,65 @@
 </template>
 
 <script>
+var _self,userdata;	
 	export default {
 		data() {
 			return {
-				userinfo:{
-					headpic:'../../static/logo.png',
-					name:'_陈默',
-					regDate:'2020-01-30',
-					company:'xxx医院',
-					dept:'妇产科'
-				},
-				listinfo:[
+				userinfo:{},
+				listinfo:[]
+			}
+		},
+		onLoad() {
+		_self = this;
+	
+		 userdata = JSON.parse(uni.getStorageSync("userdata"));
+		_self.loadlistinit();
+		
+		
+		},
+		methods: {
+			loadlistinit(){
+			if(userdata.types == '6'){
+				//超级管理员
+				var listdata = [
 					{
 						type:'rygl',
 						title:'人员管理',
-						img:'https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png'
+						img:'../../static/icon/rygl.png'
+					},
+					{
+						type:'dwgl',
+						title:'单位管理',
+						img:'../../static/icon/dwgl.png'
 					},
 					{
 						type:'bmgl',
 						title:'部门管理',
-						img:'https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png'
+						img:'../../static/icon/bmgl.png'
 					},
 					{
 						type:'grzl',
 						title:'个人资料',
-						img:'https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png'
-					},
-				]
+						img:'../../static/icon/gwzl.png'
+					}];
+					_self.listinfo = listdata;
+			}else if(userdata.types == '1'){
+				//普通状态
+				var listdata = [
+					{
+						type:'grzl',
+						title:'个人资料',
+						img:'../../static/icon/gwzl.png'
+					}];
+					_self.listinfo = listdata;
+			}else{
+				//可能未登陆
+				uni.showModal({ content: "未登陆" , showCancel: false})
+				
 			}
-		},
-		methods: {
+				_self.getuserinfo();
+			},
+			
 			clicklist(type){
 				switch (type){
 					case 'rygl':
@@ -69,7 +100,48 @@
 						console.log('个人资料')
 						break;
 				}
+			},
+			getuserinfo(){
+				uniCloud.callFunction({
+						name: 'megetuserinfo',
+						data:{token:userdata.token}
+					})
+					.then(res => {
+						console.log(res.result)
+						if(res.result.success){
+							var datas = res.result.data;
+							if(datas.photo == '0'){
+								datas.photo = '../../static/logo.png';
+							}
+							if(datas.name == '0'){
+								datas.name = "未设置";
+							}
+							if(datas.company == '0'){
+								datas.company = "未设置";
+							}
+							if(datas.section == '0'){
+								datas.section = "未设置";
+							}
+							_self.userinfo={
+								headpic:datas.photo,
+								name:datas.name,
+								regDate:datas.regtime,
+								company:datas.company,
+								dept:datas.section
+							}
+							
+						}else{
+							
+						}
+						
+					})
+					.catch(err => {
+						console.error(err)
+					})
+				
 			}
+			
+			
 		}
 	}
 </script>
