@@ -84,7 +84,7 @@ export default {
 				.callFunction({
 					name: 'login',
 					data: {
-						username: '13800000001',
+						username: 'admin',
 						password: '123456'
 					}
 				})

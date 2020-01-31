@@ -71,5 +71,9 @@
     },
     "mp-toutiao" : {
         "usingComponents" : true
+    },
+    "h5" : {
+        "title" : "xinguan2020-storage",
+        "domain" : "http://jj.znuyun.cn/"
     }
 }

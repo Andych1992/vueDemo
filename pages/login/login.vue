@@ -45,11 +45,37 @@
 			//账号密码登陆
 			lonin(){
 				
+		
+			uniCloud.callFunction({
+					name: 'login',
+					data: {
+						username: '13800138000',
+						password: '123456'
+					}
+				})
+				.then(res => {
+					console.log(res.result)
+					if(res.result.success == true){
+						var mdata = res.result.data;
+						
+						var datasstr = JSON.stringify(mdata);
+						uni.setStorageSync('userdata', datasstr);
+						
+						uni.switchTab({
+						    url: '/pages/mainindex/mainindex'
+						});
+					}else{
+						uni.showModal({ content: res.result.msg, showCancel: false})
+					}
+					
+					
+				})
+				.catch(err => {
+					console.error(err)
+				})
+	
 				
 				
-				uni.switchTab({
-				    url: '/pages/mainindex/mainindex'
-				});
 			},
 		
 			//微信授权登陆
