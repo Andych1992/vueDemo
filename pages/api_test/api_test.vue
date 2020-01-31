@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import config from '@/common/config.js'
-const myCloud = uniCloud.init(config.uniCloud)
 export default {
 	data() {
 		return {}
@@ -15,7 +13,7 @@ export default {
 	methods: {
 		// registerTest
 		registerTest() {
-			myCloud
+			this.$myCloud
 				.callFunction({
 					name: 'register',
 					data: {
@@ -32,7 +30,7 @@ export default {
 		},
 		// loginTest
 		loginTest() {
-			myCloud
+			this.$myCloud
 				.callFunction({
 					name: 'login',
 					data: {

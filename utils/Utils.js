@@ -3,9 +3,6 @@
  * @author SunSeekerX
  * @time 2019-12-02 15:38:59
  */
-
-import config from '@/common/config.js'
-
 export default {
 	/**
 	 * @param {Object} msg 需要显示的消息
@@ -31,7 +28,4 @@ export default {
 			complete: () => {}
 		});
 	},
-	getUniCloud(){
-		return uniCloud.init(config.uniCloud)
-	}
 }
