@@ -15,14 +15,9 @@
 		<view class="uni-row" style="padding: 10rpx;">
 			<button @click="newaddbtn"  type="primary">新增</button>
 		</view>
-<!--  var	compdatas = [
- {cpnames:'北京第一人民医院',cpimg:'https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png',cpid:'srw1'},
- 	{cpnames:'北京第二人民医院',cpimg:'https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png',cpid:'sdf2'},
- 	{cpnames:'北京解放军第三附属医院',cpimg:'https://img-cdn-qiniu.dcloud.net.cn/new-page/hx.png',cpid:'sef3'}
- 				] -->		
-		
+	
 		<uni-list>
-			<!-- <uni-list-item title="某某医院1" thumb="../../static/icon/compicon.png"></uni-list-item> -->
+
 			<!--  {compname,jname,address,contacts,tel,cpaddress,cplogo,desc} -->
 			<block  v-for="(item, index) in compdata" :key="index" >
 			<uni-list-item @tap="listclick(index)"  :title=item.jname :thumb=item.cplogo :note=item.cpaddress > </uni-list-item>
@@ -82,7 +77,7 @@ export default {
 			},
 			listclick(e){
 				
-				var datas = JSON.stringify( this.compdata);
+				var datas = JSON.stringify( this.compdata[e]);
 				uni.setStorageSync('compdata', datas);
 								
 				uni.navigateTo({

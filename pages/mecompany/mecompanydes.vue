@@ -12,55 +12,55 @@
 	<view class="uni-row" >
 		<view class="uni-label fl">单位名称</view>
 		<view class="fl inp">
-			<input name="compname" type="text" placeholder="请输入单位名称" />
+			<input name="compname" v-model="compdata.compname" type="text" placeholder="请输入单位名称" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">单位简称</view>
 		<view class="fl inp">
-			<input name="jname" type="text"  placeholder="请输入单位简称" />
+			<input name="jname" type="text" v-model="compdata.jname" placeholder="请输入单位简称" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">单位地址</view>
 		<view class="fl inp">
-			<input name="cpaddress" type="text"  placeholder="请输入单位地址" />
+			<input name="cpaddress" type="text" v-model="compdata.cpaddress"  placeholder="请输入单位地址" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">联系人</view>
 		<view class="fl inp">
-			<input name="contacts" type="text"  placeholder="请输入单位联系人" />
+			<input name="contacts" type="text" v-model="compdata.contacts"  placeholder="请输入单位联系人" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">联系电话</view>
 		<view class="fl inp">
-			<input name="tel" type="text"  placeholder="请输入单位联系电话" />
+			<input name="tel" type="text" v-model="compdata.tel" placeholder="请输入单位联系电话" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">备注说明</view>
 		<view class="fl inp">
-			<input name="desc" type="text"  placeholder="备注说明" />
+			<input name="desc" type="text" v-model="compdata.desc" placeholder="备注说明" />
 		</view>
 	</view>	
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">单位LOGO</view>
 		<view class="fl inp">
-			<input name="cplogo" type="text"  placeholder="单位LOGO" />
+			<input name="cplogo" type="text" v-model="compdata.cplogo"  placeholder="单位LOGO" />
 		</view>
 	</view>	
 		
 	<view class="bomvi">
 		<button class="bombtn fl" @click="resbtn" >返回</button>
-		<button class="bombtn fr" form-type="submit" >确认新增</button>
+		<button class="bombtn fr" form-type="submit" >{{btntext}}</button>
 	</view>
 
 </form>	
@@ -73,6 +73,7 @@
 	export default {
 		data() {
 			return {
+				btntext:"确认新增",compid:'0',
 				compdata:{}
 			}
 		},
@@ -82,12 +83,19 @@
 		
 		if(_types == 'n'){
 			//新增
-			
+			_self.btntext = "确认新增";
 			
 		}else if(_types == 'o'){
 			//修改
 			var datas = uni.getStorageSync('compdata');
+			console.log("公司地址" + datas);
+			
 			_self.compdata = JSON.parse(datas);
+			_self.btntext = "确认修改";
+			_self.compid = _self.compdata._id;
+			console.log("公司地址id" + _self.compdata._id);
+			
+			
 		}
 		
 		},
@@ -101,7 +109,15 @@
 			},
 			subform(e){
 				var formdata = e.detail.value;
+				if(formdata.cplogo == ''){
+					formdata.cplogo == '../../static/icon/gwzl.png'
+				}
+				
 				console.log(formdata)
+				console.log(_self.compid);
+				
+				formdata._id = _self.compid;
+				
 				uniCloud.callFunction({
 						name: 'megetcompadd',
 						data:formdata
