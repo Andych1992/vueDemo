@@ -1676,7 +1676,7 @@ var render = function() {
         "v-uni-view",
         {
           staticClass: _vm._$g(8, "sc"),
-          staticStyle: { padding: "10rpx" },
+          staticStyle: { padding: "10rpx", height: "100rpx", border: "none" },
           attrs: { _i: 8 }
         },
         [
@@ -1696,14 +1696,37 @@ var render = function() {
         1
       ),
       _c(
-        "uni-list",
-        { attrs: { _i: 10 } },
+        "v-uni-view",
+        {
+          staticClass: _vm._$g(10, "sc"),
+          staticStyle: { padding: "10rpx", height: "100rpx", border: "none" },
+          attrs: { _i: 10 }
+        },
         [
-          _vm._l(_vm._$g(11, "f"), function(item, index, $20, $30) {
+          _c(
+            "v-uni-button",
+            {
+              attrs: { type: "default", _i: 11 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
+            [_vm._v("返回")]
+          )
+        ],
+        1
+      ),
+      _c(
+        "uni-list",
+        { attrs: { _i: 12 } },
+        [
+          _vm._l(_vm._$g(13, "f"), function(item, index, $20, $30) {
             return [
               _c("uni-list-item", {
                 key: item["k0"],
-                attrs: { _i: "12-" + $30 },
+                attrs: { _i: "14-" + $30 },
                 on: {
                   click: function($event) {
                     return _vm.$handleViewEvent($event)
@@ -4043,9 +4066,20 @@ var render = function() {
             [
               _c(
                 "v-uni-button",
+                { attrs: { type: "primary", "form-type": "submit", _i: 32 } },
+                [_vm._v(_vm._$g(32, "t0"))]
+              )
+            ],
+            1
+          ),
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(33, "sc"), attrs: { _i: 33 } },
+            [
+              _c(
+                "v-uni-button",
                 {
-                  staticClass: _vm._$g(32, "sc"),
-                  attrs: { _i: 32 },
+                  attrs: { type: "default", _i: 34 },
                   on: {
                     click: function($event) {
                       return _vm.$handleViewEvent($event)
@@ -4053,14 +4087,44 @@ var render = function() {
                   }
                 },
                 [_vm._v("返回")]
-              ),
+              )
+            ],
+            1
+          ),
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(35, "sc"), attrs: { _i: 35 } },
+            [
               _c(
                 "v-uni-button",
                 {
-                  staticClass: _vm._$g(33, "sc"),
-                  attrs: { "form-type": "submit", _i: 33 }
+                  attrs: { type: "default", _i: 36 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
                 },
-                [_vm._v(_vm._$g(33, "t0"))]
+                [_vm._v("部门管理")]
+              )
+            ],
+            1
+          ),
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(37, "sc"), attrs: { _i: 37 } },
+            [
+              _c(
+                "v-uni-button",
+                {
+                  attrs: { type: "warn", _i: 38 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [_vm._v("删除")]
               )
             ],
             1
@@ -4161,7 +4225,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../Program Files/HBu
 
 
 // module
-exports.push([module.i, "\n.fl{float: left;}\n.fr{float: right;}\n.uni-label{color: #333333;font-size: 32rpx;}\n.inp{width: 550rpx;margin-left: 10rpx;height: 60rpx;}\n.inp uni-input{height: 60rpx;line-height: 60rpx;text-align: right;}\n.uni-row{margin-top: 20rpx;border-bottom: #BEBEBE solid 1rpx;height: 80rpx;padding: 10rpx;}\n.utit{background-color: #E5E5E5;height: 60rpx;line-height: 60rpx;padding: 10rpx;}\n.bomvi{position: absolute;bottom: 25rpx;width: 750rpx;}\n.bombtn{width: 220rpx;background-color: #FFFFFF;margin: 5rpx;color: #333333;}\r\n\r\n", ""]);
+exports.push([module.i, "\n.fl{float: left;}\n.fr{float: right;}\n.uni-label{color: #333333;font-size: 32rpx;}\n.inp{width: 550rpx;margin-left: 10rpx;height: 60rpx;}\n.inp uni-input{height: 60rpx;line-height: 60rpx;text-align: right;}\n.uni-row{margin-top: 20rpx;border-bottom: #BEBEBE solid 1rpx;height: 80rpx;padding: 10rpx;}\n.uni-row-b{margin-top: 20rpx;border-bottom: #BEBEBE solid 0rpx;height: 100rpx;padding: 10rpx;}\n.utit{background-color: #E5E5E5;height: 60rpx;line-height: 60rpx;padding: 10rpx;}\n.bomvi{position: absolute;bottom: 25rpx;width: 750rpx;}\n.bombtn{width: 220rpx;background-color: #FFFFFF;margin: 5rpx;color: #333333;}\r\n\r\n", ""]);
 
 // exports
 
@@ -4594,14 +4658,29 @@ var render = function() {
                   }),
                   _c("v-uni-input", {
                     staticClass: _vm._$g(5, "sc"),
-                    attrs: { type: "text", placeholder: "关键字", _i: 5 }
+                    attrs: { type: "text", placeholder: "关键字", _i: 5 },
+                    model: {
+                      value: _vm._$g(5, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(5, $$v)
+                      },
+                      expression: "keystrs"
+                    }
                   })
                 ],
                 1
               ),
               _c(
                 "v-uni-button",
-                { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
+                {
+                  staticClass: _vm._$g(6, "sc"),
+                  attrs: { _i: 6 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
                 [_vm._v("搜索")]
               )
             ],
@@ -4615,15 +4694,60 @@ var render = function() {
         attrs: { _i: 7 }
       }),
       _c(
-        "uni-list",
-        { attrs: { _i: 8 } },
+        "v-uni-view",
+        {
+          staticClass: _vm._$g(8, "sc"),
+          staticStyle: { padding: "10rpx", height: "100rpx", border: "none" },
+          attrs: { _i: 8 }
+        },
         [
-          _c("uni-list-item", { attrs: { _i: 9 } }),
-          _vm._l(_vm._$g(10, "f"), function(item, index, $20, $30) {
+          _c(
+            "v-uni-button",
+            {
+              attrs: { type: "primary", _i: 9 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
+            [_vm._v("新增")]
+          )
+        ],
+        1
+      ),
+      _c(
+        "v-uni-view",
+        {
+          staticClass: _vm._$g(10, "sc"),
+          staticStyle: { padding: "10rpx", height: "100rpx", border: "none" },
+          attrs: { _i: 10 }
+        },
+        [
+          _c(
+            "v-uni-button",
+            {
+              attrs: { type: "default", _i: 11 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
+            [_vm._v("返回")]
+          )
+        ],
+        1
+      ),
+      _c(
+        "uni-list",
+        { attrs: { _i: 12 } },
+        [
+          _vm._l(_vm._$g(13, "f"), function(item, index, $20, $30) {
             return [
               _c("uni-list-item", {
                 key: item["k0"],
-                attrs: { _i: "11-" + $30 },
+                attrs: { _i: "14-" + $30 },
                 on: {
                   click: function($event) {
                     return _vm.$handleViewEvent($event)
@@ -4820,65 +4944,148 @@ var render = function() {
     { attrs: { _i: 0 } },
     [
       _c("v-uni-view", { staticClass: _vm._$g(1, "sc"), attrs: { _i: 1 } }, [
-        _vm._v("\n\t基本信息 \n")
+        _vm._v("\n\t\t基本信息 \n\t")
       ]),
       _c(
-        "v-uni-view",
-        { staticClass: _vm._$g(2, "sc"), attrs: { _i: 2 } },
+        "v-uni-form",
+        {
+          attrs: { _i: 2 },
+          on: {
+            submit: function($event) {
+              return _vm.$handleViewEvent($event)
+            }
+          }
+        },
         [
           _c(
             "v-uni-view",
             { staticClass: _vm._$g(3, "sc"), attrs: { _i: 3 } },
-            [_vm._v("部门名称")]
-          ),
-          _c(
-            "v-uni-view",
-            { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
             [
-              _c("v-uni-input", {
-                attrs: { type: "text", placeholder: "请输入单位名称", _i: 5 }
-              })
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(4, "sc"), attrs: { _i: 4 } },
+                [_vm._v("部门名称")]
+              ),
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
+                [
+                  _c("v-uni-input", {
+                    attrs: {
+                      name: "section",
+                      type: "text",
+                      placeholder: "请输入部门名称",
+                      _i: 6
+                    },
+                    model: {
+                      value: _vm._$g(6, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(6, $$v)
+                      },
+                      expression: "bmdata.section"
+                    }
+                  })
+                ],
+                1
+              )
             ],
             1
-          )
-        ],
-        1
-      ),
-      _c(
-        "v-uni-view",
-        { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
-        [
+          ),
           _c(
             "v-uni-view",
             { staticClass: _vm._$g(7, "sc"), attrs: { _i: 7 } },
-            [_vm._v("备注说明")]
+            [
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
+                [_vm._v("备注说明")]
+              ),
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(9, "sc"), attrs: { _i: 9 } },
+                [
+                  _c("v-uni-input", {
+                    attrs: {
+                      name: "desc",
+                      type: "text",
+                      placeholder: "备注说明",
+                      _i: 10
+                    },
+                    model: {
+                      value: _vm._$g(10, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(10, $$v)
+                      },
+                      expression: "bmdata.desc"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
           ),
           _c(
             "v-uni-view",
-            { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
+            { staticClass: _vm._$g(11, "sc"), attrs: { _i: 11 } },
             [
-              _c("v-uni-input", {
-                attrs: { type: "text", placeholder: "备注说明", _i: 9 }
+              _c(
+                "v-uni-button",
+                { attrs: { type: "primary", "form-type": "submit", _i: 12 } },
+                [_vm._v(_vm._$g(12, "t0"))]
+              ),
+              _c("v-uni-view", {
+                staticStyle: { height: "10rpx" },
+                attrs: { _i: 13 }
               })
             ],
             1
-          )
-        ],
-        1
-      ),
-      _c(
-        "v-uni-view",
-        { staticClass: _vm._$g(10, "sc"), attrs: { _i: 10 } },
-        [
-          _c(
-            "v-uni-button",
-            { staticClass: _vm._$g(11, "sc"), attrs: { _i: 11 } },
-            [_vm._v("返回")]
           ),
           _c(
-            "v-uni-button",
-            { staticClass: _vm._$g(12, "sc"), attrs: { _i: 12 } },
-            [_vm._v("确认新增")]
+            "v-uni-view",
+            { staticClass: _vm._$g(14, "sc"), attrs: { _i: 14 } },
+            [
+              _c(
+                "v-uni-button",
+                {
+                  attrs: { type: "default", _i: 15 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [_vm._v("返回")]
+              ),
+              _c("v-uni-view", {
+                staticStyle: { height: "10rpx" },
+                attrs: { _i: 16 }
+              })
+            ],
+            1
+          ),
+          _c(
+            "v-uni-view",
+            { staticClass: _vm._$g(17, "sc"), attrs: { _i: 17 } },
+            [
+              _c(
+                "v-uni-button",
+                {
+                  attrs: { type: "warn", _i: 18 },
+                  on: {
+                    click: function($event) {
+                      return _vm.$handleViewEvent($event)
+                    }
+                  }
+                },
+                [_vm._v("删除")]
+              ),
+              _c("v-uni-view", {
+                staticStyle: { height: "10rpx" },
+                attrs: { _i: 19 }
+              })
+            ],
+            1
           )
         ],
         1
@@ -4976,7 +5183,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../Program Files/HBu
 
 
 // module
-exports.push([module.i, "\n.fl{float: left;}\n.fr{float: right;}\n.uni-label{color: #333333;font-size: 32rpx;}\n.inp{width: 550rpx;margin-left: 10rpx;height: 60rpx;}\n.inp uni-input{height: 60rpx;line-height: 60rpx;text-align: right;}\n.uni-row{margin-top: 20rpx;border-bottom: #BEBEBE solid 1rpx;height: 80rpx;padding: 10rpx;}\n.utit{background-color: #E5E5E5;height: 60rpx;line-height: 60rpx;padding: 10rpx;}\n.bomvi{position: absolute;bottom: 25rpx;width: 750rpx;}\n.bombtn{width: 220rpx;background-color: #FFFFFF;margin: 5rpx;color: #333333;}\r\n\r\n", ""]);
+exports.push([module.i, "\n.fl{float: left;}\n.fr{float: right;}\n.uni-label{color: #333333;font-size: 32rpx;}\n.inp{width: 550rpx;margin-left: 10rpx;height: 60rpx;}\n.inp uni-input{height: 60rpx;line-height: 60rpx;text-align: right;}\n.uni-row{margin-top: 20rpx;border-bottom: #BEBEBE solid 1rpx;height: 80rpx;padding: 10rpx;}\n.uni-row-b{margin-top: 20rpx;border-bottom: #BEBEBE solid 0rpx;height: 100rpx;padding: 10rpx;}\n.utit{background-color: #E5E5E5;height: 60rpx;line-height: 60rpx;padding: 10rpx;}\n.bomvi{position: absolute;bottom: 25rpx;width: 750rpx;}\n.bombtn{width: 220rpx;background-color: #FFFFFF;margin: 5rpx;color: #333333;}\r\n\r\n", ""]);
 
 // exports
 

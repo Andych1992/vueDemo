@@ -5,48 +5,105 @@
 			<view class="uni-row" >
 			<view class="inpus fl" >
 				<image class="micon fl" src="../../static/icon/search.png"></image>
-				<input type="text" class="fl" placeholder="关键字" />
+				<input type="text" class="fl" v-model="keystrs" placeholder="关键字" />
 			</view>
-			<button class="mbtn fl">搜索</button>
+			<button class="mbtn fl" @click="searchbtn">搜索</button>
 		</view>
 		</view>
 		<view style="height: 10rpx;clear: both;"></view>
 		
-		
+		<view class="uni-row" style="padding: 10rpx;height: 100rpx;border: none;">
+			<button @click="newaddbtn"  type="primary">新增</button>
+		</view>
+		<view class="uni-row" style="padding: 10rpx;height: 100rpx;border: none;">
+			<button @click="retbtn"  type="default">返回</button>
+		</view>
+	
 		<uni-list>
-			<uni-list-item title="某某部门" thumb="../../static/icon/compicon.png"></uni-list-item>
-			
+
+			<!--  {compname,jname,address,contacts,tel,cpaddress,cplogo,desc} -->
 			<block  v-for="(item, index) in bmdata" :key="index" >
-			<uni-list-item @tap="listclick(index)" thumb="../../static/icon/compicon.png"  :title=item.cpname  ></uni-list-item>
+			<uni-list-item @tap="listclick(index)"  :title=item.section  :note=item.desc thumb="../../static/icon/compicon.png"> </uni-list-item>
+			
 			</block>
 			
 		</uni-list>
 
 	</view>
 </template>
-
+		
 <script>
-	export default {
+var _self,userdata;	
+export default {
 		data() {
 			return {
-				bmdata:[
-					{cpname:'呼吸科',bmid:'srw1'},
-					{cpname:'诊断科',bmid:'sdf2'},
-					{cpname:'住院部',bmid:'sef3'}
-				]
+				userinfo:{},compid:'',
+				keystrs:"",
+				bmdata:[]
 			}
 		},
+		onLoad() {
+			_self=this;
+			userdata = JSON.parse(uni.getStorageSync("userdata"));
+			
+			var compdb = JSON.parse(uni.getStorageSync('compdata'));
+			_self.compid = compdb._id;
+			
+			_self.getcomp(_self.keystrs);
+			
+		},
 		methods: {
+			retbtn(){
+					uni.navigateTo({
+						url: '/pages/mecompany/mecompany'
+					});
+			},
+			searchbtn(){
+				console.log(_self.keystrs);
+				_self.getcomp(_self.keystrs);
+			},
+			getcomp(keystr = '0'){
+				if(keystr == ""){keystr = '0';}
+				uni.showLoading({title: '加载中...'})
+				
+				uniCloud.callFunction({
+						name: 'mebmtabget',
+						data:{keystr:keystr,compid:_self.compid}
+					})
+					.then(res => {
+						uni.hideLoading()
+						console.log(res.result)
+						if(res.result.success == true){
+							var mdata = res.result.data;
+							console.log(mdata.data)
+							_self.bmdata = mdata.data;
+						}else{
+							uni.showModal({ content:"暂无部门", showCancel: false})
+						}
+						
+					})
+					.catch(err => {
+						uni.hideLoading()
+						console.error(err)
+					})
+				
+				
+			},
 			listclick(e){
 				
-				var datas = JSON.stringify( this.bmdata);
+				var datas = JSON.stringify( this.bmdata[e]);
 				uni.setStorageSync('bmdata', datas);
-							
+								
 				uni.navigateTo({
-				    url: '/pages/medepartment/medepartmentdes'
+				    url: '/pages/medepartment/medepartmentdes?ty=o'
 				});
 				
 				
+			},
+			newaddbtn(){
+				uni.navigateTo({
+				    url: '/pages/medepartment/medepartmentdes?ty=n'
+				});
 			}
 		}
 	}
