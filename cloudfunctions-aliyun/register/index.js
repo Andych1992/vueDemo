@@ -5246,10 +5246,11 @@ async function register(event) {
         const registerResult = await db.collection('user').add({
           username,
           password: bcryptPassword,
-          name,
           status: 0,
           permission: 0,
-          create_time: new Date().getTime()
+          create_time: new Date().getTime(),
+		  company:"0",section:"0",wx_open_id:"0",id_card:"0",name:"0",
+		  phone:"0",age:"0",sex:"0",photo:"0",status:"0",permission:"0",power:"0"
         });
 
         return {
