@@ -1,8 +1,7 @@
 {
-  "name": "discipline-report",
+  "name": "cloudfunctions-dev",
   "version": "0.0.1",
-  "description": "违纪举报系统云函数",
-  "main": "index.js",
+  "description": "云函数开发",
   "scripts": {
     "build": "node build-api.js"
   },
@@ -15,6 +14,8 @@
     "validator": "^12.2.0"
   },
   "dependencies": {
-    "jwt-simple": "^0.5.6"
+    "bcryptjs": "^2.4.3",
+    "jwt-simple": "^0.5.6",
+    "uuid": "^3.4.0"
   }
 }

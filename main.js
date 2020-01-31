@@ -12,6 +12,7 @@ import HandleError from '@/utils/HandleError' // Handle error
 Vue.prototype.config=config
 Vue.prototype.$util = Utils // Mounted common utils
 Vue.prototype.$handleError = HandleError // Mounted handle error
+Vue.prototype.$myCloud = '123' // Mounted myCloud
 
 /**
  * @name Libs config
