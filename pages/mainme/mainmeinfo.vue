@@ -19,9 +19,9 @@
 			<uni-list-item :show-arrow="true" title="工号" rightText="1001" />
 			<uni-list-item :show-arrow="true" title="名称" rightText="_陈默" />
 			<uni-list-item :show-arrow="true" title="手机" rightText="1340****071" />
-			<uni-list-item :show-arrow="true" title="性别" rightText="男" />
-			<uni-list-item :show-arrow="true" title="部门" rightText="儿保科" />
-			<uni-list-item :show-arrow="true" title="单位" rightText="XXX医院" />
+			<uni-list-item :show-arrow="true" title="性别" :rightText="userinfo.sex" @click="chooseSex" />
+			<uni-list-item :show-arrow="true" title="部门" :rightText="userinfo.dept" @click="chooseDept"/>
+			<uni-list-item :show-arrow="true" title="单位" :rightText="userinfo.comp" @click="chooseComp"/>
 			<uni-list-item :show-arrow="true" title="备注" rightText="暂无备注信息" />
 		</uni-list>
 
@@ -43,14 +43,58 @@
 	export default {
 		data(){
 			return {
+				//头像
 				imgSrc:'../../static/logo.png',
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
-				sizeType: ['压缩', '原图', '压缩或原图']
+				sizeType: ['压缩', '原图', '压缩或原图'],
+				//个人资料
+				sexType:['男', '女'],
+				deptType:['妇产科','儿保科'],
+				compType:['xxx医院','xxx二院'],
+				userinfo:{
+					sex:'男',
+					dept:'儿保科',
+					comp:'xxx医院'
+				}
 			}
 		},
 		methods: {
+			//单位
+			chooseComp(){
+				uni.showActionSheet({
+					title:'选择单位',
+					itemList: this.compType,
+					success: (e) => {
+						console.log(e.tapIndex);
+						this.userinfo.comp = this.compType[e.tapIndex]
+					}
+				})
+			},
+			//部门
+			chooseDept(){
+				uni.showActionSheet({
+					title:'选择部门',
+					itemList: this.deptType,
+					success: (e) => {
+						console.log(e.tapIndex);
+						this.userinfo.dept = this.deptType[e.tapIndex]
+					}
+				})
+			},
+			//性别
+			chooseSex() {
+				uni.showActionSheet({
+					title:'选择性别',
+					itemList: this.sexType,
+					success: (e) => {
+						console.log(e.tapIndex);
+						this.userinfo.sex = this.sexType[e.tapIndex]
+					}
+				})
+			},
+			//修改头像
 			chooseImage: async function() {
 				// #ifdef APP-PLUS
 				// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
