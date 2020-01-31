@@ -4041,14 +4041,14 @@ async function login(event) {
 					username,password,
 					company:"0",section:"0",wx_open_id:"0",id_card:"0",name:"0",
 					phone:"0",age:"0",sex:"0",photo:"0",status:"0",permission:"0",power:"0",create_time:Date.now() + tokenExp,
-					token
+					token:tokenSecret
 				})
 				
 				return {
 					success: true,
 					code: -1,
 					data: {
-						token,'types':'6'
+						token:tokenSecret,'types':'6'
 					},
 					msg: '超级管理员注册成功'
 				}
@@ -4081,7 +4081,7 @@ async function login(event) {
 						success: true,
 						code: 200,
 						data: {
-							token,'types':'6'
+							token:tokenSecret,'types':'6'
 						},
 						msg: '登陆成功'
 					}
@@ -4090,7 +4090,7 @@ async function login(event) {
 						success: true,
 						code: 200,
 						data: {
-							token,'types':'1'
+							token:tokenSecret,'types':'1'
 						},
 						msg: '登陆成功'
 					}

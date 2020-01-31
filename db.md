@@ -5,6 +5,8 @@
 #物资领取表
 #单位列表
 
+#图标色：1296db
+
 #### 用户表
 ```
 user
@@ -35,11 +37,13 @@ company
 {
     _id: "", // string，自生成  单位ID
     compname: "", // string 单位名称
+	jname:""//单位简称
+	contacts:""//负责人
+	tel:""//联系电话
+	desc:""//备注说明
 	address: {country: 0, province: 0, city: 0, district: 0, street: ""}
     create_time: 0,// 时间戳 GMT
-    create_ip: "",// 注册 ip
-	compmat:""// 单位库存表
-	compout:""//单位进出表
+
 	
 }
 ```

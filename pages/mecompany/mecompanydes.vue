@@ -5,81 +5,129 @@
 		基本信息 
 	</view>
 
-	
+	<form @submit="subform" >
+		
+		
 		
 	<view class="uni-row" >
 		<view class="uni-label fl">单位名称</view>
 		<view class="fl inp">
-			<input type="text" placeholder="请输入单位名称" />
+			<input name="compname" type="text" placeholder="请输入单位名称" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">单位简称</view>
 		<view class="fl inp">
-			<input type="text"  placeholder="请输入单位简称" />
+			<input name="jname" type="text"  placeholder="请输入单位简称" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">单位地址</view>
 		<view class="fl inp">
-			<input type="text"  placeholder="请输入单位地址" />
+			<input name="cpaddress" type="text"  placeholder="请输入单位地址" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">联系人</view>
 		<view class="fl inp">
-			<input type="text"  placeholder="请输入单位联系人" />
+			<input name="contacts" type="text"  placeholder="请输入单位联系人" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">联系电话</view>
 		<view class="fl inp">
-			<input type="text"  placeholder="请输入单位联系电话" />
+			<input name="tel" type="text"  placeholder="请输入单位联系电话" />
 		</view>
 	</view>
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">备注说明</view>
 		<view class="fl inp">
-			<input type="text"  placeholder="备注说明" />
+			<input name="desc" type="text"  placeholder="备注说明" />
 		</view>
 	</view>	
 	
 	<view class="uni-row" >
 		<view class="uni-label fl">单位LOGO</view>
 		<view class="fl inp">
-			<input type="text"  placeholder="单位LOGO" />
+			<input name="cplogo" type="text"  placeholder="单位LOGO" />
 		</view>
 	</view>	
 		
 	<view class="bomvi">
-		<button class="bombtn fl" >返回</button>
-		<button class="bombtn fr"  >确认新增</button>
+		<button class="bombtn fl" @click="resbtn" >返回</button>
+		<button class="bombtn fr" form-type="submit" >确认新增</button>
 	</view>
-		
+
+</form>	
+	
 	</view>
 </template>
 
 <script>
-	var _self;
+	var _self,_types;
 	export default {
 		data() {
 			return {
 				compdata:{}
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 		_self = this;
+		_types = e.ty;
+		
+		if(_types == 'n'){
+			//新增
 			
-		var datas = uni.getStorageSync('compdata');
-		_self.compdata = JSON.parse(datas);
+			
+		}else if(_types == 'o'){
+			//修改
+			var datas = uni.getStorageSync('compdata');
+			_self.compdata = JSON.parse(datas);
+		}
 		
 		},
 		methods: {
+			resbtn(){
+				//uni.navigateTo({
+				//	url: '/pages/mecompany/mecompany'
+				//});
+				
+				uni.navigateBack({delta: 1});
+			},
+			subform(e){
+				var formdata = e.detail.value;
+				console.log(formdata)
+				uniCloud.callFunction({
+						name: 'megetcompadd',
+						data:formdata
+					})
+					.then(res => {
+						console.log(res.result)
+						if(res.result.success == true){
+							var mdata = res.result.data;
+							uni.showToast({
+							    title: res.result.msg,
+							    duration: 1000
+							});
+							uni.navigateTo({
+								url: '/pages/mecompany/mecompany'
+							});
+						}else{
+							uni.showModal({ content: res.result.msg, showCancel: false})
+						}
+						
+						
+					})
+					.catch(err => {
+						console.error(err)
+					})
+			}
+			
 			
 		}
 	}

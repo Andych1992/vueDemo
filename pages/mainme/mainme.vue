@@ -24,7 +24,7 @@
 				</block>
 			</uni-list>
 		</view>
-		<button class="btn">注销登陆</button>
+		<button class="btn" @click="exitbtn">注销登陆</button>
 	</view>
 </template>
 
@@ -93,6 +93,10 @@ var _self,userdata;
 					case 'rygl':
 						console.log('人员管理')
 						break;
+					case 'dwgl':
+						uni.navigateTo({
+							url: '/pages/mecompany/mecompany'
+						});
 					case 'bmgl':
 						console.log('部门管理')
 						break;
@@ -102,6 +106,8 @@ var _self,userdata;
 				}
 			},
 			getuserinfo(){
+				console.log(userdata.token);
+				
 				uniCloud.callFunction({
 						name: 'megetuserinfo',
 						data:{token:userdata.token}
@@ -139,6 +145,12 @@ var _self,userdata;
 						console.error(err)
 					})
 				
+			},
+			exitbtn(){
+				uni.setStorageSync('userdata', '0');
+				uni.navigateTo({
+				    url: '/pages/login/login'
+				});
 			}
 			
 			
