@@ -4,17 +4,6 @@
 		<view class="uni-row u-f-ac">
 			基本信息
 		</view>
-		
-		<!-- <view class="uni-row utit" >
-			基本信息 
-		</view>
-		<view class="uni-row" >
-			<view class="uni-label fl">部门名称</view>
-			<view class="fl inp">
-				<input type="text" placeholder="请输入单位名称" />
-			</view>
-		</view> -->
-		
 		<uni-list>
 			
 			<!-- <uni-list-item :show-badge="true" title="列表右侧带箭头 + 角标" badge-text="AAA" badge-type="ss" rightText="bbb"/> -->
