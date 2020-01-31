@@ -3818,6 +3818,13 @@ var render = function() {
                       type: "text",
                       placeholder: "请输入单位名称",
                       _i: 6
+                    },
+                    model: {
+                      value: _vm._$g(6, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(6, $$v)
+                      },
+                      expression: "compdata.compname"
                     }
                   })
                 ],
@@ -3845,6 +3852,13 @@ var render = function() {
                       type: "text",
                       placeholder: "请输入单位简称",
                       _i: 10
+                    },
+                    model: {
+                      value: _vm._$g(10, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(10, $$v)
+                      },
+                      expression: "compdata.jname"
                     }
                   })
                 ],
@@ -3872,6 +3886,13 @@ var render = function() {
                       type: "text",
                       placeholder: "请输入单位地址",
                       _i: 14
+                    },
+                    model: {
+                      value: _vm._$g(14, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(14, $$v)
+                      },
+                      expression: "compdata.cpaddress"
                     }
                   })
                 ],
@@ -3899,6 +3920,13 @@ var render = function() {
                       type: "text",
                       placeholder: "请输入单位联系人",
                       _i: 18
+                    },
+                    model: {
+                      value: _vm._$g(18, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(18, $$v)
+                      },
+                      expression: "compdata.contacts"
                     }
                   })
                 ],
@@ -3926,6 +3954,13 @@ var render = function() {
                       type: "text",
                       placeholder: "请输入单位联系电话",
                       _i: 22
+                    },
+                    model: {
+                      value: _vm._$g(22, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(22, $$v)
+                      },
+                      expression: "compdata.tel"
                     }
                   })
                 ],
@@ -3953,6 +3988,13 @@ var render = function() {
                       type: "text",
                       placeholder: "备注说明",
                       _i: 26
+                    },
+                    model: {
+                      value: _vm._$g(26, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(26, $$v)
+                      },
+                      expression: "compdata.desc"
                     }
                   })
                 ],
@@ -3980,6 +4022,13 @@ var render = function() {
                       type: "text",
                       placeholder: "单位LOGO",
                       _i: 30
+                    },
+                    model: {
+                      value: _vm._$g(30, "v-model"),
+                      callback: function($$v) {
+                        _vm.$handleVModelEvent(30, $$v)
+                      },
+                      expression: "compdata.cplogo"
                     }
                   })
                 ],
@@ -4011,7 +4060,7 @@ var render = function() {
                   staticClass: _vm._$g(33, "sc"),
                   attrs: { "form-type": "submit", _i: 33 }
                 },
-                [_vm._v("确认新增")]
+                [_vm._v(_vm._$g(33, "t0"))]
               )
             ],
             1
