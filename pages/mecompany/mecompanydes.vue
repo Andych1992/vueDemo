@@ -115,11 +115,11 @@
 		},
 		methods: {
 			resbtn(){
-				//uni.navigateTo({
-				//	url: '/pages/mecompany/mecompany'
-				//});
+				uni.navigateTo({
+					url: '/pages/mecompany/mecompany'
+				});
 				
-				uni.navigateBack({delta: 1});
+				//uni.navigateBack({delta: 1});
 			},
 			bmglbtn(){
 				uni.navigateTo({
