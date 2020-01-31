@@ -15,7 +15,7 @@
 		{
 			"path": "pages/mainstroage/mainstroage",
 			"style": {
-				"navigationBarTitleText": "发放",
+				"navigationBarTitleText": "发放管理",
 				// "navigationStyle": "custom" ,//导航栏样式自定义
 				"enablePullDownRefresh": true //开启下拉刷新
 			}
