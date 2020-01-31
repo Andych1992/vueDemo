@@ -22,6 +22,27 @@
 	</view>
 	
 	<view class="uni-row" >
+		<view class="uni-label fl">单位地址</view>
+		<view class="fl inp">
+			<input type="text"  placeholder="请输入单位地址" />
+		</view>
+	</view>
+	
+	<view class="uni-row" >
+		<view class="uni-label fl">联系人</view>
+		<view class="fl inp">
+			<input type="text"  placeholder="请输入单位联系人" />
+		</view>
+	</view>
+	
+	<view class="uni-row" >
+		<view class="uni-label fl">联系电话</view>
+		<view class="fl inp">
+			<input type="text"  placeholder="请输入单位联系电话" />
+		</view>
+	</view>
+	
+	<view class="uni-row" >
 		<view class="uni-label fl">备注说明</view>
 		<view class="fl inp">
 			<input type="text"  placeholder="备注说明" />
