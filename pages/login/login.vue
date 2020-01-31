@@ -6,20 +6,21 @@
 		</view>
 		
 		<view style="margin-top: 60rpx;padding: 10rpx;">
+		<form @submit="formSubmit" >
 		<view class="uni-row inpus" >
 	
 			
-			<input type="text"  placeholder="手机号" />
+			<input type="text" name="username" value="13800138000"   placeholder="手机号" />
 		</view>
 		
 		<view class="uni-row inpus">
-			<input type="text"  placeholder="密码" />
+			<input type="pass" name="password" value="123456"  placeholder="密码" />
 		</view>
 		
 		<view class="uni-row">
-			<button  @click="lonin" type="primary">登陆</button>
+			<button form-type="submit"  type="primary">登陆</button>
 		</view>
-		
+		</form>
 		<!-- <view class="uni-row">
 			<button @click="loninphone" type="default">手机登陆</button>
 		</view> -->
@@ -42,16 +43,19 @@
 			}
 		},
 		methods: {
+			formSubmit(e){
+				  var formdata = e.detail.value;
+				  this.lonin(formdata)
+				   
+			},
+			
 			//账号密码登陆
-			lonin(){
+			lonin(formdata){
 				
 		
 			uniCloud.callFunction({
 					name: 'login',
-					data: {
-						username: '13800138000',
-						password: '123456'
-					}
+					data:formdata
 				})
 				.then(res => {
 					console.log(res.result)

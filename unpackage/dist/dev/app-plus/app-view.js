@@ -1300,58 +1300,79 @@ var render = function() {
         },
         [
           _c(
-            "v-uni-view",
-            { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
-            [
-              _c("v-uni-input", {
-                attrs: { type: "text", placeholder: "手机号", _i: 6 }
-              })
-            ],
-            1
-          ),
-          _c(
-            "v-uni-view",
-            { staticClass: _vm._$g(7, "sc"), attrs: { _i: 7 } },
-            [
-              _c("v-uni-input", {
-                attrs: { type: "text", placeholder: "密码", _i: 8 }
-              })
-            ],
-            1
-          ),
-          _c(
-            "v-uni-view",
-            { staticClass: _vm._$g(9, "sc"), attrs: { _i: 9 } },
+            "v-uni-form",
+            {
+              attrs: { _i: 5 },
+              on: {
+                submit: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
             [
               _c(
-                "v-uni-button",
-                {
-                  attrs: { type: "primary", _i: 10 },
-                  on: {
-                    click: function($event) {
-                      return _vm.$handleViewEvent($event)
+                "v-uni-view",
+                { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } },
+                [
+                  _c("v-uni-input", {
+                    attrs: {
+                      type: "text",
+                      name: "username",
+                      value: "13800138000",
+                      placeholder: "手机号",
+                      _i: 7
                     }
-                  }
-                },
-                [_vm._v("登陆")]
+                  })
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
+                [
+                  _c("v-uni-input", {
+                    attrs: {
+                      type: "pass",
+                      name: "password",
+                      value: "123456",
+                      placeholder: "密码",
+                      _i: 9
+                    }
+                  })
+                ],
+                1
+              ),
+              _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(10, "sc"), attrs: { _i: 10 } },
+                [
+                  _c(
+                    "v-uni-button",
+                    {
+                      attrs: { "form-type": "submit", type: "primary", _i: 11 }
+                    },
+                    [_vm._v("登陆")]
+                  )
+                ],
+                1
               )
             ],
             1
           ),
           _c("v-uni-view", {
             staticStyle: { height: "100rpx" },
-            attrs: { _i: 11 }
+            attrs: { _i: 12 }
           }),
           _c(
             "v-uni-view",
-            { staticClass: _vm._$g(12, "sc"), attrs: { _i: 12 } },
+            { staticClass: _vm._$g(13, "sc"), attrs: { _i: 13 } },
             [
               _c(
                 "v-uni-view",
-                { staticClass: _vm._$g(13, "sc"), attrs: { _i: 13 } },
+                { staticClass: _vm._$g(14, "sc"), attrs: { _i: 14 } },
                 [
                   _c("v-uni-image", {
-                    attrs: { src: "../../static/wxlgoin.png", _i: 14 },
+                    attrs: { src: "../../static/wxlgoin.png", _i: 15 },
                     on: {
                       click: function($event) {
                         return _vm.$handleViewEvent($event)
