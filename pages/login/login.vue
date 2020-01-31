@@ -52,12 +52,13 @@
 			//账号密码登陆
 			lonin(formdata){
 				
-		
+		uni.showLoading({title: '加载中...'})
 			uniCloud.callFunction({
 					name: 'login',
 					data:formdata
 				})
 				.then(res => {
+					uni.hideLoading()
 					console.log(res.result)
 					if(res.result.success == true){
 						var mdata = res.result.data;
@@ -75,6 +76,7 @@
 					
 				})
 				.catch(err => {
+					uni.hideLoading()
 					console.error(err)
 				})
 	

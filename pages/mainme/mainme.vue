@@ -61,11 +61,6 @@ var _self,userdata;
 						img:'../../static/icon/dwgl.png'
 					},
 					{
-						type:'bmgl',
-						title:'部门管理',
-						img:'../../static/icon/bmgl.png'
-					},
-					{
 						type:'grzl',
 						title:'个人资料',
 						img:'../../static/icon/gwzl.png'
@@ -97,8 +92,7 @@ var _self,userdata;
 						uni.navigateTo({
 							url: '/pages/mecompany/mecompany'
 						});
-					case 'bmgl':
-						console.log('部门管理')
+					
 						break;
 					case 'grzl':
 						console.log('个人资料')
@@ -107,12 +101,13 @@ var _self,userdata;
 			},
 			getuserinfo(){
 				console.log(userdata.token);
-				
+				uni.showLoading({title: '加载中...'})
 				uniCloud.callFunction({
 						name: 'megetuserinfo',
 						data:{token:userdata.token}
 					})
 					.then(res => {
+						uni.hideLoading()
 						console.log(res.result)
 						if(res.result.success){
 							var datas = res.result.data;
@@ -142,6 +137,7 @@ var _self,userdata;
 						
 					})
 					.catch(err => {
+						uni.hideLoading()
 						console.error(err)
 					})
 				

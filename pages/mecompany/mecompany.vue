@@ -12,9 +12,15 @@
 		</view>
 		<view style="height: 10rpx;clear: both;"></view>
 		
-		<view class="uni-row" style="padding: 10rpx;">
-			<button @click="newaddbtn"  type="primary">新增</button>
-		</view>
+		
+	<view class="uni-row" style="padding: 10rpx;height: 100rpx;border: none;">
+		<button @click="newaddbtn"  type="primary">新增</button>
+	</view>
+	<view class="uni-row" style="padding: 10rpx;height: 100rpx;border: none;">
+		<button @click="retbtn"  type="default">返回</button>
+	</view>
+	
+	
 	
 		<uni-list>
 
@@ -46,19 +52,25 @@ export default {
 			
 		},
 		methods: {
+			retbtn(){
+				uni.switchTab({
+				    url: '/pages/mainme/mainme'
+				});
+			},
 			searchbtn(){
 				console.log(_self.keystrs);
 				_self.getcomp(_self.keystrs);
 			},
 			getcomp(keystr = '0'){
 				if(keystr == ""){keystr = '0';}
-			
+				uni.showLoading({title: '加载中...'})
+				
 				uniCloud.callFunction({
 						name: 'megetcomp',
 						data:{keystr:keystr}
 					})
 					.then(res => {
-						
+						uni.hideLoading()
 						console.log(res.result)
 						if(res.result.success == true){
 							var mdata = res.result.data;
@@ -70,6 +82,7 @@ export default {
 						
 					})
 					.catch(err => {
+						uni.hideLoading()
 						console.error(err)
 					})
 				
