@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App'
 
-
 import config from "./common/config.js"
 import Utils from '@/utils/Utils' // Common util
 import HandleError from '@/utils/HandleError' // Handle error

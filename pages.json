@@ -29,12 +29,6 @@
 			}
 		},
 		{
-			"path": "pages/login/index",
-			"style": {
-				"navigationBarTitleText": "登录"
-			}
-		},
-		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
@@ -51,22 +45,29 @@
 			"style": {
 				"navigationBarTitleText": "单位详情"
 			}
-		}
-	    ,{
-            "path" : "pages/medepartment/medepartment",
-            "style" : {"navigationBarTitleText": "部门管理"}
-        },
+		}, {
+			"path": "pages/medepartment/medepartment",
+			"style": {
+				"navigationBarTitleText": "部门管理"
+			}
+		},
 		{
-            "path" : "pages/medepartment/medepartmentdes",
-            "style" : {"navigationBarTitleText": "部门详情"}
-        }
-        ,{
-            "path" : "pages/mainme/mainmeinfo",
-            "style" : {
+			"path": "pages/medepartment/medepartmentdes",
+			"style": {
+				"navigationBarTitleText": "部门详情"
+			}
+		}, {
+			"path": "pages/mainme/mainmeinfo",
+			"style": {
 				"navigationBarTitleText": "个人资料"
 			}
-        }
-    ],
+		},{
+			"path": "pages/api_test/api_test",
+			"style": {
+				"navigationBarTitleText": "接口测试界面"
+			}
+		}
+	],
 	"easycom": {
 		"autoscan": true
 	},

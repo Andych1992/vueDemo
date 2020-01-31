@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import config from '@/common/config.js'
+const myCloud = uniCloud.init(config.uniCloud)
 export default {
 	data() {
 		return {
@@ -80,11 +82,11 @@ export default {
 		},
 		// loginTest
 		loginTest() {
-			uniCloud
+			myCloud
 				.callFunction({
 					name: 'login',
 					data: {
-						username: 'admin',
+						username: '13800000000',
 						password: '123456'
 					}
 				})

@@ -1428,69 +1428,6 @@ var bcrypt = createCommonjsModule(function (module) {
 
 var bcryptjs = bcrypt;
 
-// Unique ID creation requires a high quality random # generator.  In node.js
-// this is pretty straight-forward - we use the crypto API.
-
-
-
-var rng = function nodeRNG() {
-  return crypto.randomBytes(16);
-};
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-var byteToHex = [];
-for (var i = 0; i < 256; ++i) {
-  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-}
-
-function bytesToUuid(buf, offset) {
-  var i = offset || 0;
-  var bth = byteToHex;
-  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]]
-  ]).join('');
-}
-
-var bytesToUuid_1 = bytesToUuid;
-
-function v4(options, buf, offset) {
-  var i = buf && offset || 0;
-
-  if (typeof(options) == 'string') {
-    buf = options === 'binary' ? new Array(16) : null;
-    options = null;
-  }
-  options = options || {};
-
-  var rnds = options.random || (options.rng || rng)();
-
-  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-  rnds[6] = (rnds[6] & 0x0f) | 0x40;
-  rnds[8] = (rnds[8] & 0x3f) | 0x80;
-
-  // Copy bytes to buffer, if provided
-  if (buf) {
-    for (var ii = 0; ii < 16; ++ii) {
-      buf[i + ii] = rnds[ii];
-    }
-  }
-
-  return buf || bytesToUuid_1(rnds);
-}
-
-var v4_1 = v4;
-
 var assertString_1 = createCommonjsModule(function (module, exports) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -5262,233 +5199,26 @@ module.exports.default = exports.default;
 
 var validator = unwrapExports(validator_1);
 
-var jwt_1 = createCommonjsModule(function (module) {
-/*
- * jwt-simple
- *
- * JSON Web Token encode and decode module for node.js
- *
- * Copyright(c) 2011 Kazuhito Hokamura
- * MIT Licensed
- */
-
 /**
- * module dependencies
- */
-
-
-
-/**
- * support algorithm mapping
- */
-var algorithmMap = {
-  HS256: 'sha256',
-  HS384: 'sha384',
-  HS512: 'sha512',
-  RS256: 'RSA-SHA256'
-};
-
-/**
- * Map algorithm to hmac or sign type, to determine which crypto function to use
- */
-var typeMap = {
-  HS256: 'hmac',
-  HS384: 'hmac',
-  HS512: 'hmac',
-  RS256: 'sign'
-};
-
-
-/**
- * expose object
- */
-var jwt = module.exports;
-
-
-/**
- * version
- */
-jwt.version = '0.5.6';
-
-/**
- * Decode jwt
- *
- * @param {Object} token
- * @param {String} key
- * @param {Boolean} [noVerify]
- * @param {String} [algorithm]
- * @return {Object} payload
- * @api public
- */
-jwt.decode = function jwt_decode(token, key, noVerify, algorithm) {
-  // check token
-  if (!token) {
-    throw new Error('No token supplied');
-  }
-  // check segments
-  var segments = token.split('.');
-  if (segments.length !== 3) {
-    throw new Error('Not enough or too many segments');
-  }
-
-  // All segment should be base64
-  var headerSeg = segments[0];
-  var payloadSeg = segments[1];
-  var signatureSeg = segments[2];
-
-  // base64 decode and parse JSON
-  var header = JSON.parse(base64urlDecode(headerSeg));
-  var payload = JSON.parse(base64urlDecode(payloadSeg));
-
-  if (!noVerify) {
-    if (!algorithm && /BEGIN( RSA)? PUBLIC KEY/.test(key.toString())) {
-      algorithm = 'RS256';
-    }
-
-    var signingMethod = algorithmMap[algorithm || header.alg];
-    var signingType = typeMap[algorithm || header.alg];
-    if (!signingMethod || !signingType) {
-      throw new Error('Algorithm not supported');
-    }
-
-    // verify signature. `sign` will return base64 string.
-    var signingInput = [headerSeg, payloadSeg].join('.');
-    if (!verify(signingInput, key, signingMethod, signingType, signatureSeg)) {
-      throw new Error('Signature verification failed');
-    }
-
-    // Support for nbf and exp claims.
-    // According to the RFC, they should be in seconds.
-    if (payload.nbf && Date.now() < payload.nbf*1000) {
-      throw new Error('Token not yet active');
-    }
-
-    if (payload.exp && Date.now() > payload.exp*1000) {
-      throw new Error('Token expired');
-    }
-  }
-
-  return payload;
-};
-
-
-/**
- * Encode jwt
- *
- * @param {Object} payload
- * @param {String} key
- * @param {String} algorithm
- * @param {Object} options
- * @return {String} token
- * @api public
- */
-jwt.encode = function jwt_encode(payload, key, algorithm, options) {
-  // Check key
-  if (!key) {
-    throw new Error('Require key');
-  }
-
-  // Check algorithm, default is HS256
-  if (!algorithm) {
-    algorithm = 'HS256';
-  }
-
-  var signingMethod = algorithmMap[algorithm];
-  var signingType = typeMap[algorithm];
-  if (!signingMethod || !signingType) {
-    throw new Error('Algorithm not supported');
-  }
-
-  // header, typ is fixed value.
-  var header = { typ: 'JWT', alg: algorithm };
-  if (options && options.header) {
-    assignProperties(header, options.header);
-  }
-
-  // create segments, all segments should be base64 string
-  var segments = [];
-  segments.push(base64urlEncode(JSON.stringify(header)));
-  segments.push(base64urlEncode(JSON.stringify(payload)));
-  segments.push(sign(segments.join('.'), key, signingMethod, signingType));
-
-  return segments.join('.');
-};
-
-/**
- * private util functions
- */
-
-function assignProperties(dest, source) {
-  for (var attr in source) {
-    if (source.hasOwnProperty(attr)) {
-      dest[attr] = source[attr];
-    }
-  }
-}
-
-function verify(input, key, method, type, signature) {
-  if(type === "hmac") {
-    return (signature === sign(input, key, method, type));
-  }
-  else if(type == "sign") {
-    return crypto.createVerify(method)
-                 .update(input)
-                 .verify(key, base64urlUnescape(signature), 'base64');
-  }
-  else {
-    throw new Error('Algorithm type not recognized');
-  }
-}
-
-function sign(input, key, method, type) {
-  var base64str;
-  if(type === "hmac") {
-    base64str = crypto.createHmac(method, key).update(input).digest('base64');
-  }
-  else if(type == "sign") {
-    base64str = crypto.createSign(method).update(input).sign(key, 'base64');
-  }
-  else {
-    throw new Error('Algorithm type not recognized');
-  }
-
-  return base64urlEscape(base64str);
-}
-
-function base64urlDecode(str) {
-  return Buffer.from(base64urlUnescape(str), 'base64').toString();
-}
-
-function base64urlUnescape(str) {
-  str += new Array(5 - str.length % 4).join('=');
-  return str.replace(/\-/g, '+').replace(/_/g, '/');
-}
-
-function base64urlEncode(str) {
-  return base64urlEscape(Buffer.from(str).toString('base64'));
-}
-
-function base64urlEscape(str) {
-  return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-}
-});
-
-var jwtSimple = jwt_1;
-
-/**
- * @name login.js
+ * @name register.js
  * @author SunSeekerX
  * @time 2020-01-31 19:27:07
  * @LastEditors SunSeekerX
- * @LastEditTime 2020-01-31 21:24:58
+ * @LastEditTime 2020-01-31 21:35:19
  */
-// const tokenExp = 7200000
 
 const db = uniCloud.database();
 
-async function login(event) {
+/**
+ * @name 注册函数
+ * @param {*} event
+ */
+async function register(event) {
   try {
-    const { username, password } = event;
+    // 获取参数
+    const { username, password, name } = event;
+
+    // 校验参数
     if (!validator.isMobilePhone(username, 'zh-CN')) {
       return {
         success: false,
@@ -5502,7 +5232,7 @@ async function login(event) {
         msg: '请输入密码'
       }
     } else {
-      // Login
+      // 参数校验通过
       const userInDB = await db
         .collection('user')
         .where({
@@ -5511,63 +5241,28 @@ async function login(event) {
         .get();
 
       if (userInDB.data && userInDB.data.length === 0) {
-        // 用户不存在
+        // 用户不存在，注册
+        const bcryptPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
+        const registerResult = await db.collection('user').add({
+          username,
+          password: bcryptPassword,
+          name,
+          status: 0,
+          permission: 0,
+          create_time: new Date().getTime()
+        });
+
+        return {
+          success: true,
+          code: 200,
+          msg: '注册成功',
+          data: registerResult
+        }
+      } else {
         return {
           success: false,
           code: -1,
-          msg: '用户不存在'
-        }
-      } else {
-        // 校验密码
-        const flag = bcryptjs.compareSync(password, userInDB.data[0].password);
-        if (flag) {
-          // 用户名和密码正确
-          // 用户存在生成token和tokenSecret
-          const tokenSecret = v4_1();
-          const token = jwtSimple.encode(
-            {
-              username,
-              date: new Date().getTime()
-            },
-            tokenSecret
-          );
-          // 用户存在，更新tokenSecret
-          const updateResult = await db
-            .collection('user')
-            .doc(userInDB.data[0]._id)
-            .set({
-              tokenSecret
-            });
-          if (updateResult.id || updateResult.affectedDocs === 1) {
-            return {
-              success: true,
-              code: 200,
-              data: {
-                token,
-                userInfo: {
-                  _id: userInDB.data[0]._id,
-                  create_time: userInDB.data[0].create_time,
-                  username: userInDB.data[0].username,
-                  permission: userInDB.data[0].permission,
-                  status: userInDB.data[0].status
-                }
-              },
-              msg: '登录成功'
-            }
-          } else {
-            return {
-              success: false,
-              code: 500,
-              msg: '服务器内部错误'
-            }
-          }
-        } else {
-          // 密码错误
-          return {
-            success: false,
-            code: -1,
-            msg: '密码错误'
-          }
+          msg: '用户已存在'
         }
       }
     }
@@ -5581,4 +5276,4 @@ async function login(event) {
   }
 }
 
-exports.main = login;
+exports.main = register;
