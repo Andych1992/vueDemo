@@ -22,6 +22,8 @@ exports.main = async (event, context) => {
 	const resde = await dection.doc(rest.section).get()
 	const restde = resde.data[0];
 	
+	
+	
 	const uses = {
 		name: rest.name,
 		compid: rest.company,
