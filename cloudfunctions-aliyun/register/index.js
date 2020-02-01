@@ -5204,7 +5204,7 @@ var validator = unwrapExports(validator_1);
  * @author SunSeekerX
  * @time 2020-01-31 19:27:07
  * @LastEditors SunSeekerX
- * @LastEditTime 2020-01-31 21:35:19
+ * @LastEditTime 2020-02-01 12:37:46
  */
 
 const db = uniCloud.database();
@@ -5246,11 +5246,19 @@ async function register(event) {
         const registerResult = await db.collection('user').add({
           username,
           password: bcryptPassword,
+          name,
           status: 0,
           permission: 0,
           create_time: new Date().getTime(),
-		  company:"0",section:"0",wx_open_id:"0",id_card:"0",name:"0",
-		  phone:"0",age:"0",sex:"0",photo:"0",status:"0",permission:"0",power:"0"
+          company: '0',
+          section: '0',
+          wx_open_id: '0',
+          id_card: '0',
+          phone: '0',
+          age: '0',
+          sex: '0',
+          photo: '0',
+          power: '0'
         });
 
         return {

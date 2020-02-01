@@ -11,7 +11,8 @@
     "rollup": "^1.26.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "validator": "^12.2.0"
+    "validator": "^12.2.0",
+    "webpack": "^4.41.5"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
