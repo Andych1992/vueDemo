@@ -103,7 +103,7 @@
 				}
 			},
 			getuserinfo() {
-				console.log(userdata.token);
+				console.log(JSON.stringify(userdata));
 				uni.showLoading({
 					title: '加载中...'
 				})
@@ -111,7 +111,7 @@
 				this.$myCloud.callFunction({
 						name: 'megetuserinfo',
 						data: {
-							// token: userdata.token
+							 //token: userdata.token
 							_id:userdata.userInfo._id
 						}
 					})

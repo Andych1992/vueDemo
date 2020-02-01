@@ -65,12 +65,14 @@
 	</view>	
 	
 	<view class="uni-row-b" >
-		<button type="default" @click="resbtn"  >返回</button>
+		<button type="default" @click="bmglbtn" >部门管理</button>
 	</view>	
 	
 	<view class="uni-row-b" >
-		<button type="default" @click="bmglbtn" >部门管理</button>
+		<button type="default" @click="resbtn"  >返回</button>
 	</view>	
+	
+
 	
 	<view class="uni-row-b" >
 		<button type="warn" @click="delbtn" >删除</button>
@@ -129,7 +131,7 @@
 			delbtn(){
 				//删除此条信息
 					uni.showLoading({title: '加载中...'})
-				uniCloud.callFunction({
+				this.$myCloud.callFunction({
 						name: 'megetcompdel',
 						data:{_id:_self.compid}
 					})
@@ -167,7 +169,7 @@
 				
 				formdata._id = _self.compid;
 					uni.showLoading({title: '加载中...'})
-				uniCloud.callFunction({
+				this.$myCloud.callFunction({
 						name: 'megetcompadd',
 						data:formdata
 					})
