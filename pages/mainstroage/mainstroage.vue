@@ -132,8 +132,8 @@
 					text-align: center;
 					font-size: 3.7vw;
 					line-height: 6vw;
-					background: #007AFF;
-					border-radius: 0.3vw;
+					background: #1296db;
+					border-radius: 5rpx;
 				}
 			}
 		}

@@ -102,6 +102,12 @@
             "path" : "pages/addGrant/addGrant",
             "style" : {"navigationBarTitleText": "物资发放"}
         }
+        ,{
+            "path" : "pages/saveGrant/saveGrant",
+            "style" : {
+				"navigationBarTitleText": "新增发放物资"
+			}
+        }
     ],
 	"easycom": {
 		"autoscan": true
