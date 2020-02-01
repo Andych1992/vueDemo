@@ -73,7 +73,18 @@
 				"navigationBarTitleText": "物资资料-增加"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/mainuser/mainuser",
+            "style" : {
+				"navigationBarTitleText": "人员管理"
+			}
+        },{
+            "path" : "pages/mainuser/mainuserinfo",
+            "style" : {
+				"navigationBarTitleText": "人员管理-新增"
+			}
+        }
+    ],
 	"easycom": {
 		"autoscan": true
 	},
