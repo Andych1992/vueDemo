@@ -66,6 +66,12 @@
 			"style": {
 				"navigationBarTitleText": "接口测试界面"
 			}
+		},
+		{
+			"path": "pages/addMaterial/addMaterial",
+			"style": {
+				"navigationBarTitleText": "物资资料-增加"
+			}
 		}
 	],
 	"easycom": {
