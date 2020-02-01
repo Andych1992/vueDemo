@@ -99,6 +99,9 @@
 						break;
 					case 'grzl':
 						console.log('个人资料')
+						uni.navigateTo({
+							url: '/pages/mainme/mainmeinfo'
+						});
 						break;
 				}
 			},

@@ -34,6 +34,7 @@
 				"navigationBarTitleText": "登录"
 			}
 		},
+		
 		{
 			"path": "pages/mecompany/mecompany",
 			"style": {
@@ -61,7 +62,20 @@
 			"style": {
 				"navigationBarTitleText": "个人资料"
 			}
-		},{
+		},
+		{
+			"path": "pages/mainme/mainmegetcp",
+			"style": {
+				"navigationBarTitleText": "单位选择"
+			}
+		},
+		{
+			"path": "pages/mainme/mainmeinfoedit",
+			"style": {
+				"navigationBarTitleText": "编辑资料"
+			}
+		},
+		{
 			"path": "pages/api_test/api_test",
 			"style": {
 				"navigationBarTitleText": "接口测试界面"
