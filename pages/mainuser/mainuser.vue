@@ -4,11 +4,22 @@
 		<uni-search-bar placeholder="点击搜索..." @confirm="search"></uni-search-bar>
 		<uni-list>
 			<block v-for="(item,index) in userList" :key='index'>
-				<uni-list-item :show-arrow="true" title="儿保科-小王" 
-					thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png" 
-					@click="operUserInfo('get')"/>
+				<uni-list-item :show-arrow="true" title="儿保科-小王" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
+				 @click="operUserInfo('get')" />
 			</block>
 		</uni-list>
+		<!-- <uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
+		 @trigger="trigger" /> -->
+		<view class="button">
+			<view class="b-t" @click='backPage'>
+				<uni-icons class="icon" type="undo" size="26"></uni-icons>
+				<view class="wz">返回</view>
+			</view>
+			<view class="b-t" @click='addPage'>
+				<uni-icons class="icon" type="plus" size="26"></uni-icons>
+				<view class="wz">添加</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -16,15 +27,33 @@
 	export default {
 		data() {
 			return {
-				userList:[{},{},{},{},{},{},{},{},{},{},{}]
+				userList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+				// directionStr: '垂直',
+				// horizontal: 'right',
+				// vertical: 'bottom',
+				// direction: 'vertical',
+				// pattern: {
+				// 	color: '#7A7E83',
+				// 	backgroundColor: '#fff',
+				// 	selectedColor: '#007AFF',
+				// 	buttonColor: '#007AFF'
+				// },
+				// content: [{
+				// 	iconPath: '/static/icon/save.png',
+				// 	selectedIconPath: '/static/icon/save.png',
+				// 	text: '新增',
+				// 	active: false
+				// }]
 			}
 		},
 		methods: {
+			//搜索
 			search() {
 				console.log('搜索')
 			},
-			operUserInfo(type){
-				switch (type){
+			//点击
+			operUserInfo(type) {
+				switch (type) {
 					case 'get':
 						uni.navigateTo({
 							url: './mainuserinfo'
@@ -36,11 +65,69 @@
 						});
 						break;
 				}
+			},
+			//返回上一页
+			backPage(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			//新增
+			addPage(){
+				this.operUserInfo('add')
 			}
+			// //悬浮按钮
+			// trigger(e) {
+			// 	console.log(e)
+			// 	this.content[e.index].active = !e.item.active
+			// 	this.operUserInfo('add');
+			// 	// uni.showModal({
+			// 	// 	title: '提示',
+			// 	// 	content: `您${this.content[e.index].active ? '选中了' : '取消了'}${e.item.text}`,
+			// 	// 	success: function(res) {
+			// 	// 		if (res.confirm) {
+			// 	// 			console.log('用户点击确定')
+			// 	// 		} else if (res.cancel) {
+			// 	// 			console.log('用户点击取消')
+			// 	// 		}
+			// 	// 	}
+			// 	// })
+			// },
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
+	.button {
+		position: fixed;
+		bottom: 0vw;
+		width: 94vw;
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		padding: 2vw 3vw;
 
+		.b-t {
+
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: center;
+			width: 22vw;
+			height: 10vw;
+			border-radius: 1vw;
+			border: 1rpx solid #BEBEBE;
+			background: #F1F1F1;
+
+			.icon {
+				line-height: 10vw;
+			}
+
+			.wz {
+				margin-left: 1vw;
+				font-size: 3.8vw;
+				line-height: 10vw;
+			}
+		}
+
+	}
 </style>
