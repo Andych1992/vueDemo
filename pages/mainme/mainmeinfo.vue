@@ -1,20 +1,6 @@
 <!-- 这个文件我在做 我是群员(常州-_陈默 565036413) -->
 <template>
 	<view>
-		<view style="height: 100rpx;"></view>
-	<view class="uni-list">
-		
-		 
-		
-		<uni-list-item :show-arrow="true" title="年龄" :rightText="userinfo.age" @click="gogog"/>
-		
-	          
-	               
-	                   
-	              
-	     
-	       </view>		
-		
 		
 		
 		<view class="uni-row u-f-ac">
@@ -36,7 +22,6 @@
 			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.sname" @click="editinfo('sname')" />
 			<uni-list-item :show-arrow="true" title="身份证号" :rightText="userinfo.cards" @click="editinfo('card')" />
 			<uni-list-item :show-arrow="true" title="手机" :rightText="userinfo.phones" @click="editinfo('phone')"/>
-			<!-- <uni-list-item :show-arrow="true" title="年龄" :rightText="userinfo.age" @click="chooseages"/> -->
 			
 			<view class="listitem">
 				    <view class="listitemt">年龄</view>
@@ -118,12 +103,8 @@
 		onLoad() {
 			_self = this;
 			_self.ageinit();
-			userdata = JSON.parse(uni.getStorageSync("userdata"));
-			var uid = userdata.userInfo._id;
-	
-			uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
-			_self.userinfo._id = userdata.userInfo._id;
-			_self.userinfo._ids = uid;
+			userdata = JSON.parse(uni.getStorageSync("userinfodata"));
+			_self.getuserinfodata();
 				
 		},
 		onShow() {
@@ -147,7 +128,9 @@
 					break;
 				case 'card':
 					//姓名
-					_self.userinfo.cards = meditext;
+					var uid =  meditext;
+						uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
+					_self.userinfo.cards = uid;
 					_self.userinfo.card = meditext;
 					break;
 				case 'phone':
@@ -168,9 +151,40 @@
 		
 		},
 		methods: {
-			gogog(){
-				console.log(this.$refs.input1)
-			
+			//初始化数据
+			getuserinfodata(){
+				var uid = userdata._id;
+					
+				uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
+				_self.userinfo._id = userdata._id;
+				_self.userinfo._ids = uid;
+				
+				uid =  userdata.id_card;
+				uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
+				_self.userinfo.cards = uid;
+				_self.userinfo.card = userdata.id_card;
+				
+				
+				
+				_self.userinfo.sname = userdata.sname;
+				_self.userinfo.age = userdata.age;
+				_self.maindex = userdata.age;
+				
+				uid =  userdata.phone;
+				uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
+				
+				_self.userinfo.phone = userdata.phone;
+				_self.userinfo.phones = uid;
+				
+				_self.userinfo.desc = userdata.desc;
+				_self.userinfo.sex = userdata.sex;
+				_self.userinfo.dept = userdata.section;
+				_self.userinfo.sectionid = userdata.sectionid;
+				_self.userinfo.comp = userdata.company;
+				_self.userinfo.compid = userdata.compid;
+				_self.imgSrc = userdata.photo;
+				
+		
 			},
 			ageinit(){
 				var mage = Array();
@@ -180,6 +194,7 @@
 				_self.mages = mage;
 			},
 			//设置单位
+			
 		
 			getbm(){
 				//console.log("获取部门" + _self.mcompid);
@@ -208,6 +223,42 @@
 				//pages/mainme/mainmeinfoedit
 				var fomdata = {_id:uf._id,sname:uf.sname,id_card:uf.card,photo:_self.imgSrc,
 				phone:uf.phone,age:uf.age,desc:uf.desc,sex:uf.sex,section:uf.sectionid,company:uf.compid}
+				
+				console.log(JSON.stringify(fomdata))
+				
+				uni.showLoading({
+					title: '加载中...'
+				})
+				// uniCloud
+				this.$myCloud.callFunction({
+						name: 'meuserinfosave',
+						data: fomdata
+					})
+					.then(res => {
+						uni.hideLoading()
+						console.log(res.result)
+						if (res.result.success) {
+							uni.showToast({
+							    title: res.result.msg,
+							    duration: 1000
+							});
+							
+							uni.switchTab({
+								url: '/pages/mainme/mainme'
+							});
+				
+						} else {
+							uni.showModal({ content: res.result.msg, showCancel: false})
+				
+						}
+				
+					})
+					.catch(err => {
+						uni.hideLoading()
+						console.error(err)
+					})
+				
+				
 				
 				
 			},
