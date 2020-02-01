@@ -103,12 +103,17 @@ materModel
     types_id:"",//物资类型关联
 	mat_title:"",//物资名称
 	mat_img:"",物资图片
-	mat_des:"",物资说明
+	unit:"",//单位  （计量单位）
+	model:"",//型号（物料规格）
+	manufacturer:"",//生产厂家
+	bar_code_number:"",//物资条码
+	mat_top:"",   //物资排序1，2，3 ，4 升序	
 	mat_number:"",库存数量
+	mat_des:"",物资说明
 	mat_regtime:""第一次入库时间
 	mat_lasstime:""最后一次入库时间
-	Model:"",//型号
-	unit:"",//单位
+	
+	
 }
 ```
 #### 物资状态表

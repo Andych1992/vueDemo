@@ -80,8 +80,29 @@
 			"style": {
 				"navigationBarTitleText": "接口测试界面"
 			}
+		},
+		{
+			"path": "pages/addMaterial/addMaterial",
+			"style": {
+				"navigationBarTitleText": "物资资料-增加"
+			}
 		}
-	],
+	    ,{
+            "path" : "pages/mainuser/mainuser",
+            "style" : {
+				"navigationBarTitleText": "人员管理"
+			}
+        },{
+            "path" : "pages/mainuser/mainuserinfo",
+            "style" : {
+				"navigationBarTitleText": "人员管理-新增"
+			}
+			}
+        ,{
+            "path" : "pages/addGrant/addGrant",
+            "style" : {"navigationBarTitleText": "物资发放"}
+        }
+    ],
 	"easycom": {
 		"autoscan": true
 	},

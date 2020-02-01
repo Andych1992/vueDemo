@@ -11,7 +11,7 @@
 			<button type="primary" @click="inindex">到主页</button>
 			<button type="primary" @click="$util.navigateTo('/pages/api_test/api_test')">API测试页面</button>
 			<button type="primary" @click="inlogin">去登陆页面</button>
-
+			<button type="primary" @click="inaddMaterial">新增物资页面编写</button>
 			<button type="primary" @click="btnlist('comps')">去单位管理</button>
 
 		</view>
@@ -119,6 +119,13 @@ var _self;
 		
 			uni.navigateTo({
 			    url: '/pages/login/login'
+			});
+		},
+		//物资新增
+		inaddMaterial(){
+		
+			uni.navigateTo({
+			    url: '/pages/addMaterial/addMaterial'
 			});
 		},
 		btnlist(e){

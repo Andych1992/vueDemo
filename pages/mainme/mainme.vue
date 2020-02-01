@@ -89,7 +89,10 @@
 			clicklist(type) {
 				switch (type) {
 					case 'rygl':
-						console.log('人员管理')
+						// console.log('人员管理')
+						uni.navigateTo({
+							url: '../mainuser/mainuser'
+						});
 						break;
 					case 'dwgl':
 						uni.navigateTo({
