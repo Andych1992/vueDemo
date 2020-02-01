@@ -145,6 +145,8 @@
 								company: datas.company,
 								dept: datas.section
 							}
+							uni.setStorageSync('userinfodata', JSON.stringify(datas));
+
 
 						} else {
 
