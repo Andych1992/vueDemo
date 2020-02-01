@@ -83,6 +83,10 @@
             "style" : {
 				"navigationBarTitleText": "人员管理-新增"
 			}
+			}
+        ,{
+            "path" : "pages/addGrant/addGrant",
+            "style" : {"navigationBarTitleText": "物资发放"}
         }
     ],
 	"easycom": {

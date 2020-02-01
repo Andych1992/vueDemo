@@ -9,11 +9,12 @@
 					<view v-for="(item,index) in 5">
 						<view class="details">
 							<view class="title">
-								<view class="t-biao"><text :style="{color:index%2==0?'#007AFF':'#F76260'}">{{index%2==0?'直接发放  ':'申请发放  '}}</text> Z20201990509</view>
+								<view class="t-biao"><text :style="{color:index%2==0?'#007AFF':'#F76260'}">{{index%2==0?'直接发放 ':'申请发放  '}}</text>
+									Z20201990509</view>
 								<view class="t-time">2020-01-30 15:20:34</view>
 							</view>
 							<view class="cont">
-								<view class="t-sum">发放总数  55</view>
+								<view class="t-sum">发放总数 55</view>
 								<view class="t-status" :style="{background:index%2==0?'#F76260':'#007AFF'}">已发</view>
 							</view>
 							<view class="title">
@@ -34,8 +35,8 @@
 				</view>
 			</view>
 		</view>
-		<view >
-			<uni-fab :pattern="pattern" :vertical="bottom" :horizontal="right" :direction="vertical" :content="content" @trigger="trigger"></uni-fab>
+		<view>
+			<uni-fab :pattern="pattern" vertical="bottom" horizontal="right" direction="vertical" :content="content" @trigger="trigger"></uni-fab>
 		</view>
 	</view>
 </template>
@@ -58,11 +59,11 @@
 					[]
 				],
 				content: [{
-						iconPath: '/static/component.png',
-						selectedIconPath: '/static/componentHL.png',
-						text: '组件',
-						active: false
-					}],
+					iconPath: '/static/icon/giveOut.png',
+					selectedIconPath: '/static/icon/giveOut.png',
+					text: '发放',
+					active: false
+				}],
 				current: 0
 			}
 		},
@@ -70,46 +71,59 @@
 			search() {
 
 			},
-			trigger(){
-				
+			trigger(e) {
+				switch (e.index) {
+					case 0:
+						uni.navigateTo({
+							url: '/pages/addGrant/addGrant'
+						})
+						return;
+				}
 			},
 			onClickItem(e) {
 				this.current = e.currentIndex
 			},
+
 		}
-	} 
+	}
 </script>
 
 <style lang="scss">
 	.content {
-		.details{
+		.details {
 			padding: 2vw;
 			font-size: 3.7vw;
 			border-top: 1rpx solid #BEBEBE;
 			border-bottom: 1rpx solid #BEBEBE;
-			.title{
+
+			.title {
 				display: flex;
 				flex-wrap: nowrap;
 				justify-content: space-between;
-				.t-biao{
+
+				.t-biao {
 					width: 50vw;
 					padding-left: 2vw;
 				}
-				.t-time{
+
+				.t-time {
 					width: 50vw;
 					padding-left: 2vw;
 				}
 			}
-			.cont{
+
+			.cont {
 				display: flex;
 				flex-wrap: nowrap;
 				justify-content: space-between;
-				padding: 0vw 2vw 0vw 2vw ;
-				.t-sum{
+				padding: 0vw 2vw 0vw 2vw;
+
+				.t-sum {
 					font-size: 3.7vw;
 					line-height: 6vw;
 				}
-				.t-status{	
+
+				.t-status {
 					right: 3vw;
 					width: 12vw;
 					height: 6vw;
@@ -118,9 +132,9 @@
 					font-size: 3.7vw;
 					line-height: 6vw;
 					background: #007AFF;
+					border-radius: 0.3vw;
 				}
 			}
 		}
 	}
-
 </style>
