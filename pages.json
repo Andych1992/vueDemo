@@ -90,7 +90,8 @@
 	    ,{
             "path" : "pages/mainuser/mainuser",
             "style" : {
-				"navigationBarTitleText": "人员管理"
+				"navigationBarTitleText": "人员管理",
+				"enablePullDownRefresh": true //开启下拉刷新
 			}
         },{
             "path" : "pages/mainuser/mainuserinfo",
