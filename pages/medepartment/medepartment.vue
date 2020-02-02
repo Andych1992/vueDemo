@@ -66,7 +66,7 @@ export default {
 				if(keystr == ""){keystr = '0';}
 				uni.showLoading({title: '加载中...'})
 				
-				uniCloud.callFunction({
+				this.$myCloud.callFunction({
 						name: 'mebmtabget',
 						data:{keystr:keystr,compid:_self.compid}
 					})

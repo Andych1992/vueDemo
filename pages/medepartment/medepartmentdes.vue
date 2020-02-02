@@ -95,7 +95,7 @@
 			delbtn(){
 				//删除此条信息
 					uni.showLoading({title: '加载中...'})
-				uniCloud.callFunction({
+				this.$myCloud.callFunction({
 						name: 'mebmtabdel',
 						data:{_id:_self.bmid}
 					})
@@ -134,7 +134,7 @@
 				formdata._id = _self.bmid;
 				formdata.compid = _self.compid;
 					uni.showLoading({title: '加载中...'})
-				uniCloud.callFunction({
+				this.$myCloud.callFunction({
 						name: 'mebmtabadd',
 						data:formdata
 					})

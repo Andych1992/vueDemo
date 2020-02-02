@@ -89,7 +89,10 @@
 			clicklist(type) {
 				switch (type) {
 					case 'rygl':
-						console.log('人员管理')
+						// console.log('人员管理')
+						uni.navigateTo({
+							url: '../mainuser/mainuser'
+						});
 						break;
 					case 'dwgl':
 						uni.navigateTo({
@@ -99,11 +102,14 @@
 						break;
 					case 'grzl':
 						console.log('个人资料')
+						uni.navigateTo({
+							url: '/pages/mainme/mainmeinfo'
+						});
 						break;
 				}
 			},
 			getuserinfo() {
-				console.log(userdata.token);
+				console.log(JSON.stringify(userdata));
 				uni.showLoading({
 					title: '加载中...'
 				})
@@ -111,7 +117,7 @@
 				this.$myCloud.callFunction({
 						name: 'megetuserinfo',
 						data: {
-							// token: userdata.token
+							 //token: userdata.token
 							_id:userdata.userInfo._id
 						}
 					})
@@ -139,6 +145,8 @@
 								company: datas.company,
 								dept: datas.section
 							}
+							uni.setStorageSync('userinfodata', JSON.stringify(datas));
+
 
 						} else {
 

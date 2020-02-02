@@ -13,15 +13,6 @@
 		<view style="height: 10rpx;clear: both;"></view>
 		
 		
-	<view class="uni-row" style="padding: 10rpx;height: 100rpx;border: none;">
-		<button @click="newaddbtn"  type="primary">新增</button>
-	</view>
-	<view class="uni-row" style="padding: 10rpx;height: 100rpx;border: none;">
-		<button @click="retbtn"  type="default">返回</button>
-	</view>
-	
-	
-	
 		<uni-list>
 
 			<!--  {compname,jname,address,contacts,tel,cpaddress,cplogo,desc} -->
@@ -48,7 +39,7 @@ export default {
 		onLoad() {
 			_self=this;
 			userdata = JSON.parse(uni.getStorageSync("userdata"));
-			
+			_self.getcomp(_self.keystrs);
 			
 		},
 		methods: {
@@ -89,21 +80,18 @@ export default {
 				
 			},
 			listclick(e){
+				console.log( this.compdata[e]);
 				
 				var datas = JSON.stringify( this.compdata[e]);
+				uni.setStorageSync('pgcom', "cpget");
+				
 				uni.setStorageSync('compdata', datas);
-								
-				uni.navigateTo({
-				    url: '/pages/mecompany/mecompanydes?ty=o'
-				});
+				uni.navigateBack({ delta: 1});			
 				
 				
-			},
-			newaddbtn(){
-				uni.navigateTo({
-				    url: '/pages/mecompany/mecompanydes?ty=n'
-				});
+				
 			}
+		
 		}
 	}
 </script>

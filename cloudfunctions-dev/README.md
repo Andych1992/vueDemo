@@ -5,12 +5,14 @@
 ### 云函数打包命令
 
 ```bash
-# 1.当前目录下在命令行执行,安装依赖
+# 1.当前目录(D:\XXX\cloudfunctions-dev)下在命令行执行,安装依赖
 yarn
 # 2.打包全部云函数
 yarn build
 # 3.打包指定云函数
 node build-api.js 函数名1 函数名2 ...
+# 4.例如
+D:\XXX\cloudfunctions-dev>node .\build-api.js register
 ```
 
 ### 目录说明
