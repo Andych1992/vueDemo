@@ -3,14 +3,14 @@
  * @author SunSeekerX
  * @time 2020-01-31 19:27:07
  * @LastEditors SunSeekerX
- * @LastEditTime 2020-01-31 21:24:58
+ * @LastEditTime 2020-02-02 21:06:04
  */
 
 import bcrypt from 'bcryptjs'
-import uuidv4 from 'uuid/v4'
 import validator from 'validator'
 import jwt from 'jwt-simple'
-// const tokenExp = 7200000
+
+import config from '../../config/config'
 
 const db = uniCloud.database()
 
@@ -51,20 +51,20 @@ async function login(event) {
         if (flag) {
           // 用户名和密码正确
           // 用户存在生成token和tokenSecret
-          const tokenSecret = uuidv4()
           const token = jwt.encode(
             {
               username,
+              _id: userInDB.data[0]._id,
               date: new Date().getTime()
             },
-            tokenSecret
+            config.tokenSecret
           )
-          // 用户存在，更新tokenSecret
+          // 用户存在，更新token
           const updateResult = await db
             .collection('user')
             .doc(userInDB.data[0]._id)
             .set({
-              tokenSecret
+              token
             })
           if (updateResult.id || updateResult.affectedDocs === 1) {
             return {

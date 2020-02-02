@@ -1428,69 +1428,6 @@ var bcrypt = createCommonjsModule(function (module) {
 
 var bcryptjs = bcrypt;
 
-// Unique ID creation requires a high quality random # generator.  In node.js
-// this is pretty straight-forward - we use the crypto API.
-
-
-
-var rng = function nodeRNG() {
-  return crypto.randomBytes(16);
-};
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-var byteToHex = [];
-for (var i = 0; i < 256; ++i) {
-  byteToHex[i] = (i + 0x100).toString(16).substr(1);
-}
-
-function bytesToUuid(buf, offset) {
-  var i = offset || 0;
-  var bth = byteToHex;
-  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
-  return ([
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]], '-',
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]],
-    bth[buf[i++]], bth[buf[i++]]
-  ]).join('');
-}
-
-var bytesToUuid_1 = bytesToUuid;
-
-function v4(options, buf, offset) {
-  var i = buf && offset || 0;
-
-  if (typeof(options) == 'string') {
-    buf = options === 'binary' ? new Array(16) : null;
-    options = null;
-  }
-  options = options || {};
-
-  var rnds = options.random || (options.rng || rng)();
-
-  // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-  rnds[6] = (rnds[6] & 0x0f) | 0x40;
-  rnds[8] = (rnds[8] & 0x3f) | 0x80;
-
-  // Copy bytes to buffer, if provided
-  if (buf) {
-    for (var ii = 0; ii < 16; ++ii) {
-      buf[i + ii] = rnds[ii];
-    }
-  }
-
-  return buf || bytesToUuid_1(rnds);
-}
-
-var v4_1 = v4;
-
 var assertString_1 = createCommonjsModule(function (module, exports) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -5476,13 +5413,24 @@ function base64urlEscape(str) {
 var jwtSimple = jwt_1;
 
 /**
+ * @name 
+ * @author SunSeekerX
+ * @time 2020-02-02 19:21:42
+ * @LastEditors SunSeekerX
+ * @LastEditTime 2020-02-02 19:23:41
+ */
+
+var config = {
+  tokenSecret: '35cfd805-716f-42c1-901c-8f431a155b0e'
+};
+
+/**
  * @name login.js
  * @author SunSeekerX
  * @time 2020-01-31 19:27:07
  * @LastEditors SunSeekerX
- * @LastEditTime 2020-01-31 21:24:58
+ * @LastEditTime 2020-02-02 21:06:04
  */
-// const tokenExp = 7200000
 
 const db = uniCloud.database();
 
@@ -5523,20 +5471,20 @@ async function login(event) {
         if (flag) {
           // 用户名和密码正确
           // 用户存在生成token和tokenSecret
-          const tokenSecret = v4_1();
           const token = jwtSimple.encode(
             {
               username,
+              _id: userInDB.data[0]._id,
               date: new Date().getTime()
             },
-            tokenSecret
+            config.tokenSecret
           );
-          // 用户存在，更新tokenSecret
+          // 用户存在，更新token
           const updateResult = await db
             .collection('user')
             .doc(userInDB.data[0]._id)
             .set({
-              tokenSecret
+              token
             });
           if (updateResult.id || updateResult.affectedDocs === 1) {
             return {

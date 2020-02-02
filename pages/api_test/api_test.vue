@@ -30,20 +30,15 @@ export default {
 		},
 		// loginTest
 		loginTest() {
-			this.$myCloud
-				.callFunction({
-					name: 'login',
-					data: {
-						username: '13800000000',
-						password: '123456'
-					}
-				})
-				.then(res => {
-					console.log(res)
-				})
-				.catch(err => {
-					console.error(err)
-				})
+			this.$request({
+				name: 'login',
+				data: {
+					username: '13800000000',
+					password: '123456'
+				}
+			}).then(res => {
+				console.log(res)
+			})
 		}
 	}
 }

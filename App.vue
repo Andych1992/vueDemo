@@ -2,6 +2,8 @@
 export default {
 	onLaunch: function() {
 		console.log('App Launch')
+		// Sync storage info
+		this.$store.commit('GET_APP_STORAGE')
 	},
 	onShow: function() {
 		console.log('App Show')
