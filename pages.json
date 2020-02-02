@@ -34,6 +34,7 @@
 				"navigationBarTitleText": "登录"
 			}
 		},
+		
 		{
 			"path": "pages/mecompany/mecompany",
 			"style": {
@@ -61,7 +62,20 @@
 			"style": {
 				"navigationBarTitleText": "个人资料"
 			}
-		},{
+		},
+		{
+			"path": "pages/mainme/mainmegetcp",
+			"style": {
+				"navigationBarTitleText": "单位选择"
+			}
+		},
+		{
+			"path": "pages/mainme/mainmeinfoedit",
+			"style": {
+				"navigationBarTitleText": "编辑资料"
+			}
+		},
+		{
 			"path": "pages/api_test/api_test",
 			"style": {
 				"navigationBarTitleText": "接口测试界面"
@@ -89,8 +103,15 @@
             "style" : {"navigationBarTitleText": "物资发放"}
         }
         ,{
+<<<<<<< HEAD
             "path" : "pages/materiaInformation/materiaInformation",
             "style" : {}
+=======
+            "path" : "pages/saveGrant/saveGrant",
+            "style" : {
+				"navigationBarTitleText": "新增发放物资"
+			}
+>>>>>>> b95a0473fd39d27d7102c2e3f5746ea784405f8a
         }
     ],
 	"easycom": {

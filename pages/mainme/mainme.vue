@@ -102,6 +102,9 @@
 						break;
 					case 'grzl':
 						console.log('个人资料')
+						uni.navigateTo({
+							url: '/pages/mainme/mainmeinfo'
+						});
 						break;
 				}
 			},
@@ -142,6 +145,8 @@
 								company: datas.company,
 								dept: datas.section
 							}
+							uni.setStorageSync('userinfodata', JSON.stringify(datas));
+
 
 						} else {
 

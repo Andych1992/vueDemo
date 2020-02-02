@@ -41,6 +41,17 @@
 			</checkbox-group>
 		</view>
 		<button class="btn" @click="exitbtn">重置密码</button>
+		
+		<view class="button">
+			<view class="b-t" @click='backPage'>
+				<uni-icons class="icon" type="undo" size="26"></uni-icons>
+				<view class="wz">返回</view>
+			</view>
+			<view class="b-t" @click='addPage'>
+				<uni-icons class="icon" type="plus" size="26"></uni-icons>
+				<view class="wz">添加</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -222,7 +233,40 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+	.button {
+		position: fixed;
+		bottom: 0vw;
+		width: 94vw;
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		padding: 2vw 3vw;
+
+		.b-t {
+
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: center;
+			width: 22vw;
+			height: 10vw;
+			border-radius: 1vw;
+			border: 1rpx solid #BEBEBE;
+			background: #F1F1F1;
+
+			.icon {
+				line-height: 10vw;
+			}
+
+			.wz {
+				margin-left: 1vw;
+				font-size: 3.8vw;
+				line-height: 10vw;
+			}
+		}
+
+	}
+
 	.container {
 	  display: flex;
 	  flex-wrap: wrap;

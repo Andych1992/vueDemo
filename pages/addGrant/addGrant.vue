@@ -1,3 +1,4 @@
+<!-- 这个文件我在做 我是群员(道长 1459347320) -->
 <template>
 	<view class="page">
 		<view class="list">
@@ -54,7 +55,7 @@
 		</view>
 		<view style="height: 14vw;"></view>
 		<view class="button">
-			<view class="b-t">
+			<view class="b-t" @click="toSaveGrant()">
 				<uni-icons class="icon" type="plus" size="26"></uni-icons>
 				<view class="wz">添加</view>
 			</view>
@@ -97,6 +98,11 @@
 			}
 		},
 		methods: {
+			toSaveGrant(){
+				uni.navigateTo({
+					url:'../saveGrant/saveGrant'
+				})
+			},
 			removeMaterials(index){
 				uni.showModal({
 					title: '删除物资',
