@@ -138,7 +138,7 @@
 	border: #C0C0C0 solid 1rpx;  
 	border-radius: 5rpx; 
 	position: absolute;
-	left: 100rpx; 
+	left: calc((100% - 550rpx) / 2); 
 	top: 350rpx;
 	padding: 20upx 0;
 	}

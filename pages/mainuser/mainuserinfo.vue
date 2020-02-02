@@ -25,7 +25,10 @@
 						<text class="list-item__content-title">年龄</text>
 					</view>
 					<view class="list-item__extra">
-						<text class="uni-list-item__extra-text">29</text>
+						<picker  @change="chooseages" :value="maindex" :range="mages">
+						    <view class="uni-input">{{mages[maindex]}}</view>
+							<text class="uni-list-item__extra-text">29</text>
+						</picker>
 						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 					</view>
 				</view>
@@ -123,6 +126,9 @@
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
+				//年龄
+				mages:[],
+				maindex:18,
 				//个人资料
 				sexType:['男', '女'],
 				compType:['xxx医院','xxx二院'],
@@ -180,6 +186,13 @@
 			}
 		},
 		methods: {
+			chooseages(e){
+				//年龄选择
+				//console.log('picker发送选择改变，携带值为', e.target.value)
+				  _self.maindex = e.target.value
+				  _self.userinfo.age = e.target.value
+			},
+			//初始化数据
 			initData(){
 				this.$myCloud
 				.callFunction({

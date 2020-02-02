@@ -18,6 +18,10 @@ export default {
 	// 		spaceId: '9ff5d7ec-21aa-40c9-b744-7d99f7b2f94d',
 	// 		clientSecret: 'HkSIujHTvGg6/K5LghniCA=='
 	// },
-	
+	// uniCloud: { //道长
+	// 		provider: 'aliyun',
+	// 		spaceId: 'd5e94575-1d92-483e-b5a4-1c5616a02036',
+	// 		clientSecret: 'mydUeKmoR2eEOwV0+bHZrw=='
+	// },
 	
 }
