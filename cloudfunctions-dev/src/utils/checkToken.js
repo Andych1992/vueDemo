@@ -3,7 +3,7 @@
  * @author SunSeekerX
  * @time 2020-02-02 19:32:49
  * @LastEditors SunSeekerX
- * @LastEditTime 2020-02-02 20:05:48
+ * @LastEditTime 2020-02-02 22:42:05
  */
 
 import jwt from 'jwt-simple'
@@ -17,29 +17,37 @@ const db = uniCloud.database()
  * @name 检查token是否过期
  * @param {String}} token
  */
-async function checkToken(token) {
-  try {
-    const decoded = jwt.decode(token, config.secret)
-    const userInDB = await db
-      .collection('user')
-      .where({
-        username: decoded.username
-      })
-      .get()
+function checkToken(token) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const decoded = jwt.decode(token, config.tokenSecret)
+      const userInDB = await db
+        .collection('user')
+        .where({
+          username: decoded.username
+        })
+        .get()
+      if (
+        userInDB.data &&
+        userInDB.data.length &&
+        userInDB.data[0].token === token &&
+        decoded.date + tokenExp > new Date().getTime()
+      ) {
+        resolve(true)
+      } else {
+        // reject({
+        //   'userInDB.data': userInDB.data,
+        //   'userInDB.data.length': userInDB.data.length,
+        //   'userInDB.data[0].token === token': userInDB.data[0].token === token,
+        //   'decoded.date + tokenExp > new Date().getTime()': decoded.date + tokenExp > new Date().getTime(),
 
-    if (
-      userInDB.data &&
-      userInDB.data.length &&
-      userInDB.data[0].token === token &&
-      decoded.date + tokenExp < new Date().getTime()
-    ) {
-      return true
-    } else {
-      return false
+        // })
+        reject(false)
+      }
+    } catch (error) {
+      reject(error)
     }
-  } catch (error) {
-    return false
-  }
+  })
 }
 
 export default checkToken
