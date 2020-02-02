@@ -10,7 +10,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- <wuc-tab :tab-list="tabList" :tabCur.sync="TabCur" @change="tabChange"></wuc-tab> -->
+		<wuc-tab :tab-list="tabList" :tabCur.sync="TabCur" @change="tabChange"></wuc-tab>
 		<swiper :current="TabCur" duration="300" @change="swiperChange">
 		  <swiper-item v-for="(item,index) in tabList" :key="index">
 		    <view class ='part'>
@@ -109,7 +109,7 @@
 				]
 			}
 		},
-		// components: { WucTab },
+		components: { WucTab },
 		methods: {
 			tabChange(index) {
 				this.TabCur = index;
