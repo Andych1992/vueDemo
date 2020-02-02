@@ -1,15 +1,13 @@
 <!-- 人员管理 这个文件我在做 我是群员(常州-_陈默 565036413) -->
 <template>
 	<view>
-		<uni-search-bar placeholder="点击搜索..." @confirm="search"></uni-search-bar>
+		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
 		<uni-list>
 			<block v-for="(item,index) in userList" :key='index'>
-				<uni-list-item :show-arrow="true" title="儿保科-小王" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
-				 @click="operUserInfo('get')" />
+				<uni-list-item :show-arrow="true" :title="item.section+'-'+item.name" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
+				 @click="operUserInfo(item._id)" />
 			</block>
 		</uni-list>
-		<!-- <uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
-		 @trigger="trigger" /> -->
 		<view class="button">
 			<view class="b-t" @click='backPage'>
 				<uni-icons class="icon" type="undo" size="26"></uni-icons>
@@ -20,14 +18,20 @@
 				<view class="wz">添加</view>
 			</view>
 		</view>
+		<!-- <uni-fab ref="fab" :pattern="pattern" :content="content" :horizontal="horizontal" :vertical="vertical" :direction="direction"
+		 @trigger="trigger" /> -->
 	</view>
 </template>
 
 <script>
+	var _self;
 	export default {
 		data() {
 			return {
-				userList: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
+				searchKey:'',
+				pageSize:10,
+				page:1,
+				userList: [],
 				// directionStr: '垂直',
 				// horizontal: 'right',
 				// vertical: 'bottom',
@@ -46,22 +50,74 @@
 				// }]
 			}
 		},
+		onLoad() {
+			_self=this;
+			_self.userListGet(true);
+		},
+		onPullDownRefresh() {
+			_self.userListGet(true);
+		},
 		methods: {
+			//获取用户数据
+			userListGet(refresh){
+				if(refresh)
+				{
+					_self.page = 1;
+				}
+				this.$myCloud
+				.callFunction({
+							name: 'mainuserlistget',
+							data:{
+								searchKey:_self.searchKey,
+								pageSize:_self.pageSize,
+								page:_self.page
+							}
+						})
+						.then(res => {
+							uni.hideLoading()
+							uni.stopPullDownRefresh();
+							console.log(res)
+							if(res.success){
+								var list = res.result.data;
+								console.log(list)
+								_self.userList = list;
+							}else{
+								// uni.showModal({ content:"暂无人员信息", showCancel: false})
+							}
+							
+						})
+						.catch(err => {
+							uni.hideLoading()
+							uni.stopPullDownRefresh();
+							console.error(err)
+						})
+					
+					
+			
+			},
 			//搜索
-			search() {
-				console.log('搜索')
+			search(e) {
+				_self.searchKey = e.value;
+				_self.userListGet(false);
+				
+			},
+			//取消搜索
+			cancelSearch(){
+				_self.searchKey = '';
+				_self.userListGet(true);
 			},
 			//点击
 			operUserInfo(type) {
 				switch (type) {
-					case 'get':
-						uni.navigateTo({
-							url: './mainuserinfo'
-						});
-						break;
 					case 'add':
 						uni.navigateTo({
-							url: './mainuserinfo'
+							url: './mainuserinfo?id=add'
+						});
+						break;
+					default:
+						console.log(type);
+						uni.navigateTo({
+							url: './mainuserinfo?id='+type
 						});
 						break;
 				}

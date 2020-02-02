@@ -86,10 +86,12 @@
 			"style": {
 				"navigationBarTitleText": "物资资料-增加"
 			}
-		}, {
-			"path": "pages/mainuser/mainuser",
-			"style": {
-				"navigationBarTitleText": "人员管理"
+		}
+	    ,{
+            "path" : "pages/mainuser/mainuser",
+            "style" : {
+				"navigationBarTitleText": "人员管理",
+				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		}, {
 			"path": "pages/mainuser/mainuserinfo",

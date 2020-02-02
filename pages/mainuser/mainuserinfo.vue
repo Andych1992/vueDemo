@@ -18,11 +18,31 @@
 		<uni-list>
 			<uni-list-item :show-arrow="true" title="工号" rightText="1001" />
 			<uni-list-item :show-arrow="true" title="名称" rightText="_陈默" />
-			<uni-list-item :show-arrow="true" title="手机" rightText="1340****071" />
+			<uni-list-item :show-arrow="true" title="手机" rightText="22" />
+			<view class="list-item" hover-class='list-item--hover' @click="chooseImage">
+				<view class="list-item__container">
+					<view class="list-item__content">
+						<text class="list-item__content-title">年龄</text>
+					</view>
+					<view class="list-item__extra">
+						<picker  @change="chooseages" :value="maindex" :range="mages">
+						    <view class="uni-input">{{mages[maindex]}}</view>
+							<text class="uni-list-item__extra-text">29</text>
+						</picker>
+						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+					</view>
+				</view>
+			</view>
 			<uni-list-item :show-arrow="true" title="性别" :rightText="userinfo.sex" @click="chooseSex" />
-			<uni-list-item :show-arrow="true" title="部门" :rightText="userinfo.dept" @click="chooseDept"/>
 			<uni-list-item :show-arrow="true" title="单位" :rightText="userinfo.comp" @click="chooseComp"/>
+			<uni-list-item :show-arrow="true" title="部门" :rightText="userinfo.dept" @click="chooseDept"/>
+			
 			<uni-list-item :show-arrow="true" title="备注" rightText="暂无备注信息" />
+			
+			
+			
+			
+			
 		</uni-list>
 		<view class="uni-row u-f-ac">
 			权限信息
@@ -48,14 +68,15 @@
 				<view class="wz">返回</view>
 			</view>
 			<view class="b-t" @click='addPage'>
-				<uni-icons class="icon" type="plus" size="26"></uni-icons>
-				<view class="wz">添加</view>
+				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
+				<view class="wz">保存</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	var _self;
 	import permision from "@/common/permission.js"
 	var sourceType = [
 		['camera'],
@@ -70,6 +91,7 @@
 	export default {
 		data(){
 			return {
+				
 				//权限
 				qxList:[
 					{	
@@ -104,18 +126,122 @@
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
+				//年龄
+				mages:[],
+				maindex:18,
 				//个人资料
 				sexType:['男', '女'],
-				deptType:['妇产科','儿保科'],
 				compType:['xxx医院','xxx二院'],
+				deptType:['妇产科','儿保科'],
 				userinfo:{
+					_id:"1001",
+					photo:"未设置",
+					_ids:"1001",
+					name:"未设置",
+					phone:"未设置",
+					age:"18",
 					sex:'男',
-					dept:'儿保科',
-					comp:'xxx医院'
+					comp:'请选择单位',
+					dept:'请选择部门',
+					desc:"暂无备注信息",
+					sectionid:'0',
+					compid:'0'
+				},
+			}
+		},
+		onLoad(options) {
+			_self=this;
+			_self.initData();
+			var _id = options.id
+			if(_id)
+			{	
+				if(_id=='add')
+				{
+					uni.setNavigationBarTitle({
+						title: "人员管理-新增"
+					})
 				}
+				else
+				{
+					uni.setNavigationBarTitle({
+						title: "人员管理-编辑"
+					})
+					_self.userinfo._id=options.id;
+					//获取个人资料
+					_self.userInfoGet();
+				}
+			}
+			else{
+				uni.showToast({
+					title: '未获取到用户信息',
+					icon:'none',
+					duration:1000
+				});
+				setTimeout(function() {
+					uni.navigateTo({
+						url: './mainuser'
+					});
+				}, 1000);
+				
 			}
 		},
 		methods: {
+			chooseages(e){
+				//年龄选择
+				//console.log('picker发送选择改变，携带值为', e.target.value)
+				  _self.maindex = e.target.value
+				  _self.userinfo.age = e.target.value
+			},
+			//初始化数据
+			initData(){
+				this.$myCloud
+				.callFunction({
+							name: 'mainusercominit',
+							data:{}
+						})
+						.then(res => {
+							uni.hideLoading()
+							if(res.success){
+								var data = res.result.data;
+								_self.compType = data.comp;
+								_self.deptType = data.dept;
+							}							
+						})
+						.catch(err => {
+							uni.hideLoading()
+							console.error(err)
+						})
+			},
+			//返回上一页
+			backPage(){
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			//获取个人资料
+			userInfoGet(){
+				this.$myCloud
+				.callFunction({
+							name: 'mainuserinfoget',
+							data:{
+								_id:_self.userinfo._id
+							}
+						})
+						.then(res => {
+							uni.hideLoading()
+							if(res.success){
+								var info = res.result.data;
+								_self.userinfo = info[0];
+							}else{
+								// uni.showModal({ content:"暂无人员信息", showCancel: false})
+							}
+							
+						})
+						.catch(err => {
+							uni.hideLoading()
+							console.error(err)
+						})
+			},
 			//单位
 			chooseComp(){
 				uni.showActionSheet({
@@ -397,6 +523,6 @@
 		background: #FFFFFF;
 		color: #FF3333;
 		font-size: 32upx;
-		margin-bottom: 20upx;
+		margin-bottom: 120upx;
 	}
 </style>
