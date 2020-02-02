@@ -4,7 +4,7 @@
 		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
 		<uni-list>
 			<block v-for="(item,index) in userList" :key='index'>
-				<uni-list-item :show-arrow="true" :title="item.section+'-'+item.name" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
+				<uni-list-item :show-arrow="true" :title="item.company.compname+'-'+item.section.section+'-'+item.name" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
 				 @click="operUserInfo(item._id)" />
 			</block>
 		</uni-list>
