@@ -178,7 +178,7 @@ materMain
 {
 	_id: "", // string，自生成
 	materOperType:'', //string 业务形态 10 物资入库 20 物资发放
-	materShowType:'',//string 显示类型 针对入库分三种类型 1001 捐赠 1002 下拨 1003 采购
+	materShowType:'',//string 显示类型 针对入库分三种类型 1001 捐赠 1002 下拨 1003 采购 1004 采退
 								      出库分两种类型 2001 直接发放 2002 申请发放
 	detail_balance:"",//1 入库 -1 出库
 	materOperUer:'',//sting 操作人
