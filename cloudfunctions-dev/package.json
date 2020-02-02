@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "云函数开发",
   "scripts": {
-    "build": "node build-api.js"
+    "build": "node build-api.js",
+    "wbuild": "node build"
   },
   "author": "wangyaqi@dcloud.io",
   "license": "MIT",
@@ -17,6 +18,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "jwt-simple": "^0.5.6",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "zopfli-webpack-plugin": "^0.1.0"
   }
 }
