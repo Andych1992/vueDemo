@@ -124,7 +124,7 @@
 		display: flex;
 		justify-content: space-between;
 	}
-	/deep/ .uni-button[type=default]{
+	uni-button{
 		margin-left: 0!important;
 		margin-right: 0!important;
 	}
