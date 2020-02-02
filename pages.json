@@ -88,6 +88,10 @@
             "path" : "pages/addGrant/addGrant",
             "style" : {"navigationBarTitleText": "物资发放"}
         }
+        ,{
+            "path" : "pages/materiaInformation/materiaInformation",
+            "style" : {}
+        }
     ],
 	"easycom": {
 		"autoscan": true
