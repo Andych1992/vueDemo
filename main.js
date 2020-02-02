@@ -12,6 +12,7 @@ import config from "@/common/config.js"
 import Utils from '@/utils/Utils' // Common util
 import HandleError from '@/utils/HandleError' // Handle error
 const myCloud = uniCloud.init(config.uniCloud)
+
 const request = ({
 	name,
 	data
@@ -24,14 +25,17 @@ const request = ({
 		myCloud
 			.callFunction({
 				name,
-				data
+				data:{
+					token: store.state.token,
+					...data
+				}
 			})
 			.then(res => {
 				uni.hideLoading()
-				if (res.result.success) {
+				if (res.result && res.result.success) {
 					resolve(res.result)
 				} else {
-					if (res.result.msg) {
+					if (res.result && res.result.msg) {
 						uni.showModal({
 							content: res.result.msg,
 							showCancel: false

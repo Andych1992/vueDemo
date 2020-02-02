@@ -4,6 +4,10 @@
 
 ## 账号
 
+> 关于注册登录，app一启动（相当于刷新页面）会从本地存储读取用户token和userInfo,如果没有则为空，一旦登录成功，会将token和userInfo通过vuex写入本地存储。达到保持登录状态的目的。使用token和userInfo直接从vuex取就行了。
+>
+> 除几个开放接口外，其他接口都需要校验token才能继续操作，校验token的写法详见checktoken接口云函数
+
 ### 超级管理员注册
 
 `cloudfunctions-aliyun/register/index.js`
