@@ -34,7 +34,7 @@
 				"navigationBarTitleText": "登录"
 			}
 		},
-		
+
 		{
 			"path": "pages/mecompany/mecompany",
 			"style": {
@@ -86,34 +86,31 @@
 			"style": {
 				"navigationBarTitleText": "物资资料-增加"
 			}
-		}
-	    ,{
-            "path" : "pages/mainuser/mainuser",
-            "style" : {
+		}, {
+			"path": "pages/mainuser/mainuser",
+			"style": {
 				"navigationBarTitleText": "人员管理"
 			}
-        },{
-            "path" : "pages/mainuser/mainuserinfo",
-            "style" : {
+		}, {
+			"path": "pages/mainuser/mainuserinfo",
+			"style": {
 				"navigationBarTitleText": "人员管理-新增"
 			}
+		}, {
+			"path": "pages/addGrant/addGrant",
+			"style": {
+				"navigationBarTitleText": "物资发放"
 			}
-        ,{
-            "path" : "pages/addGrant/addGrant",
-            "style" : {"navigationBarTitleText": "物资发放"}
-        }
-        ,{
-<<<<<<< HEAD
-            "path" : "pages/materiaInformation/materiaInformation",
-            "style" : {}
-=======
-            "path" : "pages/saveGrant/saveGrant",
-            "style" : {
+		}, {
+			"path": "pages/materiaInformation/materiaInformation",
+			"style": {}
+		}, {
+			"path": "pages/saveGrant/saveGrant",
+			"style": {
 				"navigationBarTitleText": "新增发放物资"
 			}
->>>>>>> b95a0473fd39d27d7102c2e3f5746ea784405f8a
-        }
-    ],
+		}
+	],
 	"easycom": {
 		"autoscan": true
 	},
