@@ -43,6 +43,12 @@
 			</view>
 		  </swiper-item>
 		</swiper>
+		<view class="footer">
+			<view class="footerIn">
+				<button type="default"  size="mini" @click="goback"><uni-icons type="undo" size="20"></uni-icons>返回</button>
+				<button type="default" size="mini" @click="newadd"><uni-icons type="plus" size="20"></uni-icons>新增物资</button>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -108,12 +114,20 @@
 		methods: {
 			tabChange(index) {
 				this.TabCur = index;
+			},
+			goback(){
+				uni.navigateBack()
+			},
+			newadd(){
+				uni.navigateTo({
+				    url: '/pages/addMaterial/addMaterial'
+			    })
 			}
 		},
 		mounted() {
 			this.$nextTick(()=>{
 				let uniswipers = document.getElementsByTagName('uni-swiper')[0]
-				var height = document.body.clientHeight-document.getElementsByTagName('uni-page-head')[0].clientHeight-document.getElementsByClassName('uni-scroll-view')[0].clientHeight
+				var height = document.body.clientHeight-document.getElementsByTagName('uni-page-head')[0].clientHeight-document.getElementsByClassName('uni-scroll-view')[0].clientHeight-document.getElementsByClassName('search')[0].clientHeight-document.getElementsByClassName('footer')[0].clientHeight
 				console.log(height +'px')
 				uniswipers.style.height = height +'px'
 				uniswipers.style.overflowY = auto
@@ -173,6 +187,17 @@
 						width:36rpx;
 						height:36rpx;
 					}
+				}
+			}
+		}
+		.footer{
+			width: 100%;
+			.footerIn{
+				padding: 26rpx 20rpx;
+				display: flex;
+				justify-content: space-between;
+				uni-button{
+					margin: 0!important;
 				}
 			}
 		}
