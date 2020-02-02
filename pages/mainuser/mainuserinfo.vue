@@ -5,7 +5,7 @@
 			基本信息
 		</view>
 		<view class="list-item" hover-class='list-item--hover' @click="chooseImage">
-			<view class="list-item__container">
+			<view class="list-item__container list-item--bottom">
 				<view class="list-item__content">
 					<text class="list-item__content-title">头像</text>
 				</view>
@@ -18,29 +18,50 @@
 		<uni-list>
 			<uni-list-item :show-arrow="true" title="工号" rightText="1001" />
 			<uni-list-item :show-arrow="true" title="名称" rightText="_陈默" />
-			<uni-list-item :show-arrow="true" title="手机" rightText="22" />
-			<view class="list-item" hover-class='list-item--hover' @click="chooseImage">
+			<uni-list-item :show-arrow="true" title="手机" rightText="1340...0071" />
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker  @change="chooseages" :value="maindex" :range="mages">
 				<view class="list-item__container">
 					<view class="list-item__content">
 						<text class="list-item__content-title">年龄</text>
 					</view>
 					<view class="list-item__extra">
-						<picker  @change="chooseages" :value="maindex" :range="mages">
-						    <view class="uni-input">{{mages[maindex]}}</view>
-							<text class="uni-list-item__extra-text">29</text>
-						</picker>
+						{{mages[maindex]}}
 						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 					</view>
 				</view>
+				</picker>
 			</view>
 			<uni-list-item :show-arrow="true" title="性别" :rightText="userinfo.sex" @click="chooseSex" />
-			<uni-list-item :show-arrow="true" title="单位" :rightText="userinfo.comp" @click="chooseComp"/>
-			<uni-list-item :show-arrow="true" title="部门" :rightText="userinfo.dept" @click="chooseDept"/>
-			
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker  @change="chooseComp" :value="compTypeIndex" :range="compType" range-key="compname">
+				<view class="list-item__container">
+					<view class="list-item__content">
+						<text class="list-item__content-title">单位</text>
+					</view>
+					<view class="list-item__extra">
+						{{compType[compTypeIndex].compname}}
+						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+					</view>
+				</view>
+				</picker>
+			</view>
+			<!-- <uni-list-item :show-arrow="true" title="单位" :rightText="userinfo.comp" @click="chooseComp"/> -->
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker  @change="chooseDept" :value="deptTypeIndex" :range="deptType.filter(item=>item.compid===compType[compTypeIndex]._id)" range-key="section">
+				<view class="list-item__container">
+					<view class="list-item__content">
+						<text class="list-item__content-title">部门</text>
+					</view>
+					<view class="list-item__extra">
+						{{deptType.filter(item=>item.compid===compType[compTypeIndex]._id)[deptTypeIndex].section}}
+						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+					</view>
+				</view>
+				</picker>
+			</view>
+			<!-- <uni-list-item :show-arrow="true" title="部门" :rightText="userinfo.dept" @click="chooseDept"/>			 -->
 			<uni-list-item :show-arrow="true" title="备注" rightText="暂无备注信息" />
-			
-			
-			
 			
 			
 		</uni-list>
@@ -127,12 +148,14 @@
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				//年龄
-				mages:[],
-				maindex:18,
+				mages:[...Array(100).keys()],
+				maindex:28,
 				//个人资料
 				sexType:['男', '女'],
 				compType:['xxx医院','xxx二院'],
+				compTypeIndex:1,
 				deptType:['妇产科','儿保科'],
+				deptTypeIndex:1,
 				userinfo:{
 					_id:"1001",
 					photo:"未设置",
@@ -186,8 +209,8 @@
 			}
 		},
 		methods: {
+			//年龄选择
 			chooseages(e){
-				//年龄选择
 				//console.log('picker发送选择改变，携带值为', e.target.value)
 				  _self.maindex = e.target.value
 				  _self.userinfo.age = e.target.value
@@ -243,26 +266,17 @@
 						})
 			},
 			//单位
-			chooseComp(){
-				uni.showActionSheet({
-					title:'选择单位',
-					itemList: this.compType,
-					success: (e) => {
-						console.log(e.tapIndex);
-						this.userinfo.comp = this.compType[e.tapIndex]
-					}
-				})
+			chooseComp(e){
+				_self.compTypeIndex = e.target.value
+				_self.userinfo.comp = _self.compType[e.target.value]
+				_self.deptTypeIndex = 0
+				_self.userinfo.dept = 
+				_self.deptType.filter(item=>item.compid===_self.compType[_self.compTypeIndex]._id)[_self.deptTypeIndex]
 			},
 			//部门
-			chooseDept(){
-				uni.showActionSheet({
-					title:'选择部门',
-					itemList: this.deptType,
-					success: (e) => {
-						console.log(e.tapIndex);
-						this.userinfo.dept = this.deptType[e.tapIndex]
-					}
-				})
+			chooseDept(e){
+				_self.deptTypeIndex = e.target.value
+				_self.userinfo.dept = _self.deptType.filter(item=>item.compid===_self.compType[_self.compTypeIndex]._id)[_self.deptTypeIndex]
 			},
 			//性别
 			chooseSex() {
@@ -466,13 +480,15 @@
 		position: relative;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.list-item--bottom {
 		/* #ifdef APP-PLUS || H5*/
 		border-bottom-color: #e5e5e5;
 		border-bottom-style: solid;
 		border-bottom-width: 0.5px;
 		/* #endif */
 	}
-
+	
 	/* #ifndef APP-NVUE */
 	.list-item__container:after {
 		position: absolute;
@@ -484,6 +500,9 @@
 		-webkit-transform: scaleY(.5);
 		transform: scaleY(.5);
 		background-color: #e5e5e5;
+	}
+	.list-item--bottom:after {
+		height: 0px;
 	}
 	/* #endif */
 	.list-item__content {

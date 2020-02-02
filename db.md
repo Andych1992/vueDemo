@@ -79,6 +79,7 @@ department
     _id: "", // string，自生成
     compid: "", // string 单位ID
 	section:""//部门名称
+	desc:""//备注
 }
 ```
 
@@ -94,7 +95,7 @@ materialtype
 }
 ```
 
-#### 物资库存表
+#### 物资资料
 ```
 materModel
 {
@@ -169,3 +170,44 @@ member_opera_history
     create_ip: "", // string 当前操作ip
 }
 ```
+
+
+#### 物资进出库表
+```
+materMain
+{
+	_id: "", // string，自生成
+	materOperType:'', //string 业务形态 10 物资入库 20 物资发放
+	materShowType:'',//string 显示类型 针对入库分三种类型 1001 捐赠 1002 下拨 1003 采购 1004 采退
+								      出库分两种类型 2001 直接发放 2002 申请发放
+	detail_balance:"",//1 入库 -1 出库
+	materOperUer:'',//sting 操作人
+	materOperCom:'',//sting 操作单位
+	materOperDept:'',//sting 操作部门
+	relationUser:"", //sting 关联人
+	relationCom:"", //sting 关联单位
+	relationDept:"", //sting 关联部门
+	fj_img:"", //数组 附件照片 9张内
+	create_time: 0,// 时间戳 GMT
+	check_time: 0,// 时间戳 GMT审核完成时间
+	status:"", //状态  入库 1001 申请 1002 驳回 1099 完成
+					   出库 2001 申请 2002 驳回 2099 发放
+}
+materDetail
+{
+	_id: "", // string，自生成
+	materMain_id:"", //主表ID
+	detail_balance:"",//1 增加 -1减少
+	materModel_id:"", //物资ID
+	types_id:"", //物资类型关联
+	mat_title:"",//物资名称
+	mat_img:"",物资图片
+	unit:"",//单位  （计量单位）
+	model:"",//型号（物料规格）
+	manufacturer:"",//生产厂家
+	bar_code_number:"",//物资条码
+	mat_top:"",   //物资排序1，2，3 ，4 升序	
+	mat_number:"",数量
+	mat_des:"",物资说明
+}
+``` 
