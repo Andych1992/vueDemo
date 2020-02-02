@@ -53,7 +53,6 @@
 </template>
 
 <script>
-	import WucTab from '@/components/wuc-tab/wuc-tab.vue';
 	export default {
 		data() {
 			 return {
