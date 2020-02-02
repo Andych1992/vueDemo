@@ -101,13 +101,16 @@
 			"style": {
 				"navigationBarTitleText": "物资发放"
 			}
-		}, {
-			"path": "pages/materiaInformation/materiaInformation",
-			"style": {}
-		}, {
+		},  {
 			"path": "pages/saveGrant/saveGrant",
 			"style": {
 				"navigationBarTitleText": "新增发放物资"
+			}
+		},
+		{
+			"path": "pages/materiaInformation/materiaInformation",
+			"style": {
+				"navigationBarTitleText": "物资资料"
 			}
 		}
 	],
