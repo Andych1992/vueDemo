@@ -109,9 +109,15 @@
 						break;
 					case 'wzkc':
 						console.log('物资库存');
+						uni.navigateTo({
+							url: '../mainstroage/mainstroageList'
+						});
 						break;
 					case 'wzzl':
 						console.log('物资资料');
+						uni.navigateTo({
+							url: '../materiaInformation/materiaInformation'
+						});
 						break;
 					case 'wzlb':
 						console.log('物资类别');

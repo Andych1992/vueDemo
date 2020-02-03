@@ -1,15 +1,7 @@
+<!-- 这个文件我在做 物资库存 我是群员(常州-_陈默 565036413) -->
 <template>
 	<view class="materiaInformation">
-		<view class="search">
-			<view class="searchIn">
-				<view class="keft">
-					<input type="text" value="请输入搜索内容" />
-				</view>
-				<view class="imgs">
-					<image src="../../static/icon/search.png" mode=""></image>
-				</view>
-			</view>
-		</view>
+		<uni-search-bar placeholder="点击搜索..." @confirm="search" class="searchs"></uni-search-bar>
 		<wuc-tab :tab-list="tabList" :tabCur.sync="TabCur" @change="tabChange"></wuc-tab>
 		<swiper :current="TabCur" duration="300" @change="swiperChange">
 		  <swiper-item v-for="(item,index) in tabList" :key="index">
@@ -43,12 +35,6 @@
 			</view>
 		  </swiper-item>
 		</swiper>
-		<view class="footer">
-			<view class="footerIn">
-				<button type="default"  size="mini" @click="goback"><uni-icons type="undo" size="20"></uni-icons>返回</button>
-				<button type="default" size="mini" @click="newadd"><uni-icons type="plus" size="20"></uni-icons>新增物资</button>
-			</view>
-		</view>
 	</view>
 </template>
 <script>
@@ -114,6 +100,9 @@
 			tabChange(index) {
 				this.TabCur = index;
 			},
+			swiperChange(e){
+				this.TabCur = e.detail.current;
+			},
 			goback(){
 				uni.navigateBack()
 			},
@@ -126,7 +115,11 @@
 		mounted() {
 			this.$nextTick(()=>{
 				let uniswipers = document.getElementsByTagName('uni-swiper')[0]
-				var height = document.body.clientHeight-document.getElementsByTagName('uni-page-head')[0].clientHeight-document.getElementsByClassName('uni-scroll-view')[0].clientHeight-document.getElementsByClassName('search')[0].clientHeight-document.getElementsByClassName('footer')[0].clientHeight
+				var height = document.body.clientHeight-
+						document.getElementsByTagName('uni-page-head')[0].clientHeight-
+						document.getElementsByClassName('uni-scroll-view')[0].clientHeight-
+						document.getElementsByClassName('searchs')[0].clientHeight-5
+						// document.getElementsByClassName('footer')[0].clientHeight
 				console.log(height +'px')
 				uniswipers.style.height = height +'px'
 				uniswipers.style.overflowY = 'auto'
@@ -165,40 +158,40 @@
 				}			
 			}
 		}
-		.search{
-			width: 100%;
-			padding: 30rpx 0 0 0;
-			.searchIn{
-				width: 100%;
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				padding: 20rpx;
-				border: 1rpx solid #dcdcdc;
-				.keft{
-					flex: 6;
-					input{
-						width: 100%;
-					}
-				}
-				.imgs{
-					uni-image{
-						width:36rpx;
-						height:36rpx;
-					}
-				}
-			}
-		}
-		.footer{
-			width: 100%;
-			.footerIn{
-				padding: 26rpx 20rpx;
-				display: flex;
-				justify-content: space-between;
-				uni-button{
-					margin: 0!important;
-				}
-			}
-		}
+		// .search{
+		// 	width: 100%;
+		// 	padding: 30rpx 0 0 0;
+		// 	.searchIn{
+		// 		width: 100%;
+		// 		display: flex;
+		// 		justify-content: space-between;
+		// 		align-items: center;
+		// 		padding: 20rpx;
+		// 		border: 1rpx solid #dcdcdc;
+		// 		.keft{
+		// 			flex: 6;
+		// 			input{
+		// 				width: 100%;
+		// 			}
+		// 		}
+		// 		.imgs{
+		// 			uni-image{
+		// 				width:36rpx;
+		// 				height:36rpx;
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// .footer{
+		// 	width: 100%;
+		// 	.footerIn{
+		// 		padding: 26rpx 20rpx;
+		// 		display: flex;
+		// 		justify-content: space-between;
+		// 		uni-button{
+		// 			margin: 0!important;
+		// 		}
+		// 	}
+		// }
 	}
 </style>
