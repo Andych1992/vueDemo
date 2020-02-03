@@ -13,12 +13,12 @@ user
 {
     _id: "", // string，自生成 用户唯一标识，注册时生成无法修改
     username: "", // string 用户
-	company:"",//string 所属单位
-	section:""//所属部门
+	company:"",//string 所属单位 JSON
+	section:""//所属部门 JSON
     password: "", // string 密码(禁止明文)
     wx_open_id: "", // string 关联微信openid  用户code 换取
     id_card: "", // string 身份证号，需验证符合规则
-    name: "", // string 不能为空
+    sname: "", // string 不能为空
     phone: "", // string 不能为空，需验证符合规则
     age: 18, // int
     sex: 0, // int (0女, 1男, 2未知)

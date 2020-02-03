@@ -46,9 +46,10 @@ async function register(event) {
         // 用户不存在，注册
         const bcryptPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
         const registerResult = await db.collection('user').add({
+		  _ids,
           username,
           password: bcryptPassword,
-          name,
+          sname,
           status: 0,
           permission: 0,
           create_time: new Date().getTime(),

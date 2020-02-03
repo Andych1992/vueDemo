@@ -88,6 +88,9 @@ export default {
 				// Update user info
 				this.UPDATE_USER_INFO(res.data.userInfo)
 				console.log(res)
+				uni.switchTab({
+						url: '/pages/mainme/mainme'
+					})
 			})
 		},
 		//注册

@@ -10,7 +10,7 @@ exports.main = async (event, context) => {
 		_id,
 		photo,
 		_ids,
-		name,
+		sname,
 		phone,
 		age,
 		sex,
@@ -25,7 +25,7 @@ exports.main = async (event, context) => {
 			res = await collection.add({
 				photo,
 				_ids,
-				name,
+				sname,
 				phone,
 				age,
 				sex,
@@ -59,7 +59,7 @@ exports.main = async (event, context) => {
 			res = await collection.doc(dataIn._id).set({
 				photo,
 				_ids,
-				name,
+				sname,
 				phone,
 				age,
 				sex,

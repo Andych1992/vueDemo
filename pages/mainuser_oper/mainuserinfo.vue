@@ -17,7 +17,7 @@
 				</view>
 			</view>
 			<uni-list-item :show-arrow="true" title="工号" :rightText="userinfo._ids?userinfo._ids:'暂无设置'" @click="togglePopup('_ids','人员工号',userinfo._ids)" />
-			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.name?userinfo.name:'暂无设置'" @click="togglePopup('name','人员名称',userinfo.name)" />
+			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.sname?userinfo.sname:'暂无设置'" @click="togglePopup('sname','人员名称',userinfo.sname)" />
 			<uni-list-item :show-arrow="true" title="手机" :rightText="userinfo.phone?userinfo.phone:'暂无设置'" @click="togglePopup('phone','手机号码',userinfo.phone)" />
 			<view class="list-item" hover-class='list-item--hover'>
 				<picker @change="chooseages" :value="maindex" :range="mages">
@@ -349,8 +349,8 @@
 					case 'phone':
 						this.userinfo.phone = this.popupValue
 						break;
-					case 'name':
-						this.userinfo.name = this.popupValue
+					case 'sname':
+						this.userinfo.sname = this.popupValue
 						break;
 					case '_ids':
 						this.userinfo._ids = this.popupValue

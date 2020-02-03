@@ -38,15 +38,15 @@ export default {
 	},
 	onLoad() {
 		console.log('token>>>', this.token)
-		console.log('userInfo>>>', this.userInfo)
+		console.log('userInfo>>>', this.userInfo) 
 		_self = this
-		userdata = JSON.parse(uni.getStorageSync('userdata'))
+		userdata = this.userInfo //JSON.parse(uni.getStorageSync('USER_INFO'))
 		_self.loadlistinit()
 	},
 	methods: {
 		loadlistinit() {
 			console.log(userdata)
-			if (userdata.types == '6' || userdata.userInfo.permission == '0') {
+			if (userdata.types == '6' || userdata.permission == '0') {
 				//超级管理员
 				var listdata = [
 					{
@@ -82,6 +82,7 @@ export default {
 					content: '未登陆',
 					showCancel: false
 				})
+				return 
 			}
 			_self.getuserinfo()
 		},
@@ -119,7 +120,7 @@ export default {
 					name: 'megetuserinfo',
 					data: {
 						//token: userdata.token
-						_id: userdata.userInfo._id
+						_id: userdata._id
 					}
 				})
 				.then(res => {

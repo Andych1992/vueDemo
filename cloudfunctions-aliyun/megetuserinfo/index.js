@@ -12,25 +12,27 @@ exports.main = async (event, context) => {
 	const collection = db.collection('user')
 	const res = await collection.doc(event._id).get()
 	const rest = res.data[0];
-	console.log(rest.company);
+	// console.log(rest.company);
 	
-	const compction = db.collection('company');
-	const rescp = await compction.doc(rest.company).get()
-	const restcp = rescp.data[0];
+	// const compction = db.collection('company');
+	// const rescp = await compction.doc(rest.company).get()
+	// const restcp = rescp.data[0];
 	
-	const dection = db.collection('department')
-	const resde = await dection.doc(rest.section).get()
-	const restde = resde.data[0];
+	// const dection = db.collection('department')
+	// const resde = await dection.doc(rest.section).get()
+	// const restde = resde.data[0];
 	
 	
 	
 	const uses = {
-		name: rest.name,
-		compid: rest.company,
-		company: restcp.compname,
-		section: restde.section,
-		sectionid: rest.section,
 		_id: rest._id,
+		_ids: rest._ids,
+		name: rest.name,
+		username: rest.username,
+		company: rest.company,
+		// company: restcp.compname,
+		section: rest.section,
+		// sectionid: rest.section,
 		photo: rest.photo,
 		regtime: rest.create_time,
 		sname:rest.sname,
