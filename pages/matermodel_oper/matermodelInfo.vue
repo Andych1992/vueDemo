@@ -21,7 +21,20 @@
 				</view>
 			</view>
 			<uni-list-item :show-arrow="true" title="物资编号" :rightText="materModelInfo._ids" @click="togglePopup('_ids','类别编号',materModelInfo._ids)" />
-			<uni-list-item :show-arrow="true" title="物资类型" :rightText="materModelInfo.types_id" @click="togglePopup('types_id','物资类型',materModelInfo.types_id)" />
+			<!-- <uni-list-item :show-arrow="true" title="物资类型" :rightText="materModelInfo.types_id" @click="togglePopup('types_id','物资类型',materModelInfo.types_id)" /> -->
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker @change="chooseMaterType" :value="materTypeIndex" :range="materType" range-key="titles">
+					<view class="list-item__container">
+						<view class="list-item__content">
+							<text class="list-item__content-title">物资类型</text>
+						</view>
+						<view class="list-item__extra">
+							{{materModelInfo.materType?materModelInfo.materType.titles:''}}
+							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+						</view>
+					</view>
+				</picker>
+			</view>
 			<uni-list-item :show-arrow="true" title="物资名称" :rightText="materModelInfo.mat_title" @click="togglePopup('mat_title','物资名称',materModelInfo.mat_title)" />
 			<uni-list-item :show-arrow="true" title="计数单位" :rightText="materModelInfo.unit" @click="togglePopup('unit','计数单位',materModelInfo.unit)" />
 			<uni-list-item :show-arrow="true" title="规格型号" :rightText="materModelInfo.model" @click="togglePopup('model','计数单位',materModelInfo.model)" />
@@ -130,11 +143,15 @@
 				popupTitle: '',
 				popupColumn: '',
 				popupValue: '',
+				//物资类型
+				materType: [],
+				materTypeIndex: 0,
 				//图
 				imgSrc: '../../static/logo.png',
 				materModelInfo: {
 					_id: "", // string，自生成
 					_ids: "", //string 物资显示编号
+					materType:"",
 					types_id: "", //物资类型ID materialtype 里的_id
 					mat_title: "", //物资名称
 					mat_img: "", //物资图片
@@ -151,23 +168,18 @@
 		onLoad(options) {
 			_self = this;
 			var _id = options.id
-			// _self.initData(
-				// function() {
+			_self.initData(
+				function() {
 					if (_id) {
 						if (_id == 'add') {
 							_self.operType = 'add'
 							uni.setNavigationBarTitle({
 								title: "物资资料-新增"
 							})
-							// //==单位 部门
-							// _self.compTypeIndex = 0
-							// _self.materModelInfo.company = _self.compType[_self.compTypeIndex]
-							// _self.deptTypeIndex = 0
-							// _self.materModelInfo.section =
-							// 	_self.deptType.filter(
-							// 		item => item.compid === _self.compType[_self.compTypeIndex]._id
-							// 	)[_self.deptTypeIndex]
-							// //==
+							//==物资类型
+							_self.materTypeIndex = 0
+							_self.materModelInfo.materType = _self.materType[_self.materTypeIndex]
+							//==
 		
 						} else {
 							_self.operType = 'save'
@@ -186,16 +198,43 @@
 						});
 						// setTimeout(function() {
 						// 	uni.navigateTo({
-						// 		url: './mainuser'
+						// 		url: './matermodelList'
 						// 	});
 						// }, 1000);
 		
 					}
-				// }
-			// );
+				}
+			);
 		
 		},
 		methods: {
+			initData(fun){
+				this.$myCloud
+					.callFunction({
+							name: 'materialtype_oper',
+							data:{
+								operType: 'list',
+								dataIn:{},
+								searchKey:'',
+								pageSize:999,
+								page:1
+							}
+						})
+						.then(res => {
+							console.log(res)
+							if(res.result.success){
+								var list = res.result.data;
+								_self.materType = list;
+							}else{
+								// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
+							}
+							fun();
+						})
+						.catch(err => {
+							console.error(err)
+						})
+			},
+			//获取信息
 			infoGet(){
 				uni.showLoading({
 					title: '加载中...'
@@ -212,7 +251,18 @@
 						uni.hideLoading()
 						if (res.success) {
 							var info = res.result.data;
-							// //==单位 部门
+							//==物资类型
+							if(info[0].materType)
+							{
+								_self.materTypeIndex = _self.materType.indexOf(_self.materType.filter((p) => {
+									return p._id == info[0].materType._id;
+								})[0])
+							}
+							if (_self.materTypeIndex < 0) {
+								_self.materTypeIndex = 0
+							}
+							_self.materModelInfo.materType = _self.materType[_self.materTypeIndex]
+							//==单位 部门
 							// _self.compTypeIndex = _self.compType.indexOf(_self.compType.filter((p) => {
 							// 	return p._id == info[0].company._id;
 							// })[0])
@@ -285,10 +335,26 @@
 			},
 			//保存
 			savePage() {
-				// var obj = _self.materModelInfo
-				// delete _self.materModelInfo._id;
-				console.log(_self.materModelInfo);
-				// return 
+				if(!_self.materModelInfo.mat_title)
+				{
+					uni.showModal({
+						title: '提示',
+						content: '请输入物资名称',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
+				if(!_self.materModelInfo.materType)
+				{
+					uni.showModal({
+						title: '提示',
+						content: '请选择物资类型',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
 				this.$myCloud
 					.callFunction({
 						name: 'matermodel_oper',
@@ -422,6 +488,12 @@
 						})
 					}
 				})
+			},
+			//物资类型
+			chooseMaterType(e) {
+				_self.materTypeIndex = e.target.value
+				_self.materModelInfo.materType = _self.materType[_self.materTypeIndex]
+				_self.materModelInfo.types_id = _self.materType[_self.materTypeIndex]._id
 			}
 			// //调用from表单提交事件
 			// subform(e) {

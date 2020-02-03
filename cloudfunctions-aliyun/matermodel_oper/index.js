@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 	const {
 		_id,
 		_ids, //string 物资显示编号
+		materType,
 		types_id, //物资类型ID materialtype 里的_id
 		mat_title, //物资名称
 		mat_img, //物资图片
@@ -87,6 +88,7 @@ exports.main = async (event, context) => {
 		case 'add':
 			res = await collection.add({
 				_ids, //string 物资显示编号
+				materType,
 				types_id, //物资类型ID materialtype 里的_id
 				mat_title, //物资名称
 				mat_img, //物资图片
@@ -164,6 +166,7 @@ exports.main = async (event, context) => {
 			//存在
 			res = await collection.doc(_id).set({
 				_ids, //string 物资显示编号
+				materType,
 				types_id, //物资类型ID materialtype 里的_id
 				mat_title, //物资名称
 				mat_img, //物资图片
