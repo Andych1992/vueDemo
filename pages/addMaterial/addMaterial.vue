@@ -1,3 +1,5 @@
+<!-- 物资资料 新增数据的绑定 （我是群员华上进：1539858433）-->
+
 <template>
 	<form @submit="subform">
 		<view class="addMaterial">
