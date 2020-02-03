@@ -121,6 +121,9 @@
 						break;
 					case 'wzlb':
 						console.log('物资类别');
+						uni.navigateTo({
+							url: '../materialtype/materialtypeList'
+						});
 						break;
 					case 'dwzz':
 						console.log('单位组织');

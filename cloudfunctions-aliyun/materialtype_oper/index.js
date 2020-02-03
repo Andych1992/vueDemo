@@ -5,29 +5,64 @@ exports.main = async (event, context) => {
 	const {
 		operType,
 		dataIn,
-		searchKey
+		searchKey,
+		page,
+		pageSize
 	} = event
 	const {
-		searchKey
-	} = dataIn
+		_id,
+		_ids,
+		titles,
+		desc,
+		indexs
+		} = dataIn
 	const collection = db.collection('materialtype')
 	let res;
 	switch (operType) {
 		case 'list':
-			if (event.searchKey != '') {
+			if (searchKey != '') {
 				const dbCmd = db.command;
 				res = await collection.where(
 					dbCmd.or({
-						name: new RegExp(event.searchKey)
+						titles: new RegExp(searchKey)
 					}, {
-						section: new RegExp(event.searchKey)
-					})
-				).orderBy("create_time", "desc").skip((event.page - 1) * event.pageSize).limit(event.pageSize).get();
+						desc: new RegExp(searchKey)
+					},{
+						_ids: new RegExp(searchKey)
+					})					
+				).orderBy("indexs", "asc").skip((page - 1) * pageSize).limit(pageSize).get();
 			} else {
 				res = await collection
-					.orderBy("create_time", "desc").skip((event.page - 1) * event.pageSize).limit(event.pageSize).get();
+					.orderBy("indexs", "asc").skip((page - 1) * pageSize).limit(pageSize).get();
 			}
-
+			if (!res.data || res.data.length === 0) {
+			  return {
+			  	success: false,
+			  	code: 500,
+			  	msg: '暂无数据'
+			  }
+			}
+			if (res.id || res.affectedDocs >= 1) {
+				return {
+					success: true,
+					code: 200,
+					msg: '成功',
+					data:res.data
+				}
+			}
+			return {
+				success: false,
+				code: 500,
+				msg: '服务器内部错误'
+			}
+			break;
+		case 'add':
+			res = await collection.add({
+				_ids,
+				titles,
+				desc,
+				indexs
+			})
 			if (res.id || res.affectedDocs === 1) {
 				return {
 					success: true,
@@ -36,9 +71,80 @@ exports.main = async (event, context) => {
 				}
 			}
 			return {
-				success: false,
-				code: 500,
-				msg: '服务器内部错误'
+			  success: false,
+			  code: 500,
+			  msg: '服务器内部错误'
+			}
+			break;
+		case 'get':
+			//单条获取
+			res = await collection.doc(_id).get()
+			if (res.data.length == 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '物资类别不存在'
+				}
+			}
+			return {
+				success: true,
+				code: 200,
+				msg: '成功',
+				data:res.data
+			}
+			break;
+		case 'del':
+			res = await collection.doc(_id).get()
+			if (res.data.length == 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '物资类别不存在'
+				}
+			}
+			res = await collection.doc(_id).remove()
+			if (res.id || res.affectedDocs === 1) {
+				return {
+					success: true,
+					code: 200,
+					msg: '删除成功',
+					data: res.result
+				}
+			}
+			return {
+			  success: false,
+			  code: 500,
+			  msg: '服务器内部错误'
+			}
+			break;
+		case 'save':
+			res = await collection.doc(_id).get()
+			if (res.data.length == 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '物资类别不存在'
+				}
+			}
+			//存在
+			res = await collection.doc(_id).set({
+				_ids,
+				titles,
+				desc,
+				indexs
+			});
+			if (res.id || res.affectedDocs === 1) {
+				return {
+					success: true,
+					code: 200,
+					msg: '保存成功',
+					data: res.result
+				}
+			}
+			return {
+			  success: false,
+			  code: 500,
+			  msg: '服务器内部错误'
 			}
 			break;
 	}

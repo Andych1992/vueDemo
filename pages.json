@@ -126,6 +126,12 @@
 			"style": {
 				"navigationBarTitleText": "物资类别"
 			}
+		},
+		{
+			"path": "pages/materialtype/materialtypeInfo",
+			"style": {
+				"navigationBarTitleText": "物资类别"
+			}
 		}
 	],
 	"easycom": {

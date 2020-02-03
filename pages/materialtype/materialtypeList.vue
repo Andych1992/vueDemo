@@ -3,8 +3,8 @@
 	<view>
 		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
 		<uni-list>
-			<block v-for="(item,index) in userList" :key='index'>
-				<uni-list-item :show-arrow="true" :title="item.company.compname+'-'+item.section.section+'-'+item.name" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
+			<block v-for="(item,index) in materialtypeList" :key='index'>
+				<uni-list-item :show-arrow="true" :title="item._ids +'-'+ item.titles" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
 				 @click="operUserInfo(item._id)" />
 			</block>
 		</uni-list>
@@ -26,6 +26,8 @@
 	export default {
 		data() {
 			return {
+				//进入类型
+				operType: 'list',
 				searchKey:'',
 				pageSize:10,
 				page:1,
@@ -48,9 +50,11 @@
 					_self.page = 1;
 				}
 				this.$myCloud
-				.callFunction({
-							name: 'mainuserlistget',
+					.callFunction({
+							name: 'materialtype_oper',
 							data:{
+								operType: _self.operType,
+								dataIn:{},
 								searchKey:_self.searchKey,
 								pageSize:_self.pageSize,
 								page:_self.page
@@ -60,12 +64,11 @@
 							uni.hideLoading()
 							uni.stopPullDownRefresh();
 							console.log(res)
-							if(res.success){
+							if(res.result.success){
 								var list = res.result.data;
-								console.log(list)
-								_self.userList = list;
+								_self.materialtypeList = list;
 							}else{
-								// uni.showModal({ content:"暂无人员信息", showCancel: false})
+								// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
 							}
 							
 						})
@@ -93,14 +96,16 @@
 			operUserInfo(type) {
 				switch (type) {
 					case 'add':
+						//新增
 						uni.navigateTo({
-							url: './mainuserinfo?id=add'
+							url: './materialtypeInfo?id=add'
 						});
 						break;
 					default:
+						//编辑
 						console.log(type);
 						uni.navigateTo({
-							url: './mainuserinfo?id='+type
+							url: './materialtypeInfo?id='+type
 						});
 						break;
 				}
