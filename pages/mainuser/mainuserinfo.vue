@@ -11,23 +11,14 @@
 						<text class="list-item__content-title">头像</text>
 					</view>
 					<view class="list-item__extra">
-						<image :src="imgSrc" class="list-item__img"></image>
+						<image :src="userinfo.photo==''||userinfo.photo=='0'||userinfo.photo=='未设置'?imgSrc:userinfo.photo" class="list-item__img"></image>
 						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 					</view>
 				</view>
 			</view>
-			<uni-list-item :show-arrow="true" title="工号"
-					:rightText="userinfo._ids?userinfo._ids:'暂无设置'"
-					@click="togglePopup('_ids','人员工号',userinfo._ids)"
-					/>
-			<uni-list-item :show-arrow="true" title="名称"
-					:rightText="userinfo.name?userinfo.name:'暂无设置'"
-					@click="togglePopup('name','人员名称',userinfo.name)"
-					/>
-			<uni-list-item :show-arrow="true" title="手机" 
-					:rightText="userinfo.phone?userinfo.phone:'暂无设置'"
-					@click="togglePopup('phone','手机号码',userinfo.phone)" 
-					/>
+			<uni-list-item :show-arrow="true" title="工号" :rightText="userinfo._ids?userinfo._ids:'暂无设置'" @click="togglePopup('_ids','人员工号',userinfo._ids)" />
+			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.name?userinfo.name:'暂无设置'" @click="togglePopup('name','人员名称',userinfo.name)" />
+			<uni-list-item :show-arrow="true" title="手机" :rightText="userinfo.phone?userinfo.phone:'暂无设置'" @click="togglePopup('phone','手机号码',userinfo.phone)" />
 			<view class="list-item" hover-class='list-item--hover'>
 				<picker @change="chooseages" :value="maindex" :range="mages">
 					<view class="list-item__container">
@@ -72,10 +63,7 @@
 					</view>
 				</picker>
 			</view>
-			<uni-list-item :show-arrow="true" title="备注" 
-						:rightText="userinfo.desc?userinfo.desc:'暂无备注信息'"
-						@click="togglePopup('desc','备注信息',userinfo.desc)" 
-						/>
+			<uni-list-item :show-arrow="true" title="备注" :rightText="userinfo.desc?userinfo.desc:'暂无备注信息'" @click="togglePopup('desc','备注信息',userinfo.desc)" />
 
 		</uni-list>
 		<view class="uni-row u-f-ac">
@@ -97,9 +85,9 @@
 		<button class="btn" @click="exitbtn">重置密码</button>
 
 		<view class="button">
-			<view class="b-t" @click='backPage'>
-				<uni-icons class="icon" type="undo" size="26"></uni-icons>
-				<view class="wz">返回</view>
+			<view class="b-t" @click='delPage'>
+				<uni-icons class="icon" type="minus" size="26"></uni-icons>
+				<view class="wz">删除</view>
 			</view>
 			<view class="b-t" @click='savePage'>
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
@@ -138,11 +126,11 @@
 		data() {
 			return {
 				//进入类型
-				operType:'add',
+				operType: 'add',
 				//Popup
-				popupTitle:'',
-				popupColumn:'',
-				popupValue:'',
+				popupTitle: '',
+				popupColumn: '',
+				popupValue: '',
 				//权限
 				qxList: [{
 						value: 'rygl',
@@ -187,7 +175,7 @@
 				deptTypeIndex: 1,
 				userinfo: {
 					_id: "",
-					photo: "未设置",
+					photo: "",
 					_ids: "",
 					name: "",
 					phone: "",
@@ -203,7 +191,7 @@
 			_self = this;
 			var _id = options.id
 			_self.initData(
-				function(){
+				function() {
 					if (_id) {
 						if (_id == 'add') {
 							_self.operType = 'add'
@@ -211,15 +199,15 @@
 								title: "人员管理-新增"
 							})
 							//==单位 部门
-							_self.compTypeIndex=0
+							_self.compTypeIndex = 0
 							_self.userinfo.company = _self.compType[_self.compTypeIndex]
 							_self.deptTypeIndex = 0
 							_self.userinfo.section =
 								_self.deptType.filter(
-								item => item.compid === _self.compType[_self.compTypeIndex]._id
+									item => item.compid === _self.compType[_self.compTypeIndex]._id
 								)[_self.deptTypeIndex]
 							//==
-							
+
 						} else {
 							_self.operType = 'save'
 							uni.setNavigationBarTitle({
@@ -240,58 +228,106 @@
 						// 		url: './mainuser'
 						// 	});
 						// }, 1000);
-					
+
 					}
 				}
 			);
-			
+
 		},
 		methods: {
+			//删除
+			delPage() {
+				uni.showModal({
+					title: '询问',
+					content: '确定删除当前用户吗',
+					showCancel: true,
+					cancelText: '取消',
+					confirmText: '确定',
+					success: res => {
+						_self.$myCloud
+							.callFunction({
+								name: 'mainuser_oper',
+								data: {
+									operType: 'del',
+									dataIn: _self.userinfo
+								}
+							})
+							.then(res => {
+								uni.hideLoading()
+								console.log(res);
+								if (res.result.success) {
+									uni.showToast({
+										title: res.result.msg,
+										duration: 1000
+									});
+									setTimeout(function() {
+										uni.navigateTo({
+											url: './mainuser'
+										});
+									}, 1000);
+
+								} else {
+									uni.showModal({
+										content: res.result.msg,
+										showCancel: false
+									})
+								}
+							})
+							.catch(err => {
+								uni.hideLoading()
+								console.error(err)
+							})
+					},
+				});
+			},
 			//保存
-			savePage(){
+			savePage() {
 				// var obj = _self.userinfo
 				// delete _self.userinfo._id;
 				console.log(_self.userinfo);
 				// return 
 				this.$myCloud
-						.callFunction({
-							name: 'mainuser_oper',
-							data: {
-								operType:_self.operType,
-								dataIn:_self.userinfo
-							}
-						})
-						.then(res => {
-							uni.hideLoading()
-							console.log(res);
-							if (res.result.success) {
-								uni.showToast({
-								    title: res.result.msg,
-								    duration: 1000
+					.callFunction({
+						name: 'mainuser_oper',
+						data: {
+							operType: _self.operType,
+							dataIn: _self.userinfo
+						}
+					})
+					.then(res => {
+						uni.hideLoading()
+						console.log(res);
+						if (res.result.success) {
+							uni.showToast({
+								title: res.result.msg,
+								duration: 1000
+							});
+							setTimeout(function() {
+								uni.navigateTo({
+									url: './mainuser'
 								});
-								setTimeout(function() {
-									uni.navigateTo({
-										url: './mainuser'
-									});
-								}, 1000);
-								
-								// uni.navigateBack({
-								// 	delta: 1
-								// });
-								// uni.switchTab({
-								// 	url: '/pages/mainme/mainme'
-								// });
-							} else {
-								uni.showModal({ content: res.result.msg, showCancel: false})	
-							}
-						})
-						.catch(err => {
-							uni.hideLoading()
-							console.error(err)
-						})
+							}, 1000);
+
+							// uni.navigateBack({
+							// 	delta: 1
+							// });
+							// uni.switchTab({
+							// 	url: '/pages/mainme/mainme'
+							// });
+						} else {
+							uni.showModal({
+								content: res.result.msg,
+								showCancel: false
+							})
+						}
+					})
+					.catch(err => {
+						uni.hideLoading()
+						console.error(err)
+					})
 			},
 			//Popup
-			togglePopup(column,title,value) {
+			togglePopup(column, title, value) {
 				console.log(title)
 				this.popupColumn = column
 				this.popupTitle = title
@@ -303,9 +339,9 @@
 			cancel() {
 				this.$refs['showtip'].close()
 			},
-			enter(){
+			enter() {
 				console.log(this.popupValue);
-				switch (this.popupColumn){
+				switch (this.popupColumn) {
 					case 'desc':
 						this.userinfo.desc = this.popupValue
 						console.log(this.userinfo.desc);
@@ -325,7 +361,7 @@
 			change(e) {
 				console.log('是否打开:' + e.show)
 			},
-			onKeyInput(e){
+			onKeyInput(e) {
 				console.log(e.detail.value)
 			},
 			//年龄选择
@@ -362,7 +398,9 @@
 			},
 			//获取个人资料
 			userInfoGet() {
-				uni.showLoading({title: '加载中...'})
+				uni.showLoading({
+					title: '加载中...'
+				})
 				this.$myCloud
 					.callFunction({
 						name: 'mainuserinfoget',
@@ -376,17 +414,16 @@
 							var info = res.result.data;
 							//==单位 部门
 							_self.compTypeIndex = _self.compType.indexOf(_self.compType.filter((p) => {
-							    return p._id == info[0].company._id;
+								return p._id == info[0].company._id;
 							})[0])
-							if(_self.compTypeIndex<0)
-							{
-								_self.compTypeIndex=0
+							if (_self.compTypeIndex < 0) {
+								_self.compTypeIndex = 0
 							}
 							_self.userinfo.company = _self.compType[_self.compTypeIndex]
 							_self.deptTypeIndex = 0
 							_self.userinfo.section =
 								_self.deptType.filter(
-								item => item.compid === _self.compType[_self.compTypeIndex]._id
+									item => item.compid === _self.compType[_self.compTypeIndex]._id
 								)[_self.deptTypeIndex]
 							//==
 							_self.userinfo = info[0];
@@ -413,7 +450,8 @@
 			//部门
 			chooseDept(e) {
 				_self.deptTypeIndex = e.target.value
-				_self.userinfo.section = _self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)[_self.deptTypeIndex]
+				_self.userinfo.section = _self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)[
+					_self.deptTypeIndex]
 			},
 			//性别
 			chooseSex() {
@@ -427,85 +465,124 @@
 				})
 			},
 			//修改头像
-			chooseImage: async function() {
-				// #ifdef APP-PLUS
-				// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
-				if (this.sourceTypeIndex !== 2) {
-					let status = await this.checkPermission();
-					if (status !== 1) {
-						return;
-					}
-				}
-				// #endif
-				uni.chooseImage({
-					sourceType: sourceType[this.sourceTypeIndex],
-					sizeType: sizeType[this.sizeTypeIndex],
-					count: 1,
-					success: (res) => {
-						this.imgSrc = res.tempFilePaths[0];
-						console.log(this.imgSrc)
-					},
-					fail: (err) => {
-						// #ifdef APP-PLUS
-						if (err['code'] && err.code !== 0 && this.sourceTypeIndex === 2) {
-							this.checkPermission(err.code);
-						}
-						// #endif
-						// #ifdef MP
-						uni.getSetting({
-							success: (res) => {
-								let authStatus = false;
-								switch (this.sourceTypeIndex) {
-									case 0:
-										authStatus = res.authSetting['scope.camera'];
-										break;
-									case 1:
-										authStatus = res.authSetting['scope.album'];
-										break;
-									case 2:
-										authStatus = res.authSetting['scope.album'] && res.authSetting['scope.camera'];
-										break;
-									default:
-										break;
-								}
-								if (!authStatus) {
-									uni.showModal({
-										title: '授权失败',
-										content: 'Hello uni-app需要从您的相机或相册获取图片，请在设置界面打开相关权限',
-										success: (res) => {
-											if (res.confirm) {
-												uni.openSetting()
-											}
-										}
-									})
-								}
+			chooseImage() {
+				new Promise((resolve, reject) => {
+					uni.chooseImage({
+						chooseImage: 1,
+						success: res => {
+							const path = res.tempFilePaths[0]
+							const options = {
+								filePath: path
 							}
-						})
-						// #endif
-					}
-				})
-			},
-			async checkPermission(code) {
-				let type = code ? code - 1 : this.sourceTypeIndex;
-				let status = permision.isIOS ? await permision.requestIOS(sourceType[type][0]) :
-					await permision.requestAndroid(type === 0 ? 'android.permission.CAMERA' :
-						'android.permission.READ_EXTERNAL_STORAGE');
-
-				if (status === null || status === 1) {
-					status = 1;
-				} else {
-					uni.showModal({
-						content: "没有开启权限",
-						confirmText: "设置",
-						success: function(res) {
-							if (res.confirm) {
-								permision.gotoAppSetting();
-							}
+							resolve(options)
+						},
+						fail: () => {
+							reject(new Error('Fail_Cancel'))
 						}
 					})
-				}
-				return status;
+				}).then((options) => {
+					uni.showLoading({
+						title: '文件上传中...'
+					})
+					return this.$myCloud.uploadFile(options)
+				}).then(res => {
+					uni.hideLoading()
+					console.log(res);
+					uni.showModal({
+						content: '头像上传成功',
+						showCancel: false
+					})
+					this.userinfo.photo = res.fileID
+				}).catch((err) => {
+					uni.hideLoading()
+					console.log(err);
+					if (err.message !== 'Fail_Cancel') {
+						uni.showModal({
+							content: `头像上传失败，错误信息为：${err.message}`,
+							showCancel: false
+						})
+					}
+				})
 			}
+			// chooseImage: async function() {
+			// 	// #ifdef APP-PLUS
+			// 	// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
+			// 	if (this.sourceTypeIndex !== 2) {
+			// 		let status = await this.checkPermission();
+			// 		if (status !== 1) {
+			// 			return;
+			// 		}
+			// 	}
+			// 	// #endif
+			// 	uni.chooseImage({
+			// 		sourceType: sourceType[this.sourceTypeIndex],
+			// 		sizeType: sizeType[this.sizeTypeIndex],
+			// 		count: 1,
+			// 		success: (res) => {
+			// 			this.imgSrc = res.tempFilePaths[0];
+			// 			console.log(this.imgSrc)
+			// 		},
+			// 		fail: (err) => {
+			// 			// #ifdef APP-PLUS
+			// 			if (err['code'] && err.code !== 0 && this.sourceTypeIndex === 2) {
+			// 				this.checkPermission(err.code);
+			// 			}
+			// 			// #endif
+			// 			// #ifdef MP
+			// 			uni.getSetting({
+			// 				success: (res) => {
+			// 					let authStatus = false;
+			// 					switch (this.sourceTypeIndex) {
+			// 						case 0:
+			// 							authStatus = res.authSetting['scope.camera'];
+			// 							break;
+			// 						case 1:
+			// 							authStatus = res.authSetting['scope.album'];
+			// 							break;
+			// 						case 2:
+			// 							authStatus = res.authSetting['scope.album'] && res.authSetting['scope.camera'];
+			// 							break;
+			// 						default:
+			// 							break;
+			// 					}
+			// 					if (!authStatus) {
+			// 						uni.showModal({
+			// 							title: '授权失败',
+			// 							content: 'Hello uni-app需要从您的相机或相册获取图片，请在设置界面打开相关权限',
+			// 							success: (res) => {
+			// 								if (res.confirm) {
+			// 									uni.openSetting()
+			// 								}
+			// 							}
+			// 						})
+			// 					}
+			// 				}
+			// 			})
+			// 			// #endif
+			// 		}
+			// 	})
+			// },
+			// async checkPermission(code) {
+			// 	let type = code ? code - 1 : this.sourceTypeIndex;
+			// 	let status = permision.isIOS ? await permision.requestIOS(sourceType[type][0]) :
+			// 		await permision.requestAndroid(type === 0 ? 'android.permission.CAMERA' :
+			// 			'android.permission.READ_EXTERNAL_STORAGE');
+
+			// 	if (status === null || status === 1) {
+			// 		status = 1;
+			// 	} else {
+			// 		uni.showModal({
+			// 			content: "没有开启权限",
+			// 			confirmText: "设置",
+			// 			success: function(res) {
+			// 				if (res.confirm) {
+			// 					permision.gotoAppSetting();
+			// 				}
+			// 			}
+			// 		})
+			// 	}
+			// 	return status;
+			// }
 		}
 	}
 </script>

@@ -94,7 +94,7 @@ exports.main = async (event, context) => {
 				return {
 					success: true,
 					code: 200,
-					msg: '操作成功',
+					msg: '删除成功',
 					data: res.result
 				}
 			}
