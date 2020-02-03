@@ -88,7 +88,7 @@ department
 materialtype
 {
     _id: "", // string，自生成
-    types:"",//物资类型
+    types_id:"",//物资类型 （类似主键 1 2 3 4 5 6）
 	titles:""类型名称
 	indexs:0位置排列
 	

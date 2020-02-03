@@ -61,6 +61,7 @@
 			<view class="footer">
 				<view class="footerIn">
 					<button type="default">返回</button>
+					<button type="default" @click="getList">查询物资类型数据</button>
 					<button type="default" form-type="submit">确认新增</button>
 				</view>
 			</view>
@@ -85,7 +86,7 @@
 				formdata.model_id = "M_ID" + timestamp + Math.floor(Math.random() * 10);
 				formdata.mat_img = "物资图片";
 				formdata.types = "物资类型";
-
+				//第一次入库时间	
 				formdata.mat_regtime = this.$util.getCurrentTime();
 				uni.showLoading({
 					title: '数据存储中...'
@@ -102,6 +103,20 @@
 						uni.hideLoading()
 						console.error(err)
 					})
+			},
+			//获取物资类型
+			getList(){
+			this.$myCloud.callFunction({
+					name: 'materialTypeGet'
+				})
+				.then(res => {
+					uni.hideLoading()
+					console.log(res.result)
+				})
+				.catch(err => {
+					uni.hideLoading()
+					console.error(err)
+				})	
 			}
 
 		}
