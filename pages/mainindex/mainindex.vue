@@ -99,7 +99,9 @@
 			tabClick(type){
 				switch (type){
 					case 'wzrk':
-						console.log('物资入库');
+						uni.navigateTo({
+							url:'../enterMaterials/enterMaterials'
+						})
 						break;
 					case 'wzff':
 						console.log('物资发放');
