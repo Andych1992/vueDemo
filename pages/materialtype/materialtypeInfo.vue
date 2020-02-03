@@ -138,6 +138,16 @@
 			//保存
 			savePage() {
 				console.log(_self.materialtypeInfo)
+				if(!_self.materialtypeInfo.titles)
+				{
+					uni.showModal({
+						title: '警告',
+						content: '请输入类别名称',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
 				this.$myCloud
 					.callFunction({
 						name: 'materialtype_oper',

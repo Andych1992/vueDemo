@@ -124,7 +124,8 @@
 		{
 			"path": "pages/materialtype/materialtypeList",
 			"style": {
-				"navigationBarTitleText": "物资类别"
+				"navigationBarTitleText": "物资类别",
+				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		},
 		{
