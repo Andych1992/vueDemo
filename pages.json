@@ -120,6 +120,12 @@
 			"style": {
 				"navigationBarTitleText": "物资库存"
 			}
+		},
+		{
+			"path": "pages/materialtype/materialtypeList",
+			"style": {
+				"navigationBarTitleText": "物资类别"
+			}
 		}
 	],
 	"easycom": {
