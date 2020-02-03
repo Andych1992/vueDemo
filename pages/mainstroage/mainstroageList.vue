@@ -31,6 +31,14 @@
 							{{item2.specifications}}
 						</view>
 					</view>
+					<view class="group">
+						<view>
+							物资库存：
+						</view>
+						<view>
+							200 盒
+						</view>
+					</view>
 				</view>
 			</view>
 		  </swiper-item>
