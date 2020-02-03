@@ -46,12 +46,6 @@
 			</view>
 		</view>
 	</view>
-	<!-- <view class="footer">
-			<view class="footerIn">
-				<button type="default"  size="mini" @click="goback"><uni-icons type="undo" size="20"></uni-icons>返回</button>
-				<button type="default" size="mini" @click="newadd"><uni-icons type="plus" size="20"></uni-icons>新增物资</button>
-			</view>
-		</view> -->
 </template>
 <script>
 	var _self;
