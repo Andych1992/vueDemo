@@ -100,7 +100,7 @@
 		methods: {
 			toSaveGrant(){
 				uni.navigateTo({
-					url:'../saveGrant/saveGrant'
+					url:'/pages/mainstroage/saveGrant'
 				})
 			},
 			removeMaterials(index){

@@ -99,12 +99,12 @@
 				"navigationBarTitleText": "人员管理-新增"
 			}
 		}, {
-			"path": "pages/addGrant/addGrant",
+			"path": "pages/mainstroage/addGrant",
 			"style": {
 				"navigationBarTitleText": "物资发放"
 			}
 		},  {
-			"path": "pages/saveGrant/saveGrant",
+			"path": "pages/mainstroage/saveGrant",
 			"style": {
 				"navigationBarTitleText": "新增发放物资"
 			}
@@ -127,7 +127,19 @@
 				"navigationBarTitleText": "物资类别"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/enterMaterials/enterMaterials",
+            "style" : {
+				"navigationBarTitleText": "入库管理"
+			}
+        }
+        ,{
+            "path" : "pages/enterMaterials/addEnter",
+            "style" : {
+				"navigationBarTitleText": "新增入库"
+			}
+        }
+    ],
 	"easycom": {
 		"autoscan": true
 	},

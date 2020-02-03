@@ -8,17 +8,17 @@
 				<view v-show="current === 0">
 					<view class="details" v-for="(item, index) in 5" :key="index">
 						<view class="title">
-							<view class="t-biao"><text :style="{color:index%2==0?'#007AFF':'#F76260'}">{{index%2==0?'直接发放 ':'申请发放  '}}</text>
+							<view class="t-biao"><text :style="{color:index%2==0?'#007AFF':'#F76260'}">{{index%2==0?'入库  ':'采购  '}}</text>
 								Z20201990509</view>
 							<view class="t-time">2020-01-30 15:20:34</view>
 						</view>
 						<view class="cont">
 							<view class="t-sum">发放总数 55</view>
-							<view class="t-status" :style="{background:index%2==0?'#F76260':'#007AFF'}">已发</view>
+							<view class="t-status" :style="{background:index%2==0?'#F76260':'#007AFF'}">{{index%2==0?'捐赠':'采购'}}</view>
 						</view>
 						<view class="title">
-							<view class="t-biao">领取单位 郑州妇幼保健院</view>
-							<view class="t-time">领取人 妇产科张红</view>
+							<view class="t-biao">来往单位 郑州妇幼保健院</view>
+							<view class="t-time">经办人 妇产科张红</view>
 						</view>
 					</view>
 				</view>
@@ -49,7 +49,7 @@
 					selectedColor: '#007AFF',
 					buttonColor: '#007AFF'
 				},
-				items: ["全部", "已发放", "已申请", "已驳回"],
+				items: ["全部", "无偿捐赠", "上级下拨", "自行采购"],
 				grant_list: [
 					[],
 					[],
@@ -59,7 +59,7 @@
 				content: [{
 					iconPath: '/static/icon/giveOut.png',
 					selectedIconPath: '/static/icon/giveOut.png',
-					text: '发放',
+					text: '新增',
 					active: false
 				}],
 				current: 0
@@ -73,7 +73,7 @@
 				switch (e.index) {
 					case 0:
 						uni.navigateTo({
-							url: '/pages/mainstroage/addGrant'
+							url: '/pages/enterMaterials/addEnter'
 						})
 						return;
 				}
