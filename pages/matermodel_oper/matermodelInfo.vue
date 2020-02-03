@@ -37,8 +37,8 @@
 			</view>
 			<uni-list-item :show-arrow="true" title="物资名称" :rightText="materModelInfo.mat_title" @click="togglePopup('mat_title','物资名称',materModelInfo.mat_title)" />
 			<uni-list-item :show-arrow="true" title="计数单位" :rightText="materModelInfo.unit" @click="togglePopup('unit','计数单位',materModelInfo.unit)" />
-			<uni-list-item :show-arrow="true" title="规格型号" :rightText="materModelInfo.model" @click="togglePopup('model','计数单位',materModelInfo.model)" />
-			<uni-list-item :show-arrow="true" title="生产厂家" :rightText="materModelInfo.manufacturer" @click="togglePopup('manufacturer','计数单位',materModelInfo.manufacturer)" />
+			<uni-list-item :show-arrow="true" title="规格型号" :rightText="materModelInfo.model" @click="togglePopup('model','规格型号',materModelInfo.model)" />
+			<uni-list-item :show-arrow="true" title="生产厂家" :rightText="materModelInfo.manufacturer" @click="togglePopup('manufacturer','生产厂家',materModelInfo.manufacturer)" />
 			<uni-list-item :show-arrow="true" title="物资条码" :rightText="materModelInfo.bar_code_number" @click="togglePopup('bar_code_number','物资条码',materModelInfo.bar_code_number)" />
 			<uni-list-item :show-arrow="true" title="物资排序" :rightText="materModelInfo.indexs" @click="togglePopup('indexs','物资排序',materModelInfo.indexs)" />
 			<uni-list-item :show-arrow="true" title="物资说明" :rightText="materModelInfo.mat_des" @click="togglePopup('mat_des','物资说明',materModelInfo.mat_des)" />
