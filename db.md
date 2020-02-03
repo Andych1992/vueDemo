@@ -185,6 +185,7 @@ materMain
 	materShowType:'',//string 显示类型 针对入库分三种类型 1001 捐赠 1002 下拨 1003 采购 1004 采退
 								      出库分两种类型 2001 直接发放 2002 申请发放
 	detail_balance:"",//1 入库 -1 出库
+	serialNumber:"入库编号",
 	materOperUer:'',//sting 操作人
 	materOperCom:'',//sting 操作单位
 	materOperDept:'',//sting 操作部门

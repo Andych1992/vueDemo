@@ -22,61 +22,19 @@ exports.main = async (event, context) => {
 		fj_img,
 		create_time,
 		check_time,
-		status
+		status,
+		page,
+		pageSize,
+		searchKey
 	} = dataIn
 	const collection = db.collection('materMain')
 	let res;
+	var serialNumber = 'Z' + Date.parse(new Date());
 	switch (operType) {
 		case 'add':
-			const compInDB = await collection.where({
-				_id: _id
-			}).get()
-			if (compInDB.data.length == 0) {
-				const compDB = await collection.where({
-					section: event.section
-				}).get()
-				if (compDB.data.length == 0) {
-
-					res = await collection.add({
-						materOperType,
-						materShowType,
-						detail_balance,
-						materOperUer,
-						materOperCom,
-						materOperDept,
-						relationUser,
-						relationCom,
-						relationDept,
-						fj_img,
-						create_time,
-						check_time,
-						status
-					});
-					if (res) {
-						return {
-							success: true,
-							code: 200,
-							msg: '添加成功'
-						}
-					} else {
-						return {
-							success: false,
-							code: 500,
-							msg: '添加失败'
-						}
-					}
-
-				} else {
-					return {
-						success: false,
-						code: 500,
-						msg: '添加失败'
-					}
-				}
-
-
-			} else {
-				res = await collection.doc(dataIn._id).update({
+			if (!_id) {
+				res = await collection.add({
+					serialNumber,
 					materOperType,
 					materShowType,
 					detail_balance,
@@ -95,6 +53,35 @@ exports.main = async (event, context) => {
 					return {
 						success: true,
 						code: 200,
+						msg: '添加成功'
+					}
+				} else {
+					return {
+						success: false,
+						code: 500,
+						msg: '添加失败'
+					}
+				}
+			} else {
+				res = await collection.doc(dataIn._id).update({
+					materOperType,
+					materShowType,
+					detail_balance,
+					materOperUer,
+					materOperCom,
+					materOperDept,
+					relationUser,
+					relationCom,
+					relationDept,
+					fj_img,
+					create_time,
+					check_time,
+					status,
+				});
+				if (res) {
+					return {
+						success: true,
+						code: 200,
 						msg: '更新成功'
 					}
 				} else {
@@ -106,20 +93,30 @@ exports.main = async (event, context) => {
 				}
 
 			}
-
 			break;
 		case 'get':
-			if (keystr == '0') {
+			if (searchKey && !materShowType) {
 				res = await collection.where({
 					materOperType: materOperType,
-					materShowType: materShowType,
-					detail_balance: detail_balance,
-				}).limit(20).get()
-			} else {
+					relationDept: new RegExp(searchKey)
+				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+			} else if (!searchKey && materShowType) {
 				res = await collection.where({
-					relationDept: new RegExp(event.keystr)
-				}).get()
-			}
+					materOperType: materOperType,
+					materShowType: materShowType
+				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+			} else if (!searchKey && !materShowType) {
+				res = await collection.where({
+					materOperType: materOperType
+				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+			}  else if (searchKey && materShowType) {
+				res = await collection.where({
+					materOperType: materOperType,
+					relationDept: new RegExp(searchKey),
+					materShowType: materShowType
+				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+			} 
+
 			if (res) {
 				return {
 					success: true,

@@ -1,35 +1,26 @@
 <!-- 这个文件我在做 我是群员(道长 1459347320) -->
 <template>
 	<view>
-		<uni-search-bar placeholder="点击搜索..." @confirm="search"></uni-search-bar>
+		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
 		<view>
 			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="text" active-color="#1296db"></uni-segmented-control>
 			<view class="content">
-				<view v-show="current === 0">
-					<view class="details" v-for="(item, index) in 5" :key="index">
+				<view>
+					<view class="details" v-for="(item, index) in materials[current]" :key="index">
 						<view class="title">
-							<view class="t-biao"><text :style="{color:index%2==0?'#007AFF':'#F76260'}">{{index%2==0?'入库  ':'采购  '}}</text>
-								Z20201990509</view>
-							<view class="t-time">2020-01-30 15:20:34</view>
+							<view class="t-biao"><text :style="{color:item.detail_balance>0?'#007AFF':'#4CD964'}">{{item.detail_balance>0?'入库  ':'退货  '}}</text>
+								{{item.serialNumber}}</view>
+							<view class="t-time">{{item.create_time}}</view>
 						</view>
 						<view class="cont">
-							<view class="t-sum">发放总数 55</view>
+							<view class="t-sum">发放物资数 55</view>
 							<view class="t-status" :style="{background:index%2==0?'#F76260':'#007AFF'}">{{index%2==0?'捐赠':'采购'}}</view>
 						</view>
 						<view class="title">
-							<view class="t-biao">来往单位 郑州妇幼保健院</view>
-							<view class="t-time">经办人 妇产科张红</view>
+							<view class="t-biao">来往单位 {{item.relationCom}}</view>
+							<view class="t-time">联系人 {{item.relationUser}}</view>
 						</view>
 					</view>
-				</view>
-				<view v-show="current === 1">
-					已发放
-				</view>
-				<view v-show="current === 2">
-					已申请
-				</view>
-				<view v-show="current === 3">
-					已驳回
 				</view>
 			</view>
 		</view>
@@ -40,6 +31,7 @@
 </template>
 
 <script>
+		var _self;
 	export default {
 		data() {
 			return {
@@ -49,25 +41,107 @@
 					selectedColor: '#007AFF',
 					buttonColor: '#007AFF'
 				},
-				items: ["全部", "无偿捐赠", "上级下拨", "自行采购"],
-				grant_list: [
-					[],
-					[],
-					[],
-					[]
-				],
+				items: ["全部", "无偿捐赠", "上级下拨", "自行采购","采购退货"],
 				content: [{
 					iconPath: '/static/icon/giveOut.png',
 					selectedIconPath: '/static/icon/giveOut.png',
 					text: '新增',
 					active: false
 				}],
-				current: 0
+				current: 0,
+				//请求类型
+				operType: 'get',
+				//页码
+				page:1,
+				pageSize:10,
+				searchKey:'',
+				materials:[[],[],[],[],[]],
+				//1003代表采购入库1004采购退货
+				materShowTypes:["","1001","1002","1003","1004"],
+				mater:[
+					{},
+					{
+						color:"#007AFF",
+						name:"捐赠"
+					},
+					{
+						color:"#F76260",
+						name:"下拨"
+					},
+					{
+						color:"#007AFF",
+						name:"采购"
+					},
+					{
+						color:"#4CD964",
+						name:"退货"
+					}
+				]
 			}
 		},
+		onLoad() {
+			_self=this;
+			_self.materialListGet(false);
+		},
 		methods: {
-			search() {
-
+			
+			materialListGet(falg){
+				uni.showLoading({
+					title: '加载数据中...'
+				})
+				var dataIn ={
+					searchKey:_self.searchKey,
+					 materOperType:'10',//表示入库
+					 materShowType:_self.materShowTypes[_self.current],
+					 pageSize:_self.pageSize,
+					 page:_self.page
+				}
+				console.log(dataIn);
+				this.$myCloud
+				.callFunction({
+							name: 'mater_main',
+							data:{
+								operType:_self.operType,
+								dataIn:dataIn
+							}
+						})
+						.then(res => {
+							uni.hideLoading()
+							if(res.success){
+								console.log(res);
+								var list = res.result.data.data;
+								
+								if(falg){
+								_self.materials[_self.current].push(...list)
+									console.log(_self.materials);
+								}else{
+									_self.materials[_self.current]=list
+									console.log(_self.materials);
+								}
+							}else{
+								
+							}
+							
+						})
+						.catch(err => {
+							uni.hideLoading()
+							uni.showModal({
+								content: `数据获取失败，错误信息为：${err.message}`,
+								showCancel: false
+							})
+							console.error(err)
+						})		
+			},
+			//搜索
+			search(e) {
+				_self.searchKey = e.value;
+				_self.materialListGet(false);
+				
+			},
+			//取消搜索
+			cancelSearch(){
+				_self.searchKey = '';
+				_self.materialListGet(false);
 			},
 			trigger(e) {
 				switch (e.index) {
@@ -80,6 +154,7 @@
 			},
 			onClickItem(e) {
 				this.current = e.currentIndex
+				_self.materialListGet(false);
 			},
 
 		}

@@ -1,68 +1,57 @@
 <!-- 这个文件我在做 我是群员(道长 1459347320) -->
 <template>
 	<view class="page">
-		<view class="list">
-			<view class="part">
-				<view class="title">经办人</view>
-				<view class="font"><input type="text" placeholder="请输入经办人" /></view>
-			</view>
-			<view class="part">
-				<view class="title">接收单位</view>
-				<view class="font"><input type="text" placeholder="请输入接收单位" /></view>
-			</view>
-			<view class="part">
-				<view class="title">接收部门</view>
-				<view class="font"><input type="text" placeholder="请输入接收部门" /></view>
-			</view>
-			<view class="part">
-				<view class="title">联系人</view>
-				<view class="font"><input type="text" placeholder="请输入联系人" /></view>
-			</view>
-			<view class="part">
-				<view class="title">联系方式</view>
-				<view class="font"><input type="text" placeholder="请输入联系方式" /></view>
-			</view>
-			<view class="part">
-				<view class="title">来往单位</view>
-				<view class="font"><input type="text" placeholder="请输入来往单位" /></view>
-			</view>
-			<view class="part">
-				<view class="title">入库类型</view>
-				<view class="picker">
-					<picker  @change="bindChange" :value="multiIndex" :range="multiArray">
-						<view>{{multiArray[multiIndex]}}</view>
-					</picker>
-				</view>
-				<uni-icons type="arrowright" size="24"></uni-icons>
-			</view>
+		<view class="uni-row u-f-ac">
+			基本信息
 		</view>
-		<view class="proof">
-			<view class="p-title">
-				<view>拍照附件</view>
-				<view>{{imageList.length}}/9</view>
-			</view>
-			<view class="images">
-				<view v-for="(image,index) in imageList" :key="index">
-					<view style="position: relative;">
-						<image class="image" :src="image" :data-src="image" @tap="previewImage"></image>
-						<image class="image-x" src="../../static/icon/remove.png" @click="remove(index)"></image>
+		<uni-list>
+			<uni-list-item :show-arrow="true" title="经办人" :rightText="grant.materOperUer?grant.materOperUer:'暂无设置'" @click="togglePopup('materOperUer','经办人',grant.materOperUer)" />
+			<uni-list-item :show-arrow="true" title="接收单位" :rightText="grant.materOperCom?grant.materOperCom:'暂无设置'" @click="togglePopup('materOperCom','接收单位',grant.materOperCom)" />
+			<uni-list-item :show-arrow="true" title="接收部门" :rightText="grant.materOperDept?grant.materOperDept:'暂无设置'" @click="togglePopup('materOperDept','接收部门',grant.materOperDept)" />
+			<uni-list-item :show-arrow="true" title="联系人" :rightText="grant.relationUser?grant.relationUser:'暂无设置'" @click="togglePopup('relationUser','联系人',grant.relationUser)" />
+			<uni-list-item :show-arrow="true" title="来往单位" :rightText="grant.relationCom?grant.relationCom:'暂无设置'" @click="togglePopup('relationCom','来往单位',grant.relationCom)" />
+			<uni-list-item :show-arrow="true" title="来往部门" :rightText="grant.relationDept?grant.relationDept:'暂无设置'" @click="togglePopup('relationDept','来往部门',grant.relationDept)" />
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker @change="bindChange" :value="multiIndex" :range="multiArray">
+					<view class="list-item__container">
+						<view class="list-item__content">
+							<text class="list-item__content-title">入库类型</text>
+						</view>
+						<view class="list-item__extra">
+							{{multiArray[multiIndex]}}
+							<!-- {{mages[maindex]}} -->
+							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+						</view>
 					</view>
-				</view>
-				<image v-if="imageList.length<9" class="image" src="../../static/icon/save.png" @click="chooseImage"></image>
+				</picker>
 			</view>
-		</view>
+			<uni-list-item :show-arrow="true" title="拍照附件" :rightText="grant.fj_img.length+'/9'" @click="chooseImage" />
+			<view class="proof">
+				<view class="images">
+					<view v-for="(image,index) in grant.fj_img" :key="index">
+						<view style="position: relative;">
+							<image class="image" :src="image" :data-src="image" @tap="previewImage"></image>
+							<image class="image-x" src="../../static/icon/remove.png" @click="remove(index)"></image>
+						</view>
+					</view>
+					<image v-if="grant.fj_img.length<9" class="image" src="../../static/icon/save.png" @click="chooseImage"></image>
+				</view>
+			</view>
+		</uni-list>
+	<view class="uni-row u-f-ac">
+		物资明细
+	</view>
 		<view class="detail">
-			<view class="title">物资明细</view>
 			<view class="d-list">
-				<view v-for="(item,index) in 3">
+				<view v-for="(item,index) in materials">
 					<view class="materials">
-						<image class="img" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1580545258795&di=c8f802b6f0fa8b9d62688cdbf3c585b6&imgtype=0&src=http%3A%2F%2Fimg.99114.com%2Fgroup1%2FM00%2F3A%2FCF%2FwKgGMFctoRuAGZD-AAGcExaGvhY255.jpg"></image>
+						<image class="img" :src="item.mat_img[0]" @click="showImg(item.mat_img)"></image>
 						<view class="name">
-							<view class="n-va">3M医用口罩</view>
-							<view class="n-va">数量 : 15</view>
+							<view class="n-va">{{item.mat_title}}</view>
+							<view class="n-va">数量 : {{item.mat_number}}</view>
 						</view>
 						<view class="remove">
-							 <uni-number-box class="n-btn" :min="0" value="15"></uni-number-box>
+							<uni-number-box class="n-btn" :min="0" :value="item.mat_number" @change="matNumber($event,index)"></uni-number-box>
 							<view class="btn" @click="removeMaterials(index)">删除</view>
 						</view>
 					</view>
@@ -75,15 +64,26 @@
 				<uni-icons class="icon" type="plus" size="26"></uni-icons>
 				<view class="wz">添加</view>
 			</view>
-			<view class="b-t">
+			<view class="b-t" @click="saveOrupdate()">
 				<uni-icons class="icon" type="checkbox" size="26"></uni-icons>
 				<view class="wz">确定</view>
 			</view>
 		</view>
+		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
+			<view class="uni-tip">
+				<text class="uni-tip-title">{{popupTitle}}</text>
+				<input class="uni-input" v-model="popupValue" focus :placeholder="'请输入'+popupTitle" />
+				<view class="uni-tip-group-button">
+					<text class="uni-tip-button" @click="cancel()">取消</text>
+					<text class="uni-tip-button" @click="enter()">确定</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	var _self;
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -97,31 +97,189 @@
 	export default {
 		data() {
 			return {
-				materials_list: [],
-				imageList: [],
-				multiArray: ['捐赠入库', '下拨入库','采购入库','采购退货'],
+				//请求类型
+				operType: 'add',
+				//Popup
+				popupTitle: '',
+				popupColumn: '',
+				popupValue: '',
+				multiArray: ['捐赠入库', '下拨入库', '采购入库', '采购退货'],
 				multiIndex: 0,
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
 				countIndex: 8,
-				count: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+				count: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+				materShowTypes: ['1001', '1002', '1003', '1004'],
+				grant: {
+					materOperType: "10", //表示入库
+					materShowType: '1001',
+					detail_balance: '1',
+					materOperUer: '',
+					materOperCom: '',
+					materOperDept: '',
+					relationUser: '',
+					relationCom: '',
+					relationDept: '',
+					fj_img: [],
+					create_time: "",
+					check_time: "",
+					status: ""
+				},
+				materials:[
+					{
+						_id: "", // string，自生成
+						materMain_id:"", //主表ID
+						detail_balance:"",//1 增加 -1减少
+						materModel_id:"", //物资ID
+						types_id:"", //物资类型关联
+						mat_title:"3M N95口罩",//物资名称
+						mat_img:["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1580545258795&di=c8f802b6f0fa8b9d62688cdbf3c585b6&imgtype=0&src=http%3A%2F%2Fimg.99114.com%2Fgroup1%2FM00%2F3A%2FCF%2FwKgGMFctoRuAGZD-AAGcExaGvhY255.jpg"],//物资图片
+						unit:"",//单位  （计量单位）
+						model:"",//型号（物料规格）
+						manufacturer:"",//生产厂家
+						bar_code_number:"",//物资条码
+						mat_top:"",   //物资排序1，2，3 ，4 升序	
+						mat_number:22,//数量
+						mat_des:"",//物资说明
+					},
+					{
+						_id: "", // string，自生成
+						materMain_id:"", //主表ID
+						detail_balance:"",//1 增加 -1减少
+						materModel_id:"", //物资ID
+						types_id:"", //物资类型关联
+						mat_title:"3M N95口罩",//物资名称
+						mat_img:["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1580545258795&di=c8f802b6f0fa8b9d62688cdbf3c585b6&imgtype=0&src=http%3A%2F%2Fimg.99114.com%2Fgroup1%2FM00%2F3A%2FCF%2FwKgGMFctoRuAGZD-AAGcExaGvhY255.jpg"],//物资图片
+						unit:"",//单位  （计量单位）
+						model:"",//型号（物料规格）
+						manufacturer:"",//生产厂家
+						bar_code_number:"",//物资条码
+						mat_top:"",   //物资排序1，2，3 ，4 升序	
+						mat_number:22,//数量
+						mat_des:"",//物资说明
+					}
+				]
 			}
+			
 		},
+		onLoad(options) {
+			_self = this;
+			var _id = options.id
+			
+			},
 		methods: {
-			toSaveGrant(){
-				uni.navigateTo({
-					url:'../saveGrant/saveGrant'
+			saveOrupdate(){
+				uni.showLoading({
+					title: '数据上传中...'
+				})
+				this.grant.fj_img.forEach((item,index)=>{
+					new Promise((resolve, reject) => {
+						console.log(item);
+						const options = {
+							filePath: item
+						}
+						resolve(options)
+					}).then((options) => {
+						return this.$myCloud.uploadFile(options)
+					}).then(res => {
+						this.grant.fj_img[index]=res.fileID
+					}).catch((err) => {
+						uni.hideLoading()
+						if (err.message !== 'Fail_Cancel') {
+							uni.showModal({
+								content: `图片上传失败，错误信息为：${err.message}`,
+								showCancel: false
+							})
+						}
+						return;
+					})
+				})
+				_self.grant.create_time=new Date().Format("yyyy-MM-dd HH:mm:ss");  
+				this.$myCloud
+					.callFunction({
+						name: 'mater_main',
+						data: {
+							operType: _self.operType,
+							dataIn: _self.grant
+						}
+					})
+					.then(res => {
+						uni.hideLoading()
+						if (res.result.success) {
+							uni.showToast({
+								title: res.msg,
+								duration: 1000
+							});
+							setTimeout(function() {
+								
+							}, 1000)
+							}
+							})
+			},
+			matNumber(event,index){
+				this.materials[index].mat_number=event
+			},
+			showImg(imageList){
+				uni.previewImage({
+					current: 0,
+					urls: imageList
 				})
 			},
-			removeMaterials(index){
+			//Popup
+			togglePopup(column, title, value) {
+				this.popupColumn = column
+				this.popupTitle = title
+				this.popupValue = value
+				this.$nextTick(() => {
+					this.$refs['showtip'].open()
+				})
+			},
+			cancel() {
+				this.$refs['showtip'].close()
+			},
+			enter() {
+				switch (this.popupColumn) {
+					case 'materOperUer':
+						this.grant.materOperUer = this.popupValue
+						break;
+					case 'materOperCom':
+						this.grant.materOperCom = this.popupValue
+						break;
+					case 'materOperDept':
+						this.grant.materOperDept = this.popupValue
+						break;
+					case 'relationUser':
+						this.grant.relationUser = this.popupValue
+						break;
+					case 'relationCom':
+						this.grant.relationCom = this.popupValue
+						break;
+					case 'relationDept':
+						this.grant.relationDept = this.popupValue
+						break;
+				}
+				this.$refs['showtip'].close()
+			},
+			change(e) {
+				console.log('是否打开:' + e.show)
+			},
+			onKeyInput(e) {
+				console.log(e.detail.value)
+			},
+			toSaveGrant() {
+				uni.navigateTo({
+					url: '/pages/mainstroage/saveGrant'
+				})
+			},
+			removeMaterials(index) {
 				uni.showModal({
 					title: '删除物资',
 					content: '确定要删除准备发放的物资吗?',
 					success: (res) => {
 						if (res.confirm) {
-							
+							this.materials.splice(index,1)
 						}
 					}
 				})
@@ -132,11 +290,10 @@
 					content: '确定要取消当前上传的图片吗?',
 					success: (res) => {
 						if (res.confirm) {
-							this.imageList.splice(index, 1)
+							this.grant.fj_img.splice(index, 1)
 						}
 					}
 				})
-
 			},
 			previewImage: function(e) {
 				var current = e.target.dataset.src
@@ -149,15 +306,21 @@
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
-					count: this.imageList.length + this.count[this.countIndex] > 9 ? 9 - this.imageList.length : this.count[this.countIndex],
+					count: this.grant.fj_img.length + this.count[this.countIndex] > 9 ? 9 - this.grant.fj_img.length : this.count[this.countIndex],
 					success: (res) => {
-						this.imageList = this.imageList.concat(res.tempFilePaths);
+						this.grant.fj_img = this.grant.fj_img.concat(res.tempFilePaths);
 					},
 					fail: (err) => {}
 				})
 			},
-			bindChange: function(e) {
+			bindChange(e) {
 				this.multiIndex = e.target.value
+				this.grant.materShowType= this.materShowTypes[this.multiIndex]
+				if(this.materShowTypes[this.multiIndex]=="1004"){
+					this.grant.detail_balance="-1"
+				}else{
+					this.grant.detail_balance="1"
+				}
 			},
 		}
 	}
@@ -165,6 +328,139 @@
 
 <style lang="scss">
 	.page {
+		/* ======基本信息======== */
+		.list-item {
+			font-size: 32rpx;
+			position: relative;
+			flex-direction: column;
+			justify-content: space-between;
+			padding-left: 30rpx;
+		}
+		
+		.list-item--hover {
+			background-color: #f1f1f1;
+		}
+		
+		.list-item__container {
+			position: relative;
+			/* #ifndef APP-NVUE */
+			display: flex;
+			/* #endif */
+			flex-direction: row;
+			padding: 24rpx 30rpx;
+			padding-left: 0;
+			flex: 1;
+			position: relative;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		.list-item--bottom {
+			/* #ifdef APP-PLUS || H5*/
+			border-bottom-color: #e5e5e5;
+			border-bottom-style: solid;
+			border-bottom-width: 0.5px;
+			/* #endif */
+		}
+		
+		/* #ifndef APP-NVUE */
+		.list-item__container:after {
+			position: absolute;
+			top: 0;
+			right: 0;
+			left: 0;
+			height: 1px;
+			content: '';
+			-webkit-transform: scaleY(.5);
+			transform: scaleY(.5);
+			background-color: #e5e5e5;
+		}
+		
+		.list-item--bottom:after {
+			height: 0px;
+		}
+		
+		/* #endif */
+		.list-item__content {
+			/* #ifndef APP-NVUE */
+			display: flex;
+			/* #endif */
+			flex: 1;
+			overflow: hidden;
+			flex-direction: column;
+			color: #3b4144;
+		
+		}
+		
+		.list-item__content-title {
+			font-size: 28rpx;
+			color: #3b4144;
+			overflow: hidden;
+		}
+		
+		.list-item__extra {
+			/* width: 25%;*/
+			/* #ifndef APP-NVUE */
+			display: flex;
+			/* #endif */
+			flex-direction: row;
+			justify-content: flex-end;
+			align-items: center;
+		}
+		
+		.list-item__img {
+			width: 130upx;
+			height: 130upx;
+			border-radius: 50%;
+		}
+		.uni-row {
+			border-bottom: #BEBEBE solid 1rpx;
+			height: 80rpx;
+			padding: 10rpx;
+			background-color: #E5E5E5;
+		}
+		//Popup	/* 提示窗口 */
+		.uni-tip {
+			/* #ifndef APP-NVUE */
+			display: flex;
+			flex-direction: column;
+			/* #endif */
+			padding: 15px;
+			width: 300px;
+			background-color: #fff;
+			border-radius: 10px;
+		}
+		
+		.uni-tip-title {
+			margin-bottom: 10px;
+			text-align: center;
+			font-weight: bold;
+			font-size: 16px;
+			color: #333;
+		}
+		
+		.uni-tip-content {
+			/* padding: 15px;
+		*/
+			font-size: 14px;
+			color: #666;
+		}
+		
+		.uni-tip-group-button {
+			/* #ifndef APP-NVUE */
+			display: flex;
+			/* #endif */
+			flex-direction: row;
+			margin-top: 20px;
+		}
+		
+		.uni-tip-button {
+			flex: 1;
+			text-align: center;
+			font-size: 14px;
+			color: #3b4144;
+		}
+		
 		.list {
 			.part {
 				display: flex;
@@ -191,15 +487,6 @@
 
 		.proof {
 			border-bottom: 1rpx solid #BEBEBE;
-
-			.p-title {
-				padding: 3vw 3vw 1vw 3vw;
-				display: flex;
-				flex-wrap: nowrap;
-				justify-content: space-between;
-				font-size: 4vw;
-			}
-
 			.images {
 				padding: 2vw 0vw;
 				display: flex;
@@ -225,16 +512,9 @@
 		}
 
 		.detail {
-
-			.title {
-				padding: 3vw;
-				font-size: 4vw;
-				width: 20vw;
-			}
-
 			.d-list {
 				.materials {
-					margin: 2vw 0vw 0vw 3vw;
+					margin: 3vw 0vw 0vw 3vw;
 					width: 94vw;
 					height: 17vw;
 					border-radius: 1vw;
@@ -262,11 +542,13 @@
 						display: flex;
 						justify-content: space-between;
 						width: 49vw;
-						.n-btn{
-							width:20vw ;
+
+						.n-btn {
+							width: 20vw;
 							height: 6vw;
 							margin-top: 4vw;
 						}
+
 						.btn {
 							margin-right: 3.5vw;
 							margin-top: 3.5vw;
