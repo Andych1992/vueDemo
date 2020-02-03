@@ -488,10 +488,14 @@
 				}).then(res => {
 					uni.hideLoading()
 					console.log(res);
-					uni.showModal({
-						content: '头像上传成功',
-						showCancel: false
-					})
+					uni.showToast({
+						title: '头像上传成功',
+						icon:'none'
+					});
+					// uni.showModal({
+					// 	content: '头像上传成功',
+					// 	showCancel: false
+					// })
 					this.userinfo.photo = res.fileID
 				}).catch((err) => {
 					uni.hideLoading()

@@ -118,13 +118,13 @@
 					case 'wzzl':
 						console.log('物资资料');
 						uni.navigateTo({
-							url: '../materiaInformation/materiaInformation'
+							url: '../matermodel_oper/matermodelList'
 						});
 						break;
 					case 'wzlb':
 						console.log('物资类别');
 						uni.navigateTo({
-							url: '../materialtype/materialtypeList'
+							url: '../materialtype_oper/materialtypeList'
 						});
 						break;
 					case 'dwzz':

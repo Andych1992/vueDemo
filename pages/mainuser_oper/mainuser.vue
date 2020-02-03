@@ -98,7 +98,7 @@
 			//搜索
 			search(e) {
 				_self.searchKey = e.value;
-				_self.userListGet(false);
+				_self.userListGet(true);
 				
 			},
 			//取消搜索

@@ -91,7 +91,7 @@ export default {
 				case 'rygl':
 					// console.log('人员管理')
 					uni.navigateTo({
-						url: '../mainuser/mainuser'
+						url: '../mainuser_oper/mainuser'
 					})
 					break
 				case 'dwgl':

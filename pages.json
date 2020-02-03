@@ -80,21 +80,15 @@
 			"style": {
 				"navigationBarTitleText": "接口测试界面"
 			}
-		},
-		{
-			"path": "pages/addMaterial/addMaterial",
-			"style": {
-				"navigationBarTitleText": "物资资料-增加"
-			}
 		}
 	    ,{
-            "path" : "pages/mainuser/mainuser",
+            "path" : "pages/mainuser_oper/mainuser",
             "style" : {
 				"navigationBarTitleText": "人员管理",
 				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		}, {
-			"path": "pages/mainuser/mainuserinfo",
+			"path": "pages/mainuser_oper/mainuserinfo",
 			"style": {
 				"navigationBarTitleText": "人员管理-新增"
 			}
@@ -110,9 +104,15 @@
 			}
 		},
 		{
-			"path": "pages/materiaInformation/materiaInformation",
+			"path": "pages/matermodel_oper/matermodelList",
 			"style": {
 				"navigationBarTitleText": "物资资料"
+			}
+		},
+		{
+			"path": "pages/matermodel_oper/matermodelInfo",
+			"style": {
+				"navigationBarTitleText": "物资资料-增加"
 			}
 		},
 		{
@@ -122,14 +122,14 @@
 			}
 		},
 		{
-			"path": "pages/materialtype/materialtypeList",
+			"path": "pages/materialtype_oper/materialtypeList",
 			"style": {
 				"navigationBarTitleText": "物资类别",
 				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		},
 		{
-			"path": "pages/materialtype/materialtypeInfo",
+			"path": "pages/materialtype_oper/materialtypeInfo",
 			"style": {
 				"navigationBarTitleText": "物资类别"
 			}

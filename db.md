@@ -88,11 +88,12 @@ department
 materialtype
 {
     _id: "", // string，自生成
-    types_id:"",//物资类型 （类似主键 1 2 3 4 5 6）
+	_ids:"", //string 类别编号 1001 1002
 	titles:""类型名称
 	indexs:0位置排列
 	
 }
+作废    types_id:"",//物资类型 （类似主键 1 2 3 4 5 6）
 ```
 
 #### 物资资料
@@ -100,15 +101,16 @@ materialtype
 materModel
 {
     _id: "", // string，自生成
-	model_id:""唯一标识
-    types_id:"",//物资类型关联
+	_ids:"", //string 物资编号
+	materType:"",物资类型Json
+    types_id:"",//物资类型ID materialtype 里的_id
 	mat_title:"",//物资名称
 	mat_img:"",物资图片
 	unit:"",//单位  （计量单位）
 	model:"",//型号（物料规格）
 	manufacturer:"",//生产厂家
 	bar_code_number:"",//物资条码
-	mat_top:"",   //物资排序1，2，3 ，4 升序	
+	indexs:"",   //物资排序1，2，3 ，4 升序	
 	mat_number:"",库存数量
 	mat_des:"",物资说明
 	mat_regtime:""第一次入库时间
@@ -116,6 +118,8 @@ materModel
 	
 	
 }
+
+	暂时作废model_id:""唯一标识
 ```
 #### 物资状态表
 ```
