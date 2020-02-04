@@ -99,39 +99,27 @@
 			tabClick(type){
 				switch (type){
 					case 'wzrk':
-						uni.navigateTo({
-							url:'../enterMaterials/enterMaterials'
-						})
+						this.$util.navigateTo('wzrk','../enterMaterials/enterMaterials')
 						break;
 					case 'wzff':
 						console.log('物资发放');
-						uni.switchTab({
-							url:'../mainstroage/mainstroage'
-						});
+						this.$util.navigateTo('wzff','../mainstroage/mainstroage')
 						break;
 					case 'wzkc':
 						console.log('物资库存');
-						uni.navigateTo({
-							url: '../mainstroage/mainstroageList'
-						});
+						this.$util.navigateTo('wzkc','../mainstroage/mainstroageList')
 						break;
 					case 'wzzl':
 						console.log('物资资料');
-						uni.navigateTo({
-							url: '../matermodel_oper/matermodelList'
-						});
+						this.$util.navigateTo('wzzl','../matermodel_oper/matermodelList')
 						break;
 					case 'wzlb':
 						console.log('物资类别');
-						uni.navigateTo({
-							url: '../materialtype_oper/materialtypeList'
-						});
+						this.$util.navigateTo('wzlb','../materialtype_oper/materialtypeList')
 						break;
 					case 'dwzz':
 						console.log('单位组织');
-						uni.navigateTo({
-							url: '../mecompany_oper/mecompanyList'
-						});
+						this.$util.navigateTo('dwgl','../mecompany_oper/mecompanyList')
 						break;
 				}
 			}			

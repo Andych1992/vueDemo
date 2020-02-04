@@ -22,7 +22,36 @@ export default {
 	 * @name 页面跳转
 	 * @param {Object} url 跳转的地址
 	 */
-	navigateTo(url) {
+	navigateTo(ppower,url) {
+		//权限判断
+		var userinfodata = JSON.parse(uni.getStorageSync('userinfodata'))
+		if(userinfodata.permission == 9)
+		{
+			uni.navigateTo({
+				url: url,
+				success: res => {},
+				fail: () => {},
+				complete: () => {}
+			});
+		}
+		console.log(ppower)
+		if(!userinfodata.power || userinfodata.power == '0')
+		{
+			uni.showToast({
+				title: '暂无权限'
+			});
+			return 
+		}
+		var powerIndex = userinfodata.power.indexOf(userinfodata.power.filter((p) => {
+			return p.value == ppower && p.checked == true;
+			})[0]);
+		if(!powerIndex || powerIndex < 1)
+		{
+			uni.showToast({
+				title: '暂无权限'
+			});
+			return 
+		}
 		uni.navigateTo({
 			url: url,
 			success: res => {},

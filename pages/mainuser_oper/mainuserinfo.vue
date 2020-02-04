@@ -72,9 +72,9 @@
 				权限信息
 			</view>
 			<view class="qxitem">
-				<checkbox-group>
+				<checkbox-group @change="checkboxChange">
 					<view class="container">
-						<block v-for="(item,index) in qxList" :key='index'>
+						<block v-for="item in qxList" :key="item.value">
 							<view class="item">
 								<label class="item-content">
 									<checkbox :value="item.value" :checked="item.checked" />{{item.title}}
@@ -134,20 +134,21 @@
 				popupColumn: '',
 				popupValue: '',
 				//权限
-				qxList: [{
-						value: 'rygl',
-						checked: true,
-						title: '人员管理'
+				qxList: [
+					{
+						value: 'wzrk',
+						checked: false,
+						title: '物资入库'
 					},
 					{
-						value: 'bmgl',
+						value: 'wzff',
 						checked: false,
-						title: '部门管理'
+						title: '物资发放'
 					},
 					{
-						value: 'dwgl',
+						value: 'wzkc',
 						checked: false,
-						title: '单位管理'
+						title: '物资库存'
 					},
 					{
 						value: 'wzzl',
@@ -159,6 +160,21 @@
 						checked: false,
 						title: '物资类别'
 					},
+					{
+						value: 'dwgl',
+						checked: false,
+						title: '单位管理'
+					},
+					{
+						value: 'bmgl',
+						checked: false,
+						title: '部门管理'
+					},
+					{
+						value: 'rygl',
+						checked: false,
+						title: '人员管理'
+					}
 				],
 				//头像
 				imgSrc: '../../static/logo.png',
@@ -185,7 +201,8 @@
 					sex: '',
 					company: '',
 					section: '',
-					desc: ''
+					desc: '',
+					power:''
 				},
 			}
 		},
@@ -247,6 +264,19 @@
 
 		},
 		methods: {
+			//权限
+			checkboxChange: function (e) {
+				var items = _self.qxList,
+					values = e.detail.value;
+				for (var i = 0, lenI = items.length; i < lenI; ++i) {
+					const item = items[i]
+					if(values.indexOf(item.value) >= 0){
+						this.$set(item,'checked',true)
+					}else{
+						this.$set(item,'checked',false)
+					}
+				}
+			},
 			//自动生成最大编号
 			getMaxCode(fun) {
 				_self.$request({
@@ -340,6 +370,7 @@
 					delete _self.userinfo[phone]
 					console.log(_self.userinfo);
 				}
+				_self.userinfo.power = _self.qxList;
 				// return 
 				this.$myCloud
 					.callFunction({
@@ -489,8 +520,26 @@
 								_self.deptType.filter(
 									item => item.compid === _self.compType[_self.compTypeIndex]._id
 								)[_self.deptTypeIndex]
-							//==
+							//==权限
 							_self.userinfo = info[0];
+							if(_self.userinfo.power && _self.userinfo.power != '0')
+							{
+								let power = _self.userinfo.power
+								console.log(power)
+								_self.qxList.forEach((currentValue, index, arr)=>{
+									let findIndex = power.indexOf(power.filter((p)=>{
+										return p.value === arr[index].value
+									})[0]);
+									if(findIndex && findIndex > 0)
+									{
+										arr[index].checked = power[findIndex].checked
+									}
+									else{
+										arr[index].checked = false
+									}
+								})
+								// _self.qxList.e = _self.userinfo.power;
+							}
 							_self.maindex = parseInt(_self.userinfo.age)
 							console.log(_self.userinfo)
 						} else {

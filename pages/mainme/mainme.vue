@@ -52,72 +52,94 @@ export default {
 		...mapMutations(['USER_LOGIN_OUT','UPDATE_USER_INFO']),
 		loadlistinit() {
 			// console.log(userdata)
-			if (userdata.permission == '9') {
-				//超级管理员 userdata.types == '6' || 
-				var listdata = [
+			_self.getuserinfo(()=>{
+					var listdata = [
+						{
+							type: 'rygl',
+							title: '人员管理',
+							img: '../../static/icon/rygl.png'
+						},
+						{
+							type: 'dwgl',
+							title: '单位管理',
+							img: '../../static/icon/dwgl.png'
+						},
+						{
+							type: 'bmgl',
+							title: '部门管理',
+							img: '../../static/icon/dwgl.png'
+						},
+						{
+							type: 'grzl',
+							title: '个人资料',
+							img: '../../static/icon/gwzl.png'
+						}
+					]
+					if (userdata.permission == '9') {
+						//超级管理员
+						_self.listinfo = listdata
+					} else if (userdata.permission == '0')//普通状态 
 					{
-						type: 'rygl',
-						title: '人员管理',
-						img: '../../static/icon/rygl.png'
-					},
-					{
-						type: 'dwgl',
-						title: '单位管理',
-						img: '../../static/icon/dwgl.png'
-					},
-					{
-						type: 'bmgl',
-						title: '部门管理',
-						img: '../../static/icon/dwgl.png'
-					},
-					{
-						type: 'grzl',
-						title: '个人资料',
-						img: '../../static/icon/gwzl.png'
+						var userinfodata = JSON.parse(uni.getStorageSync('userinfodata'))
+						if(!userinfodata.power || userinfodata.power == '0')
+						{
+							listdata = [
+								{
+									type: 'grzl',
+									title: '个人资料',
+									img: '../../static/icon/gwzl.png'
+								}
+							]
+						}else{
+							let power = userinfodata.power
+							// for(var i=0;i<listdata.length;i++){
+							// 	let findIndex = power.indexOf(power.filter((p)=>{
+							// 		return p.value == listdata[i].type;
+							// 	})[0]);
+							// 	//&& p.checked === false
+							// 	console.log(findIndex)
+							// 	if(findIndex && findIndex > 0 && !power[findIndex].checked)
+							// 	{
+							// 　　　　listdata.splice(i,1)
+							// 　　 } 
+							// } 
+							listdata.forEach((currentValue, index, arr)=>{
+								let findIndex = power.indexOf(power.filter((p)=>{
+									return p.value === arr[index].type;
+								})[0]);
+								if(findIndex && findIndex > 0 && !power[findIndex].checked)
+								{
+									listdata.splice(index,1)
+								}
+							});
+						}
+						_self.listinfo = listdata
+					} else {
+						//可能未登陆
+						uni.showModal({
+							content: '未登陆',
+							showCancel: false
+						})
+						uni.navigateTo({
+							url: '../login/login'
+						});
+						return 
 					}
-				]
-				_self.listinfo = listdata
-			} else if (userdata.permission == '0') {
-				//普通状态
-				var listdata = [
-					{
-						type: 'grzl',
-						title: '个人资料',
-						img: '../../static/icon/gwzl.png'
-					}
-				]
-				_self.listinfo = listdata
-			} else {
-				//可能未登陆
-				uni.showModal({
-					content: '未登陆',
-					showCancel: false
-				})
-				uni.navigateTo({
-					url: '../login/login'
-				});
-				return 
-			}
-			_self.getuserinfo()
+				}
+			)
 		},
 
 		clicklist(type) {
 			switch (type) {
 				case 'rygl':
 					// console.log('人员管理')
-					uni.navigateTo({
-						url: '../mainuser_oper/mainuserList'
-					})
+					this.$util.navigateTo('rygl','../mainuser_oper/mainuserList')
 					break
 				case 'dwgl':
-					uni.navigateTo({
-						url: '/pages/mecompany_oper/mecompanyList'
-					})
+					this.$util.navigateTo('dwgl','/pages/mecompany_oper/mecompanyList')
 					break
 				case 'bmgl':
-					uni.navigateTo({
-						url: '/pages/medepartment_oper/medepartmentList'
-					})
+					this.$util.navigateTo('bmgl','/pages/medepartment_oper/medepartmentList')
 					break
 				case 'grzl':
 					console.log('个人资料')
@@ -127,7 +149,7 @@ export default {
 					break
 			}
 		},
-		getuserinfo() {
+		getuserinfo(fun) {
 			console.log(JSON.stringify(userdata))
 			uni.showLoading({
 				title: '加载中...'
@@ -176,14 +198,17 @@ export default {
 						// 	section: datas.section
 						// }
 						// // _self.UPDATE_USER_INFO(_self.userinfo);
-						uni.setStorageSync('userinfodata', JSON.stringify(datas))
+						uni.setStorageSync('userinfodata', JSON.stringify(datas));
+						fun();
 					} else {
+						fun();
 					}
 				})
 				.catch(err => {
 					uni.hideLoading()
 					uni.stopPullDownRefresh();
 					console.error(err)
+					fun();
 				})
 		},
 		//注销登陆

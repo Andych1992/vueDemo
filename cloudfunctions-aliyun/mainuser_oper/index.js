@@ -123,7 +123,7 @@ exports.main = async (event, context) => {
 				create_time: '',
 				wx_open_id: '0',
 				id_card: '0',
-				power: '0'			
+				power
 			})
 			if (res.id || res.affectedDocs === 1) {
 				return {
@@ -181,7 +181,8 @@ exports.main = async (event, context) => {
 				sex,
 				company,
 				section,
-				desc
+				desc,
+				power
 			});
 			if (res.id || res.affectedDocs === 1) {
 				return {
