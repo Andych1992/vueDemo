@@ -1,60 +1,91 @@
-<!-- 这个文件我在做 我是群员(常州-_陈默 565036413) -->
+<!-- 人员管理-新增这个文件我在做 我是群员(常州-_陈默 565036413) -->
 <template>
 	<view>
-		
-		
 		<view class="uni-row u-f-ac">
 			基本信息
 		</view>
-		<view class="list-item" hover-class='list-item--hover' @click="chooseImage">
-			<view class="list-item__container">
-				<view class="list-item__content">
-					<text class="list-item__content-title">头像</text>
-				</view>
-				<view class="list-item__extra">
-					<image :src="imgSrc" class="list-item__img"></image>
-					<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
-				</view>
-			</view>
-		</view>
 		<uni-list>
-			<uni-list-item :show-arrow="true" title="工号" :rightText="userinfo._ids" />
-			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.sname" @click="editinfo('sname')" />
-			<uni-list-item :show-arrow="true" title="身份证号" :rightText="userinfo.cards" @click="editinfo('card')" />
-			<uni-list-item :show-arrow="true" title="手机" :rightText="userinfo.phones" @click="editinfo('phone')"/>
-			
-			<view class="listitem">
-				    <view class="listitemt">年龄</view>
-					<view class="listitemd">
-						<uni-icons type="arrowright" style="color: #AAAAAA;" size="18"></uni-icons>
-						</view>
-					<view class="listditmc"> 
-					<picker  @change="chooseages" :value="maindex" :range="mages">
-					    <view class="uni-input">{{mages[maindex]}}</view>
-					</picker>
+			<view class="list-item" hover-class='list-item--hover' @click="chooseImage">
+				<view class="list-item__container list-item--bottom">
+					<view class="list-item__content">
+						<text class="list-item__content-title">头像</text>
 					</view>
-					
-			<view style="clear: both;"></view>
+					<view class="list-item__extra">
+						<image :src="userinfo.photo==''||userinfo.photo=='0'||userinfo.photo=='未设置'?imgSrc:userinfo.photo" class="list-item__img"></image>
+						<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+					</view>
+				</view>
 			</view>
-			
-			
+			<!-- @click="togglePopup('_ids','人员工号',userinfo._ids)"  -->
+			<uni-list-item :show-arrow="true" title="工号" :rightText="userinfo._ids?userinfo._ids:'自动生成'"/>
+			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.sname?userinfo.sname:'暂无设置'" @click="togglePopup('sname','人员名称',userinfo.sname)" />
+			<uni-list-item :show-arrow="true" title="手机" :rightText="userinfo.phone?userinfo.phone:'暂无设置'" @click="togglePopup('phone','手机号码',userinfo.phone)" />
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker @change="chooseages" :value="maindex" :range="mages">
+					<view class="list-item__container">
+						<view class="list-item__content">
+							<text class="list-item__content-title">年龄</text>
+						</view>
+						<view class="list-item__extra">
+							<text class="list-item__extra-text">{{userinfo.age}}</text>
+							<!-- {{mages[maindex]}} -->
+							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+						</view>
+					</view>
+				</picker>
+			</view>
 			<uni-list-item :show-arrow="true" title="性别" :rightText="userinfo.sex" @click="chooseSex" />
-			<uni-list-item :show-arrow="true" title="单位" :rightText="userinfo.comp" @click="chooseComp"/>
-			<uni-list-item :show-arrow="true" title="部门" :rightText="userinfo.dept" @click="chooseDept"/>
-			<uni-list-item :show-arrow="true" title="备注" :rightText="userinfo.desc" @click="editinfo('desc')" />
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker @change="chooseComp" :value="compTypeIndex" :range="compType" range-key="compname">
+					<view class="list-item__container">
+						<view class="list-item__content">
+							<text class="list-item__content-title">单位</text>
+						</view>
+						<view class="list-item__extra">
+							<!-- {{compType[compTypeIndex].compname}} -->
+							<text class="list-item__extra-text">{{userinfo.company.compname}}</text>
+							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+						</view>
+					</view>
+				</picker>
+			</view>
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker @change="chooseDept" :value="deptTypeIndex" :range="deptType.filter(item=>item.compid===compType[compTypeIndex]._id)"
+				 range-key="section">
+					<view class="list-item__container">
+						<view class="list-item__content">
+							<text class="list-item__content-title">部门</text>
+						</view>
+						<view class="list-item__extra">
+							<!-- {{deptType.filter(item=>item.compid===compType[compTypeIndex]._id)[deptTypeIndex].section}} -->
+							<text class="list-item__extra-text">{{userinfo.section.section}}</text>
+							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+						</view>
+					</view>
+				</picker>
+			</view>
+			<uni-list-item :show-arrow="true" title="备注" :rightText="userinfo.desc?userinfo.desc:'暂无备注信息'" @click="togglePopup('desc','备注信息',userinfo.desc)" />
+
 		</uni-list>
-
-	<view  style="padding: 10rpx;height: 100rpx;border: none;margin-top: 20rpx;">
-		<button @click="seveinfobtn"  type="primary">保存</button>
-	</view>
-	
-
+		
+		<button class="btn" @click="savePage" type="primary">保存</button>
+		<!-- 弹窗 @input="onKeyInput" -->
+		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
+			<view class="uni-tip">
+				<text class="uni-tip-title">{{popupTitle}}</text>
+				<input class="uni-input" v-model="popupValue" focus :placeholder="'请输入'+popupTitle" />
+				<view class="uni-tip-group-button">
+					<text class="uni-tip-button" @click="cancel()">取消</text>
+					<text class="uni-tip-button" @click="enter()">确定</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	var _self;
 	import permision from "@/common/permission.js"
-	var _self,userdata;
 	var sourceType = [
 		['camera'],
 		['album'],
@@ -66,244 +97,272 @@
 		['compressed', 'original']
 	]
 	export default {
-		data(){
+		data() {
 			return {
+				//进入类型
+				operType: 'get',
+				//Popup
+				popupTitle: '',
+				popupColumn: '',
+				popupValue: '',
+				
+				
 				//头像
-				imgSrc:'../../static/logo.png',
+				imgSrc: '../../static/logo.png',
 				sourceTypeIndex: 2,
 				sourceType: ['拍照', '相册', '拍照或相册'],
 				sizeTypeIndex: 2,
 				sizeType: ['压缩', '原图', '压缩或原图'],
-				mcompid:"0",isbm:false,
-				mpgto:"0",
+				//年龄
+				mages: [...Array(100).keys()],
+				maindex: 28,
 				//个人资料
-				sexType:['男', '女'],
-				deptType:['妇产科','儿保科'],
-				compType:['xxx医院','xxx二院'],
-				mages:[],
-				maindex:18,
-				userinfo:{
-					_id:"1001",
-					_ids:"1001",
-					sname:"未设置",
-					card:"0",
-					cards:"0",
-					age:"18",
-					phone:"未设置",
-					phones:"未设置",
-					desc:"暂无备注信息",
-					sex:'男',
-					dept:'请选择部门',
-					sectionid:'0',
-					comp:'请选择单位',
-					compid:'0'
-				}
+				sexType: ['男', '女'],
+				compType: ['xxx医院', 'xxx二院'],
+				compTypeIndex: 1,
+				deptType: ['妇产科', '儿保科'],
+				deptTypeIndex: 1,
+				userinfo: {
+					_id: "",
+					_ids: "",
+					photo: "",
+					sname: "",
+					phone: "",
+					age: "",
+					sex: '',
+					company: '',
+					section: '',
+					desc: ''
+				},
 			}
 		},
 		onLoad() {
 			_self = this;
-			_self.ageinit();
-			userdata = JSON.parse(uni.getStorageSync("userinfodata"));
-			_self.getuserinfodata();
-				
-		},
-		onShow() {
-			
-		var pgcom = uni.getStorageSync('pgcom');
-		if(pgcom == "cpget"){
-			var mcompdataget = JSON.parse(uni.getStorageSync('compdata'));
-			uni.setStorageSync('pgcom', "0");
-			_self.userinfo.comp = mcompdataget.compname;
-			_self.mcompid = mcompdataget._id;
-			_self.userinfo.compid = mcompdataget._id;
-			console.log("这是选择公司回来的" + _self.mcompid);
-			_self.getbm();
-		}else if(pgcom =="infoed"){
-			var meditext = uni.getStorageSync('editext');
-			uni.setStorageSync('pgcom', "0");
-			switch (_self.mpgto) {
-				case 'sname':
-					//姓名
-					_self.userinfo.sname = meditext;
-					break;
-				case 'card':
-					//姓名
-					var uid =  meditext;
-						uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
-					_self.userinfo.cards = uid;
-					_self.userinfo.card = meditext;
-					break;
-				case 'phone':
-					//电话
-					_self.userinfo.phone = meditext;
-					var mext = meditext.substring(0,4) + "******" + meditext.substring(meditext.length - 4,meditext.length);
-					
-					_self.userinfo.phones = mext;
-					break;
-				case 'desc':
-					//备注
-					_self.userinfo.desc = meditext;
-					break;
-			}
-			
-		}
-		
-		
+			var userdata = JSON.parse(uni.getStorageSync("userinfodata"));
+			var _id = userdata._id
+			_self.initData(
+				function() {
+					if (_id) {
+						_self.operType = 'get'
+						uni.setNavigationBarTitle({
+							title: "个人资料"
+						})
+						_self.userinfo._id = _id;
+						//获取个人资料
+						_self.userInfoGet();
+					} else {
+						uni.showToast({
+							title: '未获取到用户信息',
+							icon: 'none',
+							duration: 1000
+						});
+						// setTimeout(function() {
+						// 	uni.navigateTo({
+						// 		url: './mainuser'
+						// 	});
+						// }, 1000);
+
+					}
+				}
+			);
+
 		},
 		methods: {
-			//初始化数据
-			getuserinfodata(){
-				var uid = userdata._id;
-					
-				uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
-				_self.userinfo._id = userdata._id;
-				_self.userinfo._ids = uid;
-				
-				uid =  userdata.id_card;
-				uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
-				_self.userinfo.cards = uid;
-				_self.userinfo.card = userdata.id_card;
-				
-				
-				
-				_self.userinfo.sname = userdata.sname;
-				_self.userinfo.age = userdata.age;
-				_self.maindex = userdata.age;
-				
-				uid =  userdata.phone;
-				uid = uid.substring(0,6) + "******" + uid.substring(uid.length - 6,uid.length);
-				
-				_self.userinfo.phone = userdata.phone;
-				_self.userinfo.phones = uid;
-				
-				_self.userinfo.desc = userdata.desc;
-				_self.userinfo.sex = userdata.sex;
-				_self.userinfo.dept = userdata.section;
-				_self.userinfo.sectionid = userdata.sectionid;
-				_self.userinfo.comp = userdata.company;
-				_self.userinfo.compid = userdata.compid;
-				_self.imgSrc = userdata.photo;
-				
-		
-			},
-			ageinit(){
-				var mage = Array();
-				for(var i=0;i<160;i++){
-					mage.push(i);
-				}
-				_self.mages = mage;
-			},
-			//设置单位
-			
-		
-			getbm(){
-				//console.log("获取部门" + _self.mcompid);
-				_self.isbm = false;
-				this.$myCloud.callFunction({
-						name: 'mebmtabget',
-						data:{keystr:'0',compid:_self.mcompid}
-					}).then(res => {
-						_self.isbm = true;
-						console.log(res.result)
-						if(res.result.success == true){
-							var mdata = res.result.data;
-							console.log(mdata.data)
-							if(mdata.data.length < 1){
-								_self.deptType = [{section:"暂无部门",id:"0"}];
-							}else{
-								_self.deptType = mdata.data;
-							}
-							
-						}else{uni.showToast({title: '暂无部门',icon:'none'});}
-					}).catch(err => {console.error(err)})
-			},
-			seveinfobtn(){
-				//保存个人信息
-				var uf = _self.userinfo;
-				//pages/mainme/mainmeinfoedit
-				var fomdata = {_id:uf._id,sname:uf.sname,id_card:uf.card,photo:_self.imgSrc,
-				phone:uf.phone,age:uf.age,desc:uf.desc,sex:uf.sex,section:uf.sectionid,company:uf.compid}
-				
-				console.log(JSON.stringify(fomdata))
-				
-				uni.showLoading({
-					title: '加载中...'
-				})
-				// uniCloud
-				this.$myCloud.callFunction({
-						name: 'meuserinfosave',
-						data: fomdata
+			//保存
+			savePage() {
+				//普通保存
+				// var obj = _self.userinfo
+				// delete _self.userinfo._id;
+				console.log(_self.userinfo);
+				//个人资料保存
+				delete _self.userinfo._ids
+				delete _self.userinfo.sname
+				delete _self.userinfo.phone
+				delete _self.userinfo.power
+				delete _self.userinfo.status
+				delete _self.userinfo.permission
+				console.log(_self.userinfo);
+				// return 
+				this.$myCloud
+					.callFunction({
+						name: 'mainuser_oper',
+						data: {
+							operType: 'save',
+							dataIn: _self.userinfo
+						}
 					})
 					.then(res => {
 						uni.hideLoading()
-						console.log(res.result)
+						console.log(res);
 						if (res.result.success) {
 							uni.showToast({
-							    title: res.result.msg,
-							    duration: 1000
+								title: res.result.msg,
+								duration: 1000
 							});
-							
-							uni.switchTab({
-								url: '/pages/mainme/mainme'
-							});
-				
+							setTimeout(function() {
+								uni.switchTab({
+									url: '/pages/mainme/mainme'
+								});
+							}, 1000);
+
+							// uni.navigateBack({
+							// 	delta: 1
+							// });
+							// uni.switchTab({
+							// 	url: '/pages/mainme/mainme'
+							// });
 						} else {
-							uni.showModal({ content: res.result.msg, showCancel: false})
-				
+							uni.showModal({
+								content: res.result.msg,
+								showCancel: false
+							})
 						}
-				
 					})
 					.catch(err => {
 						uni.hideLoading()
 						console.error(err)
 					})
-				
-				
-				
-				
 			},
-			editinfo(e){
-				_self.mpgto = e;
-				uni.navigateTo({
-					url: '/pages/mainme/mainmeinfoedit?pg=' + e
-				});
-				
-			},
-			//单位
-			chooseComp(){
-				uni.navigateTo({
-					url: '/pages/mainme/mainmegetcp'
-				});
-				
-				
-			},
-			//部门
-			chooseDept(){
-				if(_self.isbm == false){
-					uni.showToast({title: '正在准备',icon:'none'});
-					return;
+			//Popup
+			togglePopup(column, title, value) {
+				if((column=='sname'||column=='phone'))
+				{
+					return 
 				}
-				
-				uni.showActionSheet({
-					title:'选择部门',
-					itemList: this.deptType.map((item)=>{return item.section}),
-					success: (e) => {
-						console.log(e.tapIndex);
-						this.userinfo.dept = this.deptType[e.tapIndex].section;
-						this.userinfo.sectionid = this.deptType[e.tapIndex]._id;
-					}
+				console.log(title)
+				this.popupColumn = column
+				this.popupTitle = title
+				this.popupValue = value
+				this.$nextTick(() => {
+					this.$refs['showtip'].open()
 				})
 			},
-			chooseages(e){
-				//年龄选择
-				//console.log('picker发送选择改变，携带值为', e.target.value)
-				  _self.maindex = e.target.value
-				  _self.userinfo.age = e.target.value
+			cancel() {
+				this.$refs['showtip'].close()
+			},
+			enter() {
+				console.log(this.popupValue);
+				console.log(this.popupColumn);
+				switch (this.popupColumn) {
+					case 'desc':
+						this.userinfo.desc = this.popupValue
+						console.log(this.userinfo.desc);
+						break;
+					case 'phone':
+						this.userinfo.phone = this.popupValue
+						break;
+					case 'sname':
+						this.userinfo.sname = this.popupValue
+						break;
+					case '_ids':
+						this.userinfo._ids = this.popupValue
+						break;
+				}
+				this.$refs['showtip'].close()
+			},
+			change(e) {
+				console.log('是否打开:' + e.show)
+			},
+			onKeyInput(e) {
+				console.log(e.detail.value)
+			},
+			//年龄选择
+			chooseages(e) {
+				_self.maindex = e.target.value
+				_self.userinfo.age = e.target.value
+			},
+			//初始化数据
+			initData(fun) {
+				this.$myCloud
+					.callFunction({
+						name: 'mainusercominit',
+						data: {}
+					})
+					.then(res => {
+						uni.hideLoading()
+						if (res.success) {
+							var data = res.result.data;
+							_self.compType = data.comp;
+							_self.deptType = data.dept;
+						}
+						fun();
+					})
+					.catch(err => {
+						uni.hideLoading()
+						console.error(err)
+					})
+			},
+			//返回上一页
+			backPage() {
+				uni.navigateBack({
+					delta: 1
+				});
+			},
+			//获取个人资料
+			userInfoGet() {
+				uni.showLoading({
+					title: '加载中...'
+				})
+				this.$myCloud
+					.callFunction({
+						name: 'mainuser_oper',
+						data:{
+							operType: 'get',
+							dataIn:{
+								_id: _self.userinfo._id
+							}
+						}
+					})
+					.then(res => {
+						uni.hideLoading()
+						console.log(res)
+						if (res.success) {
+							var info = res.result.data;
+							//==单位 部门
+							_self.compTypeIndex = _self.compType.indexOf(_self.compType.filter((p) => {
+								return p._id == info[0].company._id;
+							})[0])
+							if (_self.compTypeIndex < 0) {
+								_self.compTypeIndex = 0
+							}
+							_self.userinfo.company = _self.compType[_self.compTypeIndex]
+							_self.deptTypeIndex = 0
+							_self.userinfo.section =
+								_self.deptType.filter(
+									item => item.compid === _self.compType[_self.compTypeIndex]._id
+								)[_self.deptTypeIndex]
+							//==
+							_self.userinfo = info[0];
+							_self.maindex = parseInt(_self.userinfo.age)
+							console.log(_self.userinfo)
+						} else {
+							// uni.showModal({ content:"暂无人员信息", showCancel: false})
+						}
+
+					})
+					.catch(err => {
+						uni.hideLoading()
+						console.error(err)
+					})
+			},
+			//单位
+			chooseComp(e) {
+				_self.compTypeIndex = e.target.value
+				_self.userinfo.company = _self.compType[e.target.value]
+				_self.deptTypeIndex = 0
+				_self.userinfo.section =
+					_self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)[_self.deptTypeIndex]
+			},
+			//部门
+			chooseDept(e) {
+				_self.deptTypeIndex = e.target.value
+				_self.userinfo.section = _self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)[
+					_self.deptTypeIndex]
 			},
 			//性别
 			chooseSex() {
 				uni.showActionSheet({
-					title:'选择性别',
+					title: '选择性别',
 					itemList: this.sexType,
 					success: (e) => {
 						console.log(e.tapIndex);
@@ -312,95 +371,176 @@
 				})
 			},
 			//修改头像
-			chooseImage: async function() {
-				// #ifdef APP-PLUS
-				// TODO 选择相机或相册时 需要弹出actionsheet，目前无法获得是相机还是相册，在失败回调中处理
-				if (this.sourceTypeIndex !== 2) {
-					let status = await this.checkPermission();
-					if (status !== 1) {
-						return;
-					}
-				}
-				// #endif
-				uni.chooseImage({
-					sourceType: sourceType[this.sourceTypeIndex],
-					sizeType: sizeType[this.sizeTypeIndex],
-					count: 1,
-					success: (res) => {
-						this.imgSrc = res.tempFilePaths[0];
-						console.log(this.imgSrc)
-					},
-					fail: (err) => {
-						// #ifdef APP-PLUS
-						if (err['code'] && err.code !== 0 && this.sourceTypeIndex === 2) {
-							this.checkPermission(err.code);
-						}
-						// #endif
-						// #ifdef MP
-						uni.getSetting({
-							success: (res) => {
-								let authStatus = false;
-								switch (this.sourceTypeIndex) {
-									case 0:
-										authStatus = res.authSetting['scope.camera'];
-										break;
-									case 1:
-										authStatus = res.authSetting['scope.album'];
-										break;
-									case 2:
-										authStatus = res.authSetting['scope.album'] && res.authSetting['scope.camera'];
-										break;
-									default:
-										break;
-								}
-								if (!authStatus) {
-									uni.showModal({
-										title: '授权失败',
-										content: 'Hello uni-app需要从您的相机或相册获取图片，请在设置界面打开相关权限',
-										success: (res) => {
-											if (res.confirm) {
-												uni.openSetting()
-											}
-										}
-									})
-								}
+			chooseImage() {
+				new Promise((resolve, reject) => {
+					uni.chooseImage({
+						chooseImage: 1,
+						success: res => {
+							const path = res.tempFilePaths[0]
+							const options = {
+								filePath: path
 							}
-						})
-						// #endif
-					}
-				})
-			},
-			async checkPermission(code) {
-				let type = code ? code - 1 : this.sourceTypeIndex;
-				let status = permision.isIOS ? await permision.requestIOS(sourceType[type][0]) :
-					await permision.requestAndroid(type === 0 ? 'android.permission.CAMERA' :
-						'android.permission.READ_EXTERNAL_STORAGE');
-		
-				if (status === null || status === 1) {
-					status = 1;
-				} else {
-					uni.showModal({
-						content: "没有开启权限",
-						confirmText: "设置",
-						success: function(res) {
-							if (res.confirm) {
-								permision.gotoAppSetting();
-							}
+							resolve(options)
+						},
+						fail: () => {
+							reject(new Error('Fail_Cancel'))
 						}
 					})
-				}
-				return status;
+				}).then((options) => {
+					uni.showLoading({
+						title: '文件上传中...'
+					})
+					return this.$myCloud.uploadFile(options)
+				}).then(res => {
+					uni.hideLoading()
+					console.log(res);
+					uni.showToast({
+						title: '头像上传成功',
+						icon:'none'
+					});
+					// uni.showModal({
+					// 	content: '头像上传成功',
+					// 	showCancel: false
+					// })
+					this.userinfo.photo = res.fileID
+				}).catch((err) => {
+					uni.hideLoading()
+					console.log(err);
+					if (err.message !== 'Fail_Cancel') {
+						uni.showModal({
+							content: `头像上传失败，错误信息为：${err.message}`,
+							showCancel: false
+						})
+					}
+				})
 			}
+			
 		}
 	}
 </script>
 
-<style>
-	.listitem{margin-left: 30rpx; height: 80rpx;line-height: 80rpx; padding-right: 20rpx;border-top: #E5E5E5 solid 1rpx;}
-	.listitemt{float: left;font-size: 26rpx;color: #333333;}
-	.listitemd{float: right;margin-right: 10rpx;}
-	.listditmc{float: right;font-size: 18rpx;color: #999999;}
-	
+<style lang="scss">
+	// 底部按钮
+	.button {
+		position: fixed;
+		bottom: 0vw;
+		width: 94vw;
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: space-between;
+		padding: 2vw 3vw;
+
+		.b-t {
+
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: center;
+			width: 22vw;
+			height: 10vw;
+			border-radius: 1vw;
+			border: 1rpx solid #BEBEBE;
+			background: #F1F1F1;
+
+			.icon {
+				line-height: 10vw;
+			}
+
+			.wz {
+				margin-left: 1vw;
+				font-size: 3.8vw;
+				line-height: 10vw;
+			}
+		}
+
+	}
+
+	//Popup	/* 提示窗口 */
+	.uni-tip {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		flex-direction: column;
+		/* #endif */
+		padding: 15px;
+		width: 300px;
+		background-color: #fff;
+		border-radius: 10px;
+	}
+
+	.uni-tip-title {
+		margin-bottom: 10px;
+		text-align: center;
+		font-weight: bold;
+		font-size: 16px;
+		color: #333;
+	}
+
+	.uni-tip-content {
+		/* padding: 15px;
+	*/
+		font-size: 14px;
+		color: #666;
+	}
+
+	.uni-tip-group-button {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		margin-top: 20px;
+	}
+
+	.uni-tip-button {
+		flex: 1;
+		text-align: center;
+		font-size: 14px;
+		color: #3b4144;
+	}
+
+	//权限
+	.qxitem {
+		padding: 30rpx;
+	}
+
+	.qxitem label {
+		font-size: 32rpx;
+		padding-right: 20rpx;
+	}
+
+	.container {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		padding: 5px;
+	}
+
+	.container::after {
+		content: '';
+		flex: 1;
+	}
+
+	.item {
+		position: relative;
+		width: 33.33%;
+		height: auto;
+	}
+
+	.item::before {
+		content: '';
+		display: block;
+		position: relative;
+		width: 100%;
+		padding-top: 30%;
+	}
+
+	.item-content {
+		display: flex;
+		position: absolute;
+		bottom: 5px;
+		align-items: center;
+		justify-content: center;
+	}
+
 	.uni-row {
 		border-bottom: #BEBEBE solid 1rpx;
 		height: 80rpx;
@@ -408,7 +548,7 @@
 		background-color: #E5E5E5;
 	}
 
-	/* ============== */
+	/* ======基本信息======== */
 	.list-item {
 		font-size: 32rpx;
 		position: relative;
@@ -433,6 +573,9 @@
 		position: relative;
 		justify-content: space-between;
 		align-items: center;
+	}
+
+	.list-item--bottom {
 		/* #ifdef APP-PLUS || H5*/
 		border-bottom-color: #e5e5e5;
 		border-bottom-style: solid;
@@ -452,6 +595,11 @@
 		transform: scaleY(.5);
 		background-color: #e5e5e5;
 	}
+
+	.list-item--bottom:after {
+		height: 0px;
+	}
+
 	/* #endif */
 	.list-item__content {
 		/* #ifndef APP-NVUE */
@@ -479,9 +627,22 @@
 		justify-content: flex-end;
 		align-items: center;
 	}
-	.list-item__img{
+
+	.list-item__img {
 		width: 130upx;
 		height: 130upx;
 		border-radius: 50%;
+	}
+	.list-item__extra-text {
+		color: #999;
+		font-size: 24rpx;
+	}
+	/* ============================ */
+	.btn {
+		margin: 10upx 20upx;
+		// background: #FFFFFF;
+		// color: #FF3333;
+		font-size: 32upx;
+		margin-bottom: 120upx;
 	}
 </style>

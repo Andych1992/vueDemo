@@ -12,6 +12,8 @@
 user
 {
     _id: "", // string，自生成 用户唯一标识，注册时生成无法修改
+	_ids:"",//用户编号
+    photo: "", // string 图片url地址
     username: "", // string 用户
 	company:"",//string 所属单位 JSON
 	section:""//所属部门 JSON
@@ -22,9 +24,8 @@ user
     phone: "", // string 不能为空，需验证符合规则
     age: 18, // int
     sex: 0, // int (0女, 1男, 2未知)
-    photo: "", // string 图片url地址
     status: 0, // int 0正常 1冻结
-    permission: 0, int 默认2，0超级管理员, 1普通管理员, 2普通
+    permission: 0, int 默认0，9超级管理员, 1普通管理员, 0普通
 	power:"" //string 权限。（"1，3，4，5"）权限字符
     create_time: 0,// 时间戳 GMT
     create_ip: "",// 注册 ip

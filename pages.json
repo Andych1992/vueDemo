@@ -82,7 +82,7 @@
 			}
 		}
 	    ,{
-            "path" : "pages/mainuser_oper/mainuser",
+            "path" : "pages/mainuser_oper/mainuserList",
             "style" : {
 				"navigationBarTitleText": "人员管理",
 				"enablePullDownRefresh": true //开启下拉刷新

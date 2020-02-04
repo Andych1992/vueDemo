@@ -13,6 +13,25 @@ import Utils from '@/utils/Utils' // Common util
 import HandleError from '@/utils/HandleError' // Handle error
 const myCloud = uniCloud.init(config.uniCloud)
 
+function getMaxcode(table,fields,length){
+		request({
+			name: 'maxcode_get',
+			data: {
+				table:table,
+				fields:fields,
+				length:length
+			}
+		}).then(res => {
+			if (res.success) {
+				// console.log(res)
+				console.log(res.data.maxcode)
+				return res.data.maxcode;
+			}
+			else {
+				return '999';
+			}
+		})
+}	
 const request = ({
 	name,
 	data
@@ -60,6 +79,7 @@ Vue.prototype.$util = Utils // Mounted common utils
 Vue.prototype.$handleError = HandleError // Mounted handle error
 Vue.prototype.$myCloud = myCloud // Mounted myCloud
 Vue.prototype.$request = request
+Vue.prototype.getMaxcode = getMaxcode
 
 /**
  * @name Libs config

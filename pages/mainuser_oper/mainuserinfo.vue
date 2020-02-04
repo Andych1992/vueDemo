@@ -16,7 +16,8 @@
 					</view>
 				</view>
 			</view>
-			<uni-list-item :show-arrow="true" title="工号" :rightText="userinfo._ids?userinfo._ids:'暂无设置'" @click="togglePopup('_ids','人员工号',userinfo._ids)" />
+			<!-- @click="togglePopup('_ids','人员工号',userinfo._ids)"  -->
+			<uni-list-item :show-arrow="true" title="工号" :rightText="userinfo._ids?userinfo._ids:'自动生成'"/>
 			<uni-list-item :show-arrow="true" title="名称" :rightText="userinfo.sname?userinfo.sname:'暂无设置'" @click="togglePopup('sname','人员名称',userinfo.sname)" />
 			<uni-list-item :show-arrow="true" title="手机" :rightText="userinfo.phone?userinfo.phone:'暂无设置'" @click="togglePopup('phone','手机号码',userinfo.phone)" />
 			<view class="list-item" hover-class='list-item--hover'>
@@ -26,7 +27,7 @@
 							<text class="list-item__content-title">年龄</text>
 						</view>
 						<view class="list-item__extra">
-							{{userinfo.age}}
+							<text class="list-item__extra-text">{{userinfo.age}}</text>
 							<!-- {{mages[maindex]}} -->
 							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 						</view>
@@ -42,7 +43,7 @@
 						</view>
 						<view class="list-item__extra">
 							<!-- {{compType[compTypeIndex].compname}} -->
-							{{userinfo.company.compname}}
+							<text class="list-item__extra-text">{{userinfo.company.compname}}</text>
 							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 						</view>
 					</view>
@@ -56,8 +57,8 @@
 							<text class="list-item__content-title">部门</text>
 						</view>
 						<view class="list-item__extra">
-							{{userinfo.section.section}}
 							<!-- {{deptType.filter(item=>item.compid===compType[compTypeIndex]._id)[deptTypeIndex].section}} -->
+							<text class="list-item__extra-text">{{userinfo.section.section}}</text>
 							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 						</view>
 					</view>
@@ -66,26 +67,27 @@
 			<uni-list-item :show-arrow="true" title="备注" :rightText="userinfo.desc?userinfo.desc:'暂无备注信息'" @click="togglePopup('desc','备注信息',userinfo.desc)" />
 
 		</uni-list>
-		<view class="uni-row u-f-ac">
-			权限信息
-		</view>
-		<view class="qxitem">
-			<checkbox-group>
-				<view class="container">
-					<block v-for="(item,index) in qxList" :key='index'>
-						<view class="item">
-							<label class="item-content">
-								<checkbox :value="item.value" :checked="item.checked" />{{item.title}}
-							</label>
-						</view>
-					</block>
-				</view>
-			</checkbox-group>
-		</view>
-		<button class="btn" @click="exitbtn">重置密码</button>
-
+		<template v-if="!(operType =='get' || userinfo.permission ==9)">
+			<view class="uni-row u-f-ac">
+				权限信息
+			</view>
+			<view class="qxitem">
+				<checkbox-group>
+					<view class="container">
+						<block v-for="(item,index) in qxList" :key='index'>
+							<view class="item">
+								<label class="item-content">
+									<checkbox :value="item.value" :checked="item.checked" />{{item.title}}
+								</label>
+							</view>
+						</block>
+					</view>
+				</checkbox-group>
+			</view>
+			<button class="btn" @click="exitbtn">重置密码</button>
+		</template>
 		<view class="button">
-			<view class="b-t" @click='delPage'>
+			<view class="b-t" @click='delPage' v-if="!(operType =='get' || userinfo.permission ==9)">
 				<uni-icons class="icon" type="minus" size="26"></uni-icons>
 				<view class="wz">删除</view>
 			</view>
@@ -175,9 +177,9 @@
 				deptTypeIndex: 1,
 				userinfo: {
 					_id: "",
-					photo: "",
 					_ids: "",
-					name: "",
+					photo: "",
+					sname: "",
 					phone: "",
 					age: "",
 					sex: '',
@@ -208,6 +210,16 @@
 								)[_self.deptTypeIndex]
 							//==
 
+						} else if(_id == 'info')
+						{
+							_self.operType = 'get'
+							uni.setNavigationBarTitle({
+								title: "个人资料"
+							})
+							var userdata = JSON.parse(uni.getStorageSync("userinfodata"));
+							_self.userinfo._id = userdata._id;
+							//获取个人资料
+							_self.userInfoGet();
 						} else {
 							_self.operType = 'save'
 							uni.setNavigationBarTitle({
@@ -235,6 +247,25 @@
 
 		},
 		methods: {
+			//自动生成
+			getUsercode(fun) {
+				_self.$request({
+					name: 'maxcode_get',
+					data: {
+						table: 'user',
+						fields: '_ids',
+						length: 4
+					}
+				}).then(res => {
+					let maxcode
+					if (res.success) {
+						maxcode = res.data.maxcode;
+					} else {
+						maxcode = '';
+					}
+					fun(maxcode);
+				})
+			},
 			//删除
 			delPage() {
 				uni.showModal({
@@ -262,7 +293,7 @@
 									});
 									setTimeout(function() {
 										uni.navigateTo({
-											url: './mainuser'
+											url: './mainuserList'
 										});
 									}, 1000);
 
@@ -282,9 +313,33 @@
 			},
 			//保存
 			savePage() {
+				if(_self.operType == 'add')
+				{
+					//新增 自动生成编号
+					_self.getUsercode((e)=>{
+							_self.userinfo._ids = e;
+							_self.saveInfo()
+						}
+					)
+				}
+				else
+				{
+					//普通保存
+					_self.saveInfo()
+				}
+			},
+			saveInfo(){
 				// var obj = _self.userinfo
 				// delete _self.userinfo._id;
 				console.log(_self.userinfo);
+				if(_self.operType =='get')
+				{
+					//个人资料保存
+					delete _self.userinfo[_ids]
+					delete _self.userinfo[sname]
+					delete _self.userinfo[phone]
+					console.log(_self.userinfo);
+				}
 				// return 
 				this.$myCloud
 					.callFunction({
@@ -304,7 +359,7 @@
 							});
 							setTimeout(function() {
 								uni.navigateTo({
-									url: './mainuser'
+									url: './mainuserList'
 								});
 							}, 1000);
 
@@ -328,6 +383,10 @@
 			},
 			//Popup
 			togglePopup(column, title, value) {
+				if( (_self.userinfo.permission ==9 || _self.operType == 'get') && (column=='sname'||column=='phone'))
+				{
+					return 
+				}
 				console.log(title)
 				this.popupColumn = column
 				this.popupTitle = title
@@ -341,6 +400,7 @@
 			},
 			enter() {
 				console.log(this.popupValue);
+				console.log(this.popupColumn);
 				switch (this.popupColumn) {
 					case 'desc':
 						this.userinfo.desc = this.popupValue
@@ -403,13 +463,17 @@
 				})
 				this.$myCloud
 					.callFunction({
-						name: 'mainuserinfoget',
-						data: {
-							_id: _self.userinfo._id
+						name: 'mainuser_oper',
+						data:{
+							operType: 'get',
+							dataIn:{
+								_id: _self.userinfo._id
+							}
 						}
 					})
 					.then(res => {
 						uni.hideLoading()
+						console.log(res)
 						if (res.success) {
 							var info = res.result.data;
 							//==单位 部门
@@ -805,7 +869,10 @@
 		height: 130upx;
 		border-radius: 50%;
 	}
-
+	.list-item__extra-text {
+		color: #999;
+		font-size: 24rpx;
+	}
 	/* ============================ */
 	.btn {
 		margin: 0 20upx;

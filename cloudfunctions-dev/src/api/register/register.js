@@ -17,8 +17,8 @@ const db = uniCloud.database()
  */
 async function register(event) {
   try {
-    // 获取参数
-    const { username, password, name } = event
+    // 获取参数name,
+    const { username, password, permission, _ids, sname } = event
 
     // 校验参数
     if (!validator.isMobilePhone(username, 'zh-CN')) {
@@ -34,16 +34,31 @@ async function register(event) {
         msg: '请输入密码'
       }
     } else {
-      // 参数校验通过
-      const userInDB = await db
-        .collection('user')
-        .where({
-          username
-        })
-        .get()
-
+		  // 参数校验通过
+		const userInDB = await db
+		.collection('user')
+		.where({
+			username
+		})
+		.get();
+		
       if (userInDB.data && userInDB.data.length === 0) {
         // 用户不存在，注册
+		if(permission==9||permission=='9'){
+			const userInDBSuper = await db
+			.collection('user')
+			.where({
+				permission
+			})
+			.get();
+			if (userInDBSuper.data && userInDBSuper.data.length > 0) {
+				return {
+				  success: false,
+				  code: -1,
+				  msg: '超级管理员已经存在'
+				}
+			}
+		}
         const bcryptPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))
         const registerResult = await db.collection('user').add({
 		  _ids,
@@ -51,13 +66,13 @@ async function register(event) {
           password: bcryptPassword,
           sname,
           status: 0,
-          permission: 0,
+          permission,
           create_time: new Date().getTime(),
           company: '0',
           section: '0',
           wx_open_id: '0',
           id_card: '0',
-          phone: '0',
+          phone: username,
           age: '0',
           sex: '0',
           photo: '0',
@@ -82,7 +97,7 @@ async function register(event) {
     return {
       success: false,
       code: 500,
-      msg: '服务器内部错误',
+      msg: '服务器内部错误'+error.message,
       err: error.message
     }
   }

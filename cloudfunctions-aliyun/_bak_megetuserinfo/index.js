@@ -1,3 +1,4 @@
+// 作废
 'use strict';
 
 const db = uniCloud.database();
@@ -27,14 +28,13 @@ exports.main = async (event, context) => {
 	const uses = {
 		_id: rest._id,
 		_ids: rest._ids,
-		name: rest.name,
 		username: rest.username,
 		company: rest.company,
 		// company: restcp.compname,
 		section: rest.section,
 		// sectionid: rest.section,
 		photo: rest.photo,
-		regtime: rest.create_time,
+		create_time: rest.create_time,
 		sname:rest.sname,
 		id_card:rest.id_card,
 		phone:rest.phone,

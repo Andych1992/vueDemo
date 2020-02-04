@@ -4,7 +4,10 @@
 		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
 		<uni-list>
 			<block v-for="(item,index) in userList" :key='index'>
-				<uni-list-item :show-arrow="true" :title="item.company.compname+'-'+item.section.section+'-'+item.name" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
+				<uni-list-item :show-arrow="true" 
+					:title="((!item.company||item.company=='0')?'':(item.company.compname+'-'))+
+							((!item.section||item.section=='0')?'':(item.section.section+'-'))+
+							item.sname" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
 				 @click="operUserInfo(item._id)" />
 			</block>
 		</uni-list>
@@ -24,8 +27,12 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	var _self;
 	export default {
+		computed: {
+			...mapState(['userInfo'])
+		},
 		data() {
 			return {
 				searchKey:'',
@@ -60,14 +67,30 @@
 		methods: {
 			//获取用户数据
 			userListGet(refresh){
+				let loginUserid = ''
+				if(_self.userInfo && _self.userInfo._id)
+				{
+					loginUserid = _self.userInfo._id
+				}
+				console.log('uID='+loginUserid)
 				if(refresh)
 				{
 					_self.page = 1;
 				}
 				this.$myCloud
 				.callFunction({
-							name: 'mainuserlistget',
-							data:{
+							// name: 'mainuserlistget',
+							// data:{
+							// 	searchKey:_self.searchKey,
+							// 	pageSize:_self.pageSize,
+							// 	page:_self.page
+							// },
+							name: 'mainuser_oper', 
+							data: {
+								operType: 'list',
+								dataIn:{
+									_id:loginUserid
+								},
 								searchKey:_self.searchKey,
 								pageSize:_self.pageSize,
 								page:_self.page

@@ -4,12 +4,12 @@
 		<view style="height: 300rpx;background-color: #007AFF;"></view>
 		<view class="head">
 			<view class="u-f u-f-ac">
-				<view class="headpic"><image :src="userinfo.headpic" mode="widthFix" lazy-load></image></view>
+				<view class="headpic"><image :src="userinfo.photo" mode="widthFix" lazy-load></image></view>
 				<view class="headinfo u-f-column">
-					<view>{{ userinfo.name }}</view>
-					<view>单位:{{ userinfo.company }}</view>
+					<view>{{userinfo.sname}}</view>
+					<view>单位:{{userinfo.company?userinfo.company.compname:''}}</view>
 					<!-- <view>{{userinfo.regDate}}</view> -->
-					<view>部门: {{ userinfo.dept }}</view>
+					<view>部门:{{userinfo.section?userinfo.section.section:''}}</view>
 				</view>
 			</view>
 		</view>
@@ -37,17 +37,20 @@ export default {
 		}
 	},
 	onLoad() {
-		console.log('token>>>', this.token)
-		console.log('userInfo>>>', this.userInfo) 
 		_self = this
+	},
+	onShow() {
+		// console.log('token>>>', this.token)
+		// console.log('userInfo>>>', this.userInfo) 
 		userdata = this.userInfo //JSON.parse(uni.getStorageSync('USER_INFO'))
 		_self.loadlistinit()
 	},
 	methods: {
+		...mapMutations(['USER_LOGIN_OUT','UPDATE_USER_INFO']),
 		loadlistinit() {
-			console.log(userdata)
-			if (userdata.types == '6' || userdata.permission == '0') {
-				//超级管理员
+			// console.log(userdata)
+			if (userdata.permission == '9') {
+				//超级管理员 userdata.types == '6' || 
 				var listdata = [
 					{
 						type: 'rygl',
@@ -66,7 +69,7 @@ export default {
 					}
 				]
 				_self.listinfo = listdata
-			} else if (userdata.types == '1') {
+			} else if (userdata.permission == '0') {
 				//普通状态
 				var listdata = [
 					{
@@ -82,6 +85,9 @@ export default {
 					content: '未登陆',
 					showCancel: false
 				})
+				uni.navigateTo({
+					url: '../login/login'
+				});
 				return 
 			}
 			_self.getuserinfo()
@@ -92,7 +98,7 @@ export default {
 				case 'rygl':
 					// console.log('人员管理')
 					uni.navigateTo({
-						url: '../mainuser_oper/mainuser'
+						url: '../mainuser_oper/mainuserList'
 					})
 					break
 				case 'dwgl':
@@ -117,36 +123,46 @@ export default {
 			// uniCloud
 			this.$myCloud
 				.callFunction({
-					name: 'megetuserinfo',
-					data: {
-						//token: userdata.token
-						_id: userdata._id
+					// name: 'megetuserinfo',
+					// data: {
+					// 	//token: userdata.token
+					// 	_id: userdata._id
+					// },
+					name: 'mainuser_oper',
+					data:{
+						operType: 'get',
+						dataIn:{
+							_id: userdata._id
+						}
 					}
 				})
 				.then(res => {
 					uni.hideLoading()
 					console.log(res.result)
-					if (res.result.success) {
-						var datas = res.result.data
-						if (datas.photo == '0') {
+					if (res.success) {
+						var datas = res.result.data[0];
+						console.log(datas)
+						if (datas.photo == '0'|| datas.photo == '../../static/logo.png') {
 							datas.photo = '../../static/logo.png'
 						}
-						if (datas.name == '0') {
-							datas.name = '未设置'
+						if (datas.sname == '0') {
+							datas.sname = '未设置'
 						}
 						if (datas.company == '0') {
-							datas.company = '未设置'
+							datas.company.compname = '未设置'
 						}
 						if (datas.section == '0') {
-							datas.section = '未设置'
+							datas.section.section = '未设置'
 						}
-						_self.userinfo = {
-							headpic: datas.photo,
-							name: datas.name,
-							regDate: datas.regtime,
-							company: datas.company,
-							dept: datas.section
-						}
+						_self.userinfo = datas
+						// {
+						// 	headpic: datas.photo,
+						// 	sname: datas.sname,
+						// 	create_time: datas.regtime,
+						// 	company: datas.company,
+						// 	section: datas.section
+						// }
+						// // _self.UPDATE_USER_INFO(_self.userinfo);
 						uni.setStorageSync('userinfodata', JSON.stringify(datas))
 					} else {
 					}
@@ -156,8 +172,12 @@ export default {
 					console.error(err)
 				})
 		},
+		//注销登陆
 		exitbtn() {
-			uni.setStorageSync('userdata', '0')
+			_self.USER_LOGIN_OUT();
+			// uni.setStorageSync('userdata', '0')
+			console.log('token>>>', _self.token)
+			console.log('userInfo>>>', _self.userInfo) 
 			uni.navigateTo({
 				url: '/pages/login/login'
 			})
