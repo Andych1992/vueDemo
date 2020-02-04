@@ -74,12 +74,6 @@
 			"style": {
 				"navigationBarTitleText": "编辑资料"
 			}
-		},
-		{
-			"path": "pages/api_test/api_test",
-			"style": {
-				"navigationBarTitleText": "接口测试界面"
-			}
 		}
 	    ,{
             "path" : "pages/mainuser_oper/mainuserList",
