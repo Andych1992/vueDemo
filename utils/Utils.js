@@ -22,11 +22,18 @@ export default {
 	 * @name 页面跳转
 	 * @param {Object} url 跳转的地址
 	 */
-	navigateTo(ppower,url) {
+	navigateTo(ppower,url,switchTab) {
 		//权限判断
 		var userinfodata = JSON.parse(uni.getStorageSync('userinfodata'))
 		if(userinfodata.permission == 9)
 		{
+			if(switchTab)
+			{
+				uni.switchTab({
+					url: url
+				})
+				return 
+			}
 			uni.navigateTo({
 				url: url,
 				success: res => {},
@@ -50,6 +57,13 @@ export default {
 			uni.showToast({
 				title: '暂无权限'
 			});
+			return 
+		}
+		if(switchTab)
+		{
+			uni.switchTab({
+				url: url
+			})
 			return 
 		}
 		uni.navigateTo({

@@ -103,7 +103,7 @@
 						break;
 					case 'wzff':
 						console.log('物资发放');
-						this.$util.navigateTo('wzff','../mainstroage/mainstroage')
+						this.$util.navigateTo('wzff','../mainstroage/mainstroage',true)
 						break;
 					case 'wzkc':
 						console.log('物资库存');
