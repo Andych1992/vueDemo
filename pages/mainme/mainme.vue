@@ -43,7 +43,10 @@ export default {
 		// console.log('token>>>', this.token)
 		// console.log('userInfo>>>', this.userInfo) 
 		userdata = this.userInfo //JSON.parse(uni.getStorageSync('USER_INFO'))
-		_self.loadlistinit()
+		_self.loadlistinit();
+	},
+	onPullDownRefresh() {
+		_self.loadlistinit();
 	},
 	methods: {
 		...mapMutations(['USER_LOGIN_OUT','UPDATE_USER_INFO']),
@@ -138,6 +141,7 @@ export default {
 				})
 				.then(res => {
 					uni.hideLoading()
+					uni.stopPullDownRefresh();
 					console.log(res.result)
 					if (res.success) {
 						var datas = res.result.data[0];
@@ -169,6 +173,7 @@ export default {
 				})
 				.catch(err => {
 					uni.hideLoading()
+					uni.stopPullDownRefresh();
 					console.error(err)
 				})
 		},

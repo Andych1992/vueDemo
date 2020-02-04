@@ -247,8 +247,8 @@
 
 		},
 		methods: {
-			//自动生成
-			getUsercode(fun) {
+			//自动生成最大编号
+			getMaxCode(fun) {
 				_self.$request({
 					name: 'maxcode_get',
 					data: {
@@ -316,7 +316,7 @@
 				if(_self.operType == 'add')
 				{
 					//新增 自动生成编号
-					_self.getUsercode((e)=>{
+					_self.getMaxCode((e)=>{
 							_self.userinfo._ids = e;
 							_self.saveInfo()
 						}

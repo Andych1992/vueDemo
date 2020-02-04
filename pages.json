@@ -33,30 +33,6 @@
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		},
-
-		{
-			"path": "pages/mecompany/mecompany",
-			"style": {
-				"navigationBarTitleText": "单位管理"
-			}
-		},
-		{
-			"path": "pages/mecompany/mecompanydes",
-			"style": {
-				"navigationBarTitleText": "单位详情"
-			}
-		}, {
-			"path": "pages/medepartment/medepartment",
-			"style": {
-				"navigationBarTitleText": "部门管理"
-			}
-		},
-		{
-			"path": "pages/medepartment/medepartmentdes",
-			"style": {
-				"navigationBarTitleText": "部门详情"
-			}
 		}, {
 			"path": "pages/mainme/mainmeinfo",
 			"style": {
@@ -139,7 +115,56 @@
             "style" : {
 				"navigationBarTitleText": "新增入库"
 			}
-        }
+        },		
+		{
+			"path": "pages/mecompany/mecompany",
+			"style": {
+				"navigationBarTitleText": "单位管理"
+			}
+		},
+		{
+			"path": "pages/mecompany/mecompanydes",
+			"style": {
+				"navigationBarTitleText": "单位详情"
+			}
+		}, {
+			"path": "pages/medepartment/medepartment",
+			"style": {
+				"navigationBarTitleText": "部门管理"
+			}
+		},
+		{
+			"path": "pages/medepartment/medepartmentdes",
+			"style": {
+				"navigationBarTitleText": "部门详情"
+			}
+		},
+		{
+			"path": "pages/mecompany_oper/mecompanyList",
+			"style": {
+				"navigationBarTitleText": "单位管理",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		{
+			"path": "pages/mecompany_oper/mecompanyInfo",
+			"style": {
+				"navigationBarTitleText": "单位资料"
+			}
+		},
+		{
+			"path": "pages/medepartment_oper/medepartmentList",
+			"style": {
+				"navigationBarTitleText": "部门管理",
+				"enablePullDownRefresh": true //开启下拉刷新
+			}
+		},
+		{
+			"path": "pages/medepartment_oper/medepartmentInfo",
+			"style": {
+				"navigationBarTitleText": "部门资料"
+			}
+		}
     ],
 	"easycom": {
 		"autoscan": true

@@ -130,7 +130,7 @@
 					case 'dwzz':
 						console.log('单位组织');
 						uni.navigateTo({
-							url: '../mecompany/mecompany'
+							url: '../mecompany_oper/mecompanyList'
 						});
 						break;
 				}

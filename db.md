@@ -37,16 +37,18 @@ user
 company
 {
     _id: "", // string，自生成  单位ID
+    _ids:"", // string 编号
     compname: "", // string 单位名称
-	jname:""//单位简称
-	contacts:""//负责人
-	tel:""//联系电话
-	desc:""//备注说明
-	address: {country: 0, province: 0, city: 0, district: 0, street: ""}
-    create_time: 0,// 时间戳 GMT
-
-	
+    jname:"",//单位简称
+    contacts:"",//负责人
+    tel:"",//联系电话
+    cpaddress:"",
+    cplogo:"",
+    desc:"",//备注说明
+    indexs:"",//顺序
+    create_time: 0// 时间戳 GMT	
 }
+暂时作废	address: {country: 0, province: 0, city: 0, district: 0, street: ""}
 ```
 
 #### 权限表
@@ -78,9 +80,12 @@ approvallist
 department
 {
     _id: "", // string，自生成
+	_ids:"", // string 编号
+	company:"",//JSon
     compid: "", // string 单位ID
-	section:""//部门名称
-	desc:""//备注
+	section:"",//部门名称
+	desc:"",//备注
+	indexs:"",//顺序
 }
 ```
 
