@@ -44,6 +44,9 @@
 		methods: {
 			//获取数据
 			listGet(refresh){
+				uni.showLoading({
+					title: '加载中...'
+				});				
 				if(refresh)
 				{
 					_self.page = 1;

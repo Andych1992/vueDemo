@@ -84,6 +84,9 @@
 		methods: {
 			//物资类别
 			typeListGet(fun) {
+				uni.showLoading({
+					title: '加载中...'
+				});
 				this.$myCloud
 					.callFunction({
 						name: 'materialtype_oper',

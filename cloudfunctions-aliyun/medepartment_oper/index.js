@@ -12,6 +12,7 @@ exports.main = async (event, context) => {
 	const {
 		_id,
 		_ids,
+		company,
 		compid,
 		section,
 		desc,
@@ -60,6 +61,7 @@ exports.main = async (event, context) => {
 		case 'add':
 			res = await collection.add({
 				_ids,
+				company,
 				compid,
 				section,
 				desc,
@@ -131,6 +133,7 @@ exports.main = async (event, context) => {
 			//存在
 			res = await collection.doc(_id).set({
 				_ids,
+				company,
 				compid,
 				section,
 				desc,

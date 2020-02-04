@@ -1,11 +1,5 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		// {
-		// 	"path": "pages/index/index",
-		// 	"style": {
-		// 		"navigationBarTitleText": "新冠-物资管理系统"
-		// 	}
-		// },
 		{
 			"path": "pages/mainindex/mainindex",
 			"style": {
@@ -115,30 +109,7 @@
             "style" : {
 				"navigationBarTitleText": "新增入库"
 			}
-        },		
-		{
-			"path": "pages/mecompany/mecompany",
-			"style": {
-				"navigationBarTitleText": "单位管理"
-			}
-		},
-		{
-			"path": "pages/mecompany/mecompanydes",
-			"style": {
-				"navigationBarTitleText": "单位详情"
-			}
-		}, {
-			"path": "pages/medepartment/medepartment",
-			"style": {
-				"navigationBarTitleText": "部门管理"
-			}
-		},
-		{
-			"path": "pages/medepartment/medepartmentdes",
-			"style": {
-				"navigationBarTitleText": "部门详情"
-			}
-		},
+        },
 		{
 			"path": "pages/mecompany_oper/mecompanyList",
 			"style": {

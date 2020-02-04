@@ -6,7 +6,20 @@
 		</view>
 		<uni-list>
 			<uni-list-item :show-arrow="true" title="部门编号" disabled :rightText="departmentInfo._ids?departmentInfo._ids:'自动生成'" />
-			<uni-list-item :show-arrow="true" title="所属单位" :rightText="departmentInfo.cpaddress?departmentInfo.cpaddress:'暂无设置'" @click="togglePopup('cpaddress','单位地址',departmentInfo.cpaddress)" />
+			<!-- <uni-list-item :show-arrow="true" title="所属单位" :rightText="departmentInfo.cpaddress?departmentInfo.cpaddress:'暂无设置'" @click="togglePopup('cpaddress','单位地址',departmentInfo.cpaddress)" /> -->
+			<view class="list-item" hover-class='list-item--hover'>
+				<picker @change="chooseCompany" :value="compTypeIndex" :range="compType" range-key="compname">
+					<view class="list-item__container">
+						<view class="list-item__content">
+							<text class="list-item__content-title">所属单位</text>
+						</view>
+						<view class="list-item__extra">
+							<text class="list-item__extra-text">{{departmentInfo.company?departmentInfo.company.compname:''}}</text>
+							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+						</view>
+					</view>
+				</picker>
+			</view>
 			<uni-list-item :show-arrow="true" title="部门名称" :rightText="departmentInfo.section?departmentInfo.section:'暂无设置'" @click="togglePopup('section','部门名称',departmentInfo.section)" />
 			<uni-list-item :show-arrow="true" title="备注信息" :rightText="departmentInfo.desc?departmentInfo.desc:'暂无设置'" @click="togglePopup('desc','备注信息',departmentInfo.desc)" />
 			<uni-list-item :show-arrow="true" title="排序" :rightText="departmentInfo.indexs?departmentInfo.indexs:'0'" @click="togglePopup('indexs','排序',departmentInfo.indexs)" />
@@ -47,10 +60,14 @@
 				popupTitle: '',
 				popupColumn: '',
 				popupValue: '',
+				//单位列表
+				compType: [],
+				compTypeIndex: 0,
 				//基本信息
 				departmentInfo:{
 					_id: "", // string，自生成
 					_ids:"", // string 编号
+					company:"",//JSon
 					compid: "", // string 单位ID
 					section:"",//部门名称
 					desc:"",//备注
@@ -61,37 +78,72 @@
 		onLoad(options) {
 			_self = this;
 			var _id = options.id
-			if (_id) {
-				if (_id == 'add') {
-					_self.operType = 'add'
-					uni.setNavigationBarTitle({
-						title: "部门资料-新增"
-					})
-				} else {
-					_self.operType = 'save'
-					uni.setNavigationBarTitle({
-						title: "部门资料-编辑"
-					})
-					_self.departmentInfo._id = _id;
-					//获取资料
-					_self.infoGet();
+			_self.initData(
+				function() {
+					if (_id) {
+						if (_id == 'add') {
+							_self.operType = 'add'
+							uni.setNavigationBarTitle({
+								title: "部门资料-新增"
+							})
+						} else {
+							_self.operType = 'save'
+							uni.setNavigationBarTitle({
+								title: "部门资料-编辑"
+							})
+							_self.departmentInfo._id = _id;
+							//获取资料
+							_self.infoGet();
+						}
+					} else {
+						uni.showToast({
+							title: '未获取到信息',
+							icon: 'none',
+							duration: 1000
+						});
+						// setTimeout(function() {
+						// 	uni.navigateTo({
+						// 		url: './mainuser'
+						// 	});
+						// }, 1000);
+					}
 				}
-			} else {
-				uni.showToast({
-					title: '未获取到信息',
-					icon: 'none',
-					duration: 1000
-				});
-				// setTimeout(function() {
-				// 	uni.navigateTo({
-				// 		url: './mainuser'
-				// 	});
-				// }, 1000);
-			
-			}
+			);
 			
 		},
 		methods: {
+			//初始化下来部门选择
+			initData(fun){
+				this.$myCloud
+					.callFunction({
+							name: 'mecompany_oper',
+							data:{
+								operType: 'list',
+								dataIn:{},
+								searchKey:'',
+								pageSize:999,
+								page:1
+							}
+						})
+						.then(res => {
+							console.log(res)
+							if(res.result.success){
+								var list = res.result.data;
+								_self.compType = list;
+							}else{
+							}
+							fun();
+						})
+						.catch(err => {
+							console.error(err)
+						})
+			},
+			//物资类型
+			chooseCompany(e) {
+				_self.compTypeIndex = e.target.value
+				_self.departmentInfo.company = _self.compType[_self.compTypeIndex]
+				_self.departmentInfo.compid = _self.compType[_self.compTypeIndex]._id
+			},
 			//自动生成最大编号
 			getMaxCode(fun) {
 				_self.$request({
@@ -99,7 +151,7 @@
 					data: {
 						table: 'department',
 						fields: '_ids',
-						length: 6
+						length: 4
 					}
 				}).then(res => {
 					let maxcode
@@ -138,7 +190,7 @@
 									});
 									setTimeout(function() {
 										uni.navigateTo({
-											url: './mecompanyList'
+											url: './medepartmentList'
 										});
 									}, 1000);
 			
@@ -162,6 +214,7 @@
 				{
 					//新增 自动生成编号
 					_self.getMaxCode((e)=>{
+							console.log(e)
 							_self.departmentInfo._ids = e;
 							_self.saveInfo()
 						}
@@ -175,11 +228,21 @@
 			},
 			saveInfo(){
 				console.log(_self.departmentInfo)
-				if(!_self.departmentInfo.compname)
+				if(!_self.departmentInfo.section)
 				{
 					uni.showModal({
 						title: '警告',
-						content: '请输入单位名称',
+						content: '请输入部门名称',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
+				if(!_self.departmentInfo.company)
+				{
+					uni.showModal({
+						title: '警告',
+						content: '请选择所属单位',
 						showCancel: false,
 						confirmText: '确定'
 					});
@@ -203,7 +266,7 @@
 							});
 							setTimeout(function() {
 								uni.navigateTo({
-									url: './mecompanyList'
+									url: './medepartmentList'
 								});
 							}, 1000);
 			
@@ -282,6 +345,14 @@
 						if (res.success) {
 							console.log(res)
 							var info = res.result.data;
+							//==单位 部门
+							_self.compTypeIndex = _self.compType.indexOf(_self.compType.filter((p) => {
+								return p._id == info[0].company._id;
+							})[0])
+							if (_self.compTypeIndex < 0) {
+								_self.compTypeIndex = 0
+							}
+							_self.departmentInfo.company = _self.compType[_self.compTypeIndex]
 							_self.departmentInfo = info[0];
 							console.log(_self.departmentInfo)
 						} else {
@@ -382,5 +453,95 @@
 		background-color: #E5E5E5;
 		font-size: 28upx;
 		padding-left: 20upx;
+	}
+	
+	/* ======基本信息======== */
+	.list-item {
+		font-size: 32rpx;
+		position: relative;
+		flex-direction: column;
+		justify-content: space-between;
+		padding-left: 30rpx;
+	}
+	
+	.list-item--hover {
+		background-color: #f1f1f1;
+	}
+	
+	.list-item__container {
+		position: relative;
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		padding: 24rpx 30rpx;
+		padding-left: 0;
+		flex: 1;
+		position: relative;
+		justify-content: space-between;
+		align-items: center;
+	}
+	
+	.list-item--bottom {
+		/* #ifdef APP-PLUS || H5*/
+		border-bottom-color: #e5e5e5;
+		border-bottom-style: solid;
+		border-bottom-width: 0.5px;
+		/* #endif */
+	}
+	
+	/* #ifndef APP-NVUE */
+	.list-item__container:after {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		height: 1px;
+		content: '';
+		-webkit-transform: scaleY(.5);
+		transform: scaleY(.5);
+		background-color: #e5e5e5;
+	}
+	
+	.list-item--bottom:after {
+		height: 0px;
+	}
+	
+	/* #endif */
+	.list-item__content {
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex: 1;
+		overflow: hidden;
+		flex-direction: column;
+		color: #3b4144;
+	
+	}
+	
+	.list-item__content-title {
+		font-size: 28rpx;
+		color: #3b4144;
+		overflow: hidden;
+	}
+	
+	.list-item__extra {
+		/* width: 25%;*/
+		/* #ifndef APP-NVUE */
+		display: flex;
+		/* #endif */
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+	}
+	
+	.list-item__img {
+		width: 130upx;
+		height: 130upx;
+		border-radius: 50%;
+	}
+	.list-item__extra-text {
+		color: #999;
+		font-size: 24rpx;
 	}
 </style>

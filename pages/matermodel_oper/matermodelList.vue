@@ -124,134 +124,6 @@
 								specifications: '10个/盒'
 							}
 						],
-					},
-					{
-						name: '医护用品',
-						material: [{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							}
-						],
-					},
-					{
-						name: '其他',
-						material: [{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							},
-							{
-								name: '3m医用口罩',
-								sanufacturer: '北京市海淀区白云公司',
-								specifications: '10个/盒'
-							}
-						],
 					}
 				]
 			}
@@ -269,6 +141,9 @@
 		methods: {
 			//物资类别
 			typeListGet(fun) {
+				uni.showLoading({
+					title: '加载中...'
+				});
 				this.$myCloud
 					.callFunction({
 						name: 'materialtype_oper',

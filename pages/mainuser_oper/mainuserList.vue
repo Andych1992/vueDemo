@@ -67,6 +67,9 @@
 		methods: {
 			//获取用户数据
 			userListGet(refresh){
+				uni.showLoading({
+					title: '加载中...'
+				});
 				let loginUserid = ''
 				if(_self.userInfo && _self.userInfo._id)
 				{

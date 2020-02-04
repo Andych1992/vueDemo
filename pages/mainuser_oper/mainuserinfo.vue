@@ -508,14 +508,28 @@
 				_self.compTypeIndex = e.target.value
 				_self.userinfo.company = _self.compType[e.target.value]
 				_self.deptTypeIndex = 0
-				_self.userinfo.section =
-					_self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)[_self.deptTypeIndex]
+				var deptL = _self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)
+				if(deptL.length>0)
+				{
+					_self.userinfo.section = deptL[_self.deptTypeIndex]
+				}
+				else
+				{
+					_self.userinfo.section = []
+				}
 			},
 			//部门
 			chooseDept(e) {
 				_self.deptTypeIndex = e.target.value
-				_self.userinfo.section = _self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)[
-					_self.deptTypeIndex]
+				var deptL = _self.deptType.filter(item => item.compid === _self.compType[_self.compTypeIndex]._id)
+				if(deptL.length>0)
+				{
+					_self.userinfo.section = deptL[_self.deptTypeIndex]
+				}
+				else
+				{
+					_self.userinfo.section = []
+				}
 			},
 			//性别
 			chooseSex() {

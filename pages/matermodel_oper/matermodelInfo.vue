@@ -29,7 +29,7 @@
 							<text class="list-item__content-title">物资类型</text>
 						</view>
 						<view class="list-item__extra">
-							{{materModelInfo.materType?materModelInfo.materType.titles:''}}
+							<text class="list-item__extra-text">{{materModelInfo.materType?materModelInfo.materType.titles:''}}</text>
 							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 						</view>
 					</view>
@@ -703,7 +703,10 @@
 		height: 130upx;
 		border-radius: 50%;
 	}
-
+	.list-item__extra-text {
+			color: #999;
+			font-size: 24rpx;
+		}
 	/* * {
 		box-sizing: border-box;
 	} */

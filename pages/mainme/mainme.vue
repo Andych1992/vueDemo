@@ -4,7 +4,7 @@
 		<view style="height: 300rpx;background-color: #007AFF;"></view>
 		<view class="head">
 			<view class="u-f u-f-ac">
-				<view class="headpic"><image :src="userinfo.photo" mode="widthFix" lazy-load></image></view>
+				<view class="headpic"><image :src="userinfo.photo" mode="aspectFill" lazy-load></image></view>
 				<view class="headinfo u-f-column">
 					<view>{{userinfo.sname}}</view>
 					<view>单位:{{userinfo.company?userinfo.company.compname:''}}</view>
@@ -66,6 +66,11 @@ export default {
 						img: '../../static/icon/dwgl.png'
 					},
 					{
+						type: 'bmgl',
+						title: '部门管理',
+						img: '../../static/icon/dwgl.png'
+					},
+					{
 						type: 'grzl',
 						title: '个人资料',
 						img: '../../static/icon/gwzl.png'
@@ -106,9 +111,13 @@ export default {
 					break
 				case 'dwgl':
 					uni.navigateTo({
-						url: '/pages/mecompany/mecompany'
+						url: '/pages/mecompany_oper/mecompanyList'
 					})
-
+					break
+				case 'bmgl':
+					uni.navigateTo({
+						url: '/pages/medepartment_oper/medepartmentList'
+					})
 					break
 				case 'grzl':
 					console.log('个人资料')
