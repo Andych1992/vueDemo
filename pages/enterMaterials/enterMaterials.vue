@@ -14,7 +14,7 @@
 						</view>
 						<view class="cont">
 							<view class="t-sum">发放物资数 55</view>
-							<view class="t-status" :style="{background:index%2==0?'#F76260':'#007AFF'}">{{index%2==0?'捐赠':'采购'}}</view>
+							<view class="t-status" :style="{background:mater[materShowTypes.indexOf(item.materShowType)].color}">{{mater[materShowTypes.indexOf(item.materShowType)].name}}</view>
 						</view>
 						<view class="title">
 							<view class="t-biao">来往单位 {{item.relationCom}}</view>
@@ -69,7 +69,7 @@
 						name:"下拨"
 					},
 					{
-						color:"#007AFF",
+						color:"#8A6DE9",
 						name:"采购"
 					},
 					{
@@ -79,9 +79,14 @@
 				]
 			}
 		},
-		onLoad() {
+		onShow() {
 			_self=this;
 			_self.materialListGet(false);
+		},
+		onReachBottom() {
+			_self=this;
+			_self.page= _self.page+1
+			_self.materialListGet(true);
 		},
 		methods: {
 			
@@ -106,20 +111,32 @@
 							}
 						})
 						.then(res => {
-							uni.hideLoading()
+							
 							if(res.success){
-								console.log(res);
 								var list = res.result.data.data;
-								
 								if(falg){
-								_self.materials[_self.current].push(...list)
+									if(list.length==0){
+										uni.hideLoading()
+										uni.showModal({
+											content: `已经没有更多数据了`,
+											showCancel: false
+										})
+									}		
+									_self.materials[_self.current].push(...list)
+									
+									console.log(1111111);
 									console.log(_self.materials);
 								}else{
-									_self.materials[_self.current]=list
+									console.log(2222222222);
+									this.$set(_self.materials,_self.current,list)
 									console.log(_self.materials);
 								}
+								uni.hideLoading()
 							}else{
-								
+								uni.showModal({
+									content: `数据获取失败`,
+									showCancel: false
+								})
 							}
 							
 						})
@@ -154,6 +171,7 @@
 			},
 			onClickItem(e) {
 				this.current = e.currentIndex
+				this.page=1
 				_self.materialListGet(false);
 			},
 

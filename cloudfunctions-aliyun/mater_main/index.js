@@ -53,6 +53,7 @@ exports.main = async (event, context) => {
 					return {
 						success: true,
 						code: 200,
+						data:res,
 						msg: '添加成功'
 					}
 				} else {

@@ -38,14 +38,14 @@
 				</view>
 			</view>
 		</uni-list>
-	<view class="uni-row u-f-ac">
-		物资明细
-	</view>
+		<view class="uni-row u-f-ac">
+			物资明细
+		</view>
 		<view class="detail">
 			<view class="d-list">
 				<view v-for="(item,index) in materials">
 					<view class="materials">
-						<image class="img" :src="item.mat_img[0]" @click="showImg(item.mat_img)"></image>
+						<image class="img" :src="item.mat_img" @click="showImg(item.mat_img)"></image>
 						<view class="name">
 							<view class="n-va">{{item.mat_title}}</view>
 							<view class="n-va">数量 : {{item.mat_number}}</view>
@@ -127,54 +127,27 @@
 					check_time: "",
 					status: ""
 				},
-				materials:[
-					{
-						_id: "", // string，自生成
-						materMain_id:"", //主表ID
-						detail_balance:"",//1 增加 -1减少
-						materModel_id:"", //物资ID
-						types_id:"", //物资类型关联
-						mat_title:"3M N95口罩",//物资名称
-						mat_img:["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1580545258795&di=c8f802b6f0fa8b9d62688cdbf3c585b6&imgtype=0&src=http%3A%2F%2Fimg.99114.com%2Fgroup1%2FM00%2F3A%2FCF%2FwKgGMFctoRuAGZD-AAGcExaGvhY255.jpg"],//物资图片
-						unit:"",//单位  （计量单位）
-						model:"",//型号（物料规格）
-						manufacturer:"",//生产厂家
-						bar_code_number:"",//物资条码
-						mat_top:"",   //物资排序1，2，3 ，4 升序	
-						mat_number:22,//数量
-						mat_des:"",//物资说明
-					},
-					{
-						_id: "", // string，自生成
-						materMain_id:"", //主表ID
-						detail_balance:"",//1 增加 -1减少
-						materModel_id:"", //物资ID
-						types_id:"", //物资类型关联
-						mat_title:"3M N95口罩",//物资名称
-						mat_img:["https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1580545258795&di=c8f802b6f0fa8b9d62688cdbf3c585b6&imgtype=0&src=http%3A%2F%2Fimg.99114.com%2Fgroup1%2FM00%2F3A%2FCF%2FwKgGMFctoRuAGZD-AAGcExaGvhY255.jpg"],//物资图片
-						unit:"",//单位  （计量单位）
-						model:"",//型号（物料规格）
-						manufacturer:"",//生产厂家
-						bar_code_number:"",//物资条码
-						mat_top:"",   //物资排序1，2，3 ，4 升序	
-						mat_number:22,//数量
-						mat_des:"",//物资说明
-					}
-				]
+				materials: []
 			}
-			
+
 		},
 		onLoad(options) {
 			_self = this;
 			var _id = options.id
-			
-			},
+
+		},
+		onShow() {
+			var materials_save = uni.getStorageSync('materials_save');
+			if(materials_save){
+				_self.materials = materials_save
+			}	
+		},
 		methods: {
-			saveOrupdate(){
+			saveOrupdate() {
 				uni.showLoading({
 					title: '数据上传中...'
 				})
-				this.grant.fj_img.forEach((item,index)=>{
+				this.grant.fj_img.forEach((item, index) => {
 					new Promise((resolve, reject) => {
 						console.log(item);
 						const options = {
@@ -184,7 +157,7 @@
 					}).then((options) => {
 						return this.$myCloud.uploadFile(options)
 					}).then(res => {
-						this.grant.fj_img[index]=res.fileID
+						this.grant.fj_img[index] = res.fileID
 					}).catch((err) => {
 						uni.hideLoading()
 						if (err.message !== 'Fail_Cancel') {
@@ -196,7 +169,7 @@
 						return;
 					})
 				})
-				_self.grant.create_time=new Date().Format("yyyy-MM-dd HH:mm:ss");  
+				_self.grant.create_time = Date.parse(new Date())
 				this.$myCloud
 					.callFunction({
 						name: 'mater_main',
@@ -206,25 +179,44 @@
 						}
 					})
 					.then(res => {
-						uni.hideLoading()
 						if (res.result.success) {
+							_self.materials.forEach((item, index) => {
+								item.materMain_id=res.result.data.id
+								item.detail_balance=_self.grant.detail_balance
+								this.$myCloud
+									.callFunction({
+										name: 'mater_detail',
+										data: {
+											operType:'add',
+											dataIn: item
+										}
+									}).then(res => {
+										if (res.result.success) {
+											console.log(res);
+										}
+									})
+							})
+							uni.hideLoading()
 							uni.showToast({
-								title: res.msg,
+								title: res.result.msg,
 								duration: 1000
 							});
 							setTimeout(function() {
-								
-							}, 1000)
-							}
-							})
+								uni.navigateBack({
+									
+								})
+							}, 1000);
+						}
+					})
+				
 			},
-			matNumber(event,index){
-				this.materials[index].mat_number=event
+			matNumber(event, index) {
+				this.materials[index].mat_number = event
 			},
-			showImg(imageList){
+			showImg(imageList) {
 				uni.previewImage({
 					current: 0,
-					urls: imageList
+					urls: [imageList]
 				})
 			},
 			//Popup
@@ -269,6 +261,7 @@
 				console.log(e.detail.value)
 			},
 			toSaveGrant() {
+				uni.setStorageSync("materials_save", _self.materials)
 				uni.navigateTo({
 					url: '/pages/mainstroage/saveGrant'
 				})
@@ -279,7 +272,7 @@
 					content: '确定要删除准备发放的物资吗?',
 					success: (res) => {
 						if (res.confirm) {
-							this.materials.splice(index,1)
+							this.materials.splice(index, 1)
 						}
 					}
 				})
@@ -306,7 +299,8 @@
 				uni.chooseImage({
 					sourceType: sourceType[this.sourceTypeIndex],
 					sizeType: sizeType[this.sizeTypeIndex],
-					count: this.grant.fj_img.length + this.count[this.countIndex] > 9 ? 9 - this.grant.fj_img.length : this.count[this.countIndex],
+					count: this.grant.fj_img.length + this.count[this.countIndex] > 9 ? 9 - this.grant.fj_img.length : this.count[
+						this.countIndex],
 					success: (res) => {
 						this.grant.fj_img = this.grant.fj_img.concat(res.tempFilePaths);
 					},
@@ -315,11 +309,11 @@
 			},
 			bindChange(e) {
 				this.multiIndex = e.target.value
-				this.grant.materShowType= this.materShowTypes[this.multiIndex]
-				if(this.materShowTypes[this.multiIndex]=="1004"){
-					this.grant.detail_balance="-1"
-				}else{
-					this.grant.detail_balance="1"
+				this.grant.materShowType = this.materShowTypes[this.multiIndex]
+				if (this.materShowTypes[this.multiIndex] == "1004") {
+					this.grant.detail_balance = "-1"
+				} else {
+					this.grant.detail_balance = "1"
 				}
 			},
 		}
@@ -328,6 +322,7 @@
 
 <style lang="scss">
 	.page {
+
 		/* ======基本信息======== */
 		.list-item {
 			font-size: 32rpx;
@@ -336,11 +331,11 @@
 			justify-content: space-between;
 			padding-left: 30rpx;
 		}
-		
+
 		.list-item--hover {
 			background-color: #f1f1f1;
 		}
-		
+
 		.list-item__container {
 			position: relative;
 			/* #ifndef APP-NVUE */
@@ -354,7 +349,7 @@
 			justify-content: space-between;
 			align-items: center;
 		}
-		
+
 		.list-item--bottom {
 			/* #ifdef APP-PLUS || H5*/
 			border-bottom-color: #e5e5e5;
@@ -362,7 +357,7 @@
 			border-bottom-width: 0.5px;
 			/* #endif */
 		}
-		
+
 		/* #ifndef APP-NVUE */
 		.list-item__container:after {
 			position: absolute;
@@ -375,11 +370,11 @@
 			transform: scaleY(.5);
 			background-color: #e5e5e5;
 		}
-		
+
 		.list-item--bottom:after {
 			height: 0px;
 		}
-		
+
 		/* #endif */
 		.list-item__content {
 			/* #ifndef APP-NVUE */
@@ -389,15 +384,15 @@
 			overflow: hidden;
 			flex-direction: column;
 			color: #3b4144;
-		
+
 		}
-		
+
 		.list-item__content-title {
 			font-size: 28rpx;
 			color: #3b4144;
 			overflow: hidden;
 		}
-		
+
 		.list-item__extra {
 			/* width: 25%;*/
 			/* #ifndef APP-NVUE */
@@ -407,18 +402,20 @@
 			justify-content: flex-end;
 			align-items: center;
 		}
-		
+
 		.list-item__img {
 			width: 130upx;
 			height: 130upx;
 			border-radius: 50%;
 		}
+
 		.uni-row {
 			border-bottom: #BEBEBE solid 1rpx;
 			height: 80rpx;
 			padding: 10rpx;
 			background-color: #E5E5E5;
 		}
+
 		//Popup	/* 提示窗口 */
 		.uni-tip {
 			/* #ifndef APP-NVUE */
@@ -430,7 +427,7 @@
 			background-color: #fff;
 			border-radius: 10px;
 		}
-		
+
 		.uni-tip-title {
 			margin-bottom: 10px;
 			text-align: center;
@@ -438,14 +435,14 @@
 			font-size: 16px;
 			color: #333;
 		}
-		
+
 		.uni-tip-content {
 			/* padding: 15px;
 		*/
 			font-size: 14px;
 			color: #666;
 		}
-		
+
 		.uni-tip-group-button {
 			/* #ifndef APP-NVUE */
 			display: flex;
@@ -453,14 +450,14 @@
 			flex-direction: row;
 			margin-top: 20px;
 		}
-		
+
 		.uni-tip-button {
 			flex: 1;
 			text-align: center;
 			font-size: 14px;
 			color: #3b4144;
 		}
-		
+
 		.list {
 			.part {
 				display: flex;
@@ -487,6 +484,7 @@
 
 		.proof {
 			border-bottom: 1rpx solid #BEBEBE;
+
 			.images {
 				padding: 2vw 0vw;
 				display: flex;
