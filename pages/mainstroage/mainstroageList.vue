@@ -87,6 +87,18 @@
 				uni.showLoading({
 					title: '加载中...'
 				});
+				//干库存
+				this.$myCloud
+					.callFunction({
+						name: '_0_bak_sumtest',
+						data: {}
+					})
+					.then(res => {
+					})
+					.catch(err => {
+						console.error(err)
+					})
+				//干库存
 				this.$myCloud
 					.callFunction({
 						name: 'materialtype_oper',

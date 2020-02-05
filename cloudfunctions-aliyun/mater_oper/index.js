@@ -109,9 +109,9 @@ exports.main = async (event, context) => {
 											var resDetail = db3b.collection('materModel').doc(_id).set({
 													mat_number:arr[index].sumSales
 												})
-											if (!resDetail.id || resDetail.affectedDocs != 1) {
-												throw new Error(resDetail);
-											}
+											// if (!resDetail.id || resDetail.affectedDocs != 1) {
+											// 	throw new Error(resDetail);
+											// }
 										})
 									} catch (error) {
 										return {

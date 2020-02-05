@@ -3,6 +3,8 @@ const db = uniCloud.database();
 const dbb = uniCloud.database();
 const $ = db.command.aggregate
 exports.main = async (event, context) => {
+	//加个计算标识符 有需要计算的根据标识 可以继续下面两次停止标识
+	//加个计算标识符
 	db.collection('materDetail').aggregate()
 	// .match({
 	// 	materModel_id: $.eq("5e3a8632b4f646004e8880c1")
@@ -22,9 +24,9 @@ exports.main = async (event, context) => {
 				var resDetail = dbb.collection('materModel').doc(_id).set({
 						mat_number:arr[index].sumSales
 					})
-				if (!resDetail.id || resDetail.affectedDocs != 1) {
-					throw new Error(resDetail);
-				}
+				// if (!resDetail.id || resDetail.affectedDocs != 1) {
+				// 	throw new Error(resDetail);
+				// }
 			})
 		} catch (error) {
 			return {
