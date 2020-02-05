@@ -29,7 +29,7 @@
 							<text class="list-item__content-title">物资类型</text>
 						</view>
 						<view class="list-item__extra">
-							<text class="list-item__extra-text">{{materModelInfo.materType?materModelInfo.materType.titles:''}}</text>
+							<text class="list-item__extra-text">{{materModelInfo.materType && materModelInfo.types_id?materModelInfo.materType.titles:''}}</text>
 							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 						</view>
 					</view>
@@ -251,17 +251,17 @@
 						uni.hideLoading()
 						if (res.success) {
 							var info = res.result.data;
+							console.log(info);
 							//==物资类型
-							if(info[0].materType)
+							if(info[0].materType && info[0].types_id)
 							{
 								_self.materTypeIndex = _self.materType.indexOf(_self.materType.filter((p) => {
 									return p._id == info[0].materType._id;
 								})[0])
+								if (_self.materTypeIndex > 0) {
+									_self.materModelInfo.materType = _self.materType[_self.materTypeIndex]
+								}
 							}
-							if (_self.materTypeIndex < 0) {
-								_self.materTypeIndex = 0
-							}
-							_self.materModelInfo.materType = _self.materType[_self.materTypeIndex]
 							//==单位 部门
 							// _self.compTypeIndex = _self.compType.indexOf(_self.compType.filter((p) => {
 							// 	return p._id == info[0].company._id;
@@ -345,7 +345,7 @@
 					});
 					return 
 				}
-				if(!_self.materModelInfo.materType)
+				if(!_self.materModelInfo.materType || !_self.materModelInfo.types_id)
 				{
 					uni.showModal({
 						title: '提示',
@@ -354,6 +354,11 @@
 						confirmText: '确定'
 					});
 					return 
+				}
+				//物资类型ID 单独补充上去
+				if(_self.materType && _self.materType.length > 0)
+				{
+					_self.materModelInfo.types_id = _self.materType[_self.materTypeIndex]._id
 				}
 				this.$myCloud
 					.callFunction({

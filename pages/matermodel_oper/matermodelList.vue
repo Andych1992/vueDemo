@@ -190,14 +190,14 @@
 				if (refresh) {
 					_self.page = 1;
 				}
-				var current_types_id = _self.materTypeList[_self.TabCur]._id
+				var current_types_id = _self.TabCur==0?'':_self.materTypeList[_self.TabCur]._id
 				this.$myCloud
 					.callFunction({
 						name: 'matermodel_oper',
 						data: {
 							operType: 'list',
 							dataIn:{
-								types_id:_self.TabCur==0?'':current_types_id
+								types_id:current_types_id
 							},
 							searchKey: _self.searchKey,
 							pageSize: _self.pageSize,

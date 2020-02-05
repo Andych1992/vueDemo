@@ -59,8 +59,9 @@ exports.main = async (event, context) => {
 						//添加明细
 						dataInDetail.forEach((currentValue, index, arr) => {
 							arr[index].materMain_id = main_ID;
-							arr[index].detail_balance = detail_balance;
+							arr[index].detail_balance = parseInt(detail_balance);
 							delete arr[index]["_id"];
+							arr[index].calcNum = arr[index].mat_number * arr[index].detail_balance
 							dbb.collection('materDetail').add({
 									materMain_id: arr[index].materMain_id,
 									detail_balance: arr[index].detail_balance,
@@ -74,7 +75,8 @@ exports.main = async (event, context) => {
 									bar_code_number: arr[index].bar_code_number,
 									mat_top: arr[index].mat_top,
 									mat_number: arr[index].mat_number,
-									mat_des: arr[index].mat_des
+									mat_des: arr[index].mat_des,
+									calcNum:arr[index].calcNum
 								})
 								.then((resDetail) => {
 									resDetails[index] = resDetail
@@ -94,7 +96,7 @@ exports.main = async (event, context) => {
 					return {
 						success: true,
 						code: 200,
-						data: resDetails,
+						data: dataInDetail,
 						msg: '添加成功'
 					}
 				} else {

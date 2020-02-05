@@ -24,23 +24,23 @@ exports.main = async (event, context) => {
 		mat_number, //库存数量
 		mat_des //物资说明
 		} = dataIn
-	let where 
-	if(types_id)
-	{
-		where = {
-			types_id:types_id
-		}
-	}
-	else{
-		where = {
-		}
-	}
 	// dbCmd.and(where,)
 	const collection = db.collection('materModel')
 	let res;
 	switch (operType) {
 		case 'list':
 			const dbCmd = db.command;
+			let where
+			if(types_id)
+			{
+				where = {
+					types_id:dbCmd.eq(types_id)
+				}
+			}
+			else{
+				where = {
+				}
+			}
 			if (searchKey != '') {
 				res = await collection.where(
 					dbCmd.or({
