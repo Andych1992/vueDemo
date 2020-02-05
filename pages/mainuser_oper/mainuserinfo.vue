@@ -264,6 +264,43 @@
 
 		},
 		methods: {
+			//重置密码
+			exitbtn(){
+				uni.showModal({
+					title: '询问',
+					content: '确定重置密码吗？',
+					showCancel: true,
+					cancelText: '取消',
+					confirmText: '确定',
+					success: res => {
+						// console.log(res)
+						if(res.confirm)
+						{
+							//重置密码
+							console.log('重置密码')
+							_self.$request({
+								name: 'setpwd',
+								data: {
+									_id: _self.userinfo._id
+								}
+							}).then(res => {
+								console.log(res)
+								// let maxcode
+								if (res.success) {
+									uni.showToast({
+										title: '重置成功'
+									});
+								}
+								// 	maxcode = res.data.maxcode;
+								// } else {
+								// 	maxcode = '';
+								// }
+								// fun(maxcode);
+							})
+						}
+					}
+				});
+			},
 			//权限
 			checkboxChange: function (e) {
 				var items = _self.qxList,

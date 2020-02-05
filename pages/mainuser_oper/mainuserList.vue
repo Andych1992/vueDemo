@@ -6,7 +6,7 @@
 			<block v-for="(item,index) in userList" :key='index'>
 				<uni-list-item :show-arrow="true" 
 					:title="((!item.company||item.company=='0')?'':(item.company.compname+'-'))+
-							((!item.section||item.section=='0')?'':(item.section.section+'-'))+
+							((!item.section||item.section=='0'||!item.section.section)?'':(item.section.section+'-'))+
 							item.sname" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
 				 @click="operUserInfo(item._id)" />
 			</block>

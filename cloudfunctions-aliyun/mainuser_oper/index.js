@@ -182,6 +182,7 @@ exports.main = async (event, context) => {
 				company,
 				section,
 				desc,
+				username:phone,
 				power
 			});
 			if (res.id || res.affectedDocs === 1) {
