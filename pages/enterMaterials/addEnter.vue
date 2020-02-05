@@ -18,7 +18,7 @@
 							<text class="list-item__content-title">入库类型</text>
 						</view>
 						<view class="list-item__extra">
-							{{multiArray[multiIndex]}}
+							<text class="list-item__extra-text">{{multiArray[multiIndex]}}</text>
 							<!-- {{mages[maindex]}} -->
 							<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
 						</view>
@@ -43,7 +43,7 @@
 		</view>
 		<view class="detail">
 			<view class="d-list">
-				<view v-for="(item,index) in materials">
+				<view v-for="(item,index) in materials" :key="index">
 					<view class="materials">
 						<image class="img" :src="item.mat_img" @click="showImg(item.mat_img)"></image>
 						<view class="name">
@@ -62,11 +62,11 @@
 		<view class="button">
 			<view class="b-t" @click="toSaveGrant()">
 				<uni-icons class="icon" type="plus" size="26"></uni-icons>
-				<view class="wz">添加</view>
+				<view class="wz">添加明细</view>
 			</view>
 			<view class="b-t" @click="saveOrupdate()">
-				<uni-icons class="icon" type="checkbox" size="26"></uni-icons>
-				<view class="wz">确定</view>
+				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
+				<view class="wz">确定入库</view>
 			</view>
 		</view>
 		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
@@ -134,20 +134,51 @@
 		onLoad(options) {
 			_self = this;
 			var _id = options.id
+			var userinfodata = uni.getStorageSync('userinfodata')
+			if (userinfodata) {
+				userinfodata = JSON.parse(userinfodata)
+			}
+			if (_id) {
+				if (_id == 'add') {
+					_self.operType = 'add'
+					uni.setNavigationBarTitle({
+						title: "物资入库-新增"
+					})
+					if (userinfodata) {
+						_self.grant.materOperUer = userinfodata.sname;
+						_self.grant.materOperCom = userinfodata.company.compname;
+						_self.grant.materOperDept = userinfodata.section.section;
+					}
+				} else {
+					_self.operType = 'save'
+					uni.setNavigationBarTitle({
+						title: "物资入库-编辑"
+					})
+					_self.grant._id = _id;
+					//获取资料
+					// _self.infoGet();
+				}
+			} else {
+				uni.showToast({
+					title: '未获取到信息',
+					icon: 'none',
+					duration: 1000
+				});
+			}
 
 		},
 		onShow() {
 			var materials_save = uni.getStorageSync('materials_save');
-			if(materials_save){
+			if (materials_save) {
 				_self.materials = materials_save
-			}	
+			}
 		},
 		methods: {
 			saveOrupdate() {
 				uni.showLoading({
 					title: '数据上传中...'
 				})
-				this.grant.fj_img.forEach((item, index) => {
+				_self.grant.fj_img.forEach((item, index) => {
 					new Promise((resolve, reject) => {
 						console.log(item);
 						const options = {
@@ -155,9 +186,11 @@
 						}
 						resolve(options)
 					}).then((options) => {
-						return this.$myCloud.uploadFile(options)
+						return _self.$myCloud.uploadFile(options)
 					}).then(res => {
-						this.grant.fj_img[index] = res.fileID
+						// console.log(res);
+						_self.grant.fj_img[index] = res.fileID
+						// console.log(_self.grant.fj_img[index])
 					}).catch((err) => {
 						uni.hideLoading()
 						if (err.message !== 'Fail_Cancel') {
@@ -170,48 +203,80 @@
 					})
 				})
 				_self.grant.create_time = Date.parse(new Date())
-				this.$myCloud
+				//New
+				_self.$myCloud
 					.callFunction({
-						name: 'mater_main',
+						name: 'mater_oper',
 						data: {
 							operType: _self.operType,
-							dataIn: _self.grant
+							dataIn: _self.grant,
+							dataInDetail:_self.materials
 						}
 					})
 					.then(res => {
+						console.log(res)
+						// return 
 						if (res.result.success) {
-							_self.materials.forEach((item, index) => {
-								item.materMain_id=res.result.data.id
-								item.detail_balance=_self.grant.detail_balance
-								this.$myCloud
-									.callFunction({
-										name: 'mater_detail',
-										data: {
-											operType:'add',
-											dataIn: item
-										}
-									}).then(res => {
-										if (res.result.success) {
-											console.log(res);
-										}
-									})
-							})
-							uni.hideLoading()
 							uni.showToast({
 								title: res.result.msg,
 								duration: 1000
 							});
 							setTimeout(function() {
-								uni.navigateBack({
-									
-								})
+								uni.navigateTo({
+									url: './enterMaterials'
+								});
 							}, 1000);
+						}else {
+							uni.showModal({
+								content: res.result.msg,
+								showCancel: false
+							})
 						}
 					})
-				
+
+				// _self.$myCloud
+				// 	.callFunction({
+				// 		name: 'mater_main',
+				// 		data: {
+				// 			operType: _self.operType,
+				// 			dataIn: _self.grant
+				// 		}
+				// 	})
+				// 	.then(res => {
+				// 		if (res.result.success) {
+				// 			_self.materials.forEach((item, index) => {
+				// 				item.materMain_id = res.result.data.id
+				// 				item.detail_balance = _self.grant.detail_balance
+				// 				this.$myCloud
+				// 					.callFunction({
+				// 						name: 'mater_detail',
+				// 						data: {
+				// 							operType: 'add',
+				// 							dataIn: item
+				// 						}
+				// 					}).then(res => {
+				// 						if (res.result.success) {
+				// 							console.log(res);
+				// 						}
+				// 					})
+				// 			})
+				// 			uni.hideLoading()
+				// 			uni.showToast({
+				// 				title: res.result.msg,
+				// 				duration: 1000
+				// 			});
+				// 			setTimeout(function() {
+				// 				uni.navigateBack({
+
+				// 				})
+				// 			}, 1000);
+				// 		}
+				// 	})
+
 			},
 			matNumber(event, index) {
 				this.materials[index].mat_number = event
+				uni.setStorageSync("materials_save", _self.materials)
 			},
 			showImg(imageList) {
 				uni.previewImage({
@@ -273,6 +338,7 @@
 					success: (res) => {
 						if (res.confirm) {
 							this.materials.splice(index, 1)
+							uni.setStorageSync("materials_save", _self.materials)
 						}
 					}
 				})
@@ -409,6 +475,11 @@
 			border-radius: 50%;
 		}
 
+		.list-item__extra-text {
+			color: #999;
+			font-size: 24rpx;
+		}
+
 		.uni-row {
 			border-bottom: #BEBEBE solid 1rpx;
 			height: 80rpx;
@@ -494,15 +565,15 @@
 				.image {
 
 					margin-left: 3vw;
-					width: 30vw;
-					height: 30vw;
+					width: 20vw;
+					height: 20vw;
 					border-radius: 1.5vw;
 				}
 
 				.image-x {
 					position: absolute;
 					top: 1vw;
-					left: 26vw;
+					left: 17vw;
 					width: 6vw;
 					height: 6vw;
 				}
@@ -521,8 +592,9 @@
 					flex-wrap: nowrap;
 
 					.img {
-						width: 17vw;
-						height: 17vw;
+						margin: 1vw 0;
+						width: 15vw;
+						height: 15vw;
 						border-radius: 1vw;
 					}
 
@@ -577,7 +649,7 @@
 				display: flex;
 				flex-wrap: nowrap;
 				justify-content: center;
-				width: 22vw;
+				width: 28vw;
 				height: 10vw;
 				border-radius: 1vw;
 				border: 1rpx solid #BEBEBE;

@@ -117,10 +117,10 @@
 								if(falg){
 									if(list.length==0){
 										uni.hideLoading()
-										uni.showModal({
-											content: `已经没有更多数据了`,
-											showCancel: false
-										})
+										// uni.showModal({
+										// 	content: `已经没有更多数据了`,
+										// 	showCancel: false
+										// })
 									}		
 									_self.materials[_self.current].push(...list)
 									
@@ -164,7 +164,7 @@
 				switch (e.index) {
 					case 0:
 						uni.navigateTo({
-							url: '/pages/enterMaterials/addEnter'
+							url: '/pages/enterMaterials/addEnter?id=add'
 						})
 						return;
 				}
