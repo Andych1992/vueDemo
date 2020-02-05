@@ -17,14 +17,39 @@ export default {
 			duration: 2000
 		}, options));
 	},
-
+	
+	checkLogin(){
+		const userInfo = uni.getStorageSync('USER_INFO')
+		// var userinfodata = uni.getStorageSync('userinfodata')
+		if(!userInfo)
+		{
+			return false
+		}
+		return true
+	},
 	/**
 	 * @name 页面跳转
 	 * @param {Object} url 跳转的地址
 	 */
 	navigateTo(ppower,url,switchTab) {
+		if(!this.checkLogin())
+		{
+			uni.showToast({
+				title: '暂未登录',
+				icon:'none'
+			});
+			return
+		}
 		//权限判断
-		var userinfodata = JSON.parse(uni.getStorageSync('userinfodata'))
+		var userinfodata = uni.getStorageSync('userinfodata')
+		if(!userinfodata)
+		{
+			uni.showToast({
+				title: '暂无权限'
+			});
+			return 
+		}
+		userinfodata = JSON.parse(userinfodata)
 		if(userinfodata.permission == 9)
 		{
 			if(switchTab)

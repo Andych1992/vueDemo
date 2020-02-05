@@ -120,6 +120,19 @@ exports.main = async (event, context) => {
 					msg: '单位组织不存在'
 				}
 			}
+			const dept = db.collection('department')
+			//单条获取
+			var resDept = await dept.where({
+				compid: _id
+			}).get()
+			// return resDept
+			if (resDept.data.length > 0 || resDept.affectedDocs > 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '单位组织下存在部门信息'
+				}
+			}
 			res = await collection.doc(_id).remove()
 			if (res.id || res.affectedDocs === 1) {
 				return {
