@@ -8,7 +8,7 @@
 				<view>
 					<view class="details" v-for="(item, index) in materials[current]" :key="index">
 						<view class="title">
-							<view class="t-biao"><text :style="{color:item.detail_balance>0?'#007AFF':'#4CD964'}">{{item.detail_balance>0?'入库  ':'退货  '}}</text>
+							<view class="t-biao"><text :style="{color:item.detail_balance>0?'#007AFF':'#4CD964'}">{{item.detail_balance>0?'入库 ':'退货  '}}</text>
 								{{item.serialNumber}}</view>
 							<view class="t-time">{{item.create_time}}</view>
 						</view>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-		var _self;
+	var _self;
 	export default {
 		data() {
 			return {
@@ -41,7 +41,7 @@
 					selectedColor: '#007AFF',
 					buttonColor: '#007AFF'
 				},
-				items: ["全部", "无偿捐赠", "上级下拨", "自行采购","采购退货"],
+				items: ["全部", "无偿捐赠", "上级下拨", "自行采购", "采购退货"],
 				content: [{
 					iconPath: '/static/icon/giveOut.png',
 					selectedIconPath: '/static/icon/giveOut.png',
@@ -52,111 +52,115 @@
 				//请求类型
 				operType: 'get',
 				//页码
-				page:1,
-				pageSize:10,
-				searchKey:'',
-				materials:[[],[],[],[],[]],
+				page: 1,
+				pageSize: 10,
+				searchKey: '',
+				materials: [
+					[],
+					[],
+					[],
+					[],
+					[]
+				],
 				//1003代表采购入库1004采购退货
-				materShowTypes:["","1001","1002","1003","1004"],
-				mater:[
-					{},
+				materShowTypes: ["", "1001", "1002", "1003", "1004"],
+				mater: [{},
 					{
-						color:"#007AFF",
-						name:"捐赠"
+						color: "#007AFF",
+						name: "捐赠"
 					},
 					{
-						color:"#F76260",
-						name:"下拨"
+						color: "#F76260",
+						name: "下拨"
 					},
 					{
-						color:"#8A6DE9",
-						name:"采购"
+						color: "#8A6DE9",
+						name: "采购"
 					},
 					{
-						color:"#4CD964",
-						name:"退货"
+						color: "#4CD964",
+						name: "退货"
 					}
 				]
 			}
 		},
 		onShow() {
-			_self=this;
+			_self = this;
 			_self.materialListGet(false);
 		},
 		onReachBottom() {
-			_self=this;
-			_self.page= _self.page+1
+			_self = this;
+			_self.page = _self.page + 1
 			_self.materialListGet(true);
 		},
 		methods: {
-			
-			materialListGet(falg){
+
+			materialListGet(falg) {
 				uni.showLoading({
 					title: '加载数据中...'
 				})
-				var dataIn ={
-					searchKey:_self.searchKey,
-					 materOperType:'10',//表示入库
-					 materShowType:_self.materShowTypes[_self.current],
-					 pageSize:_self.pageSize,
-					 page:_self.page
+				var dataIn = {
+					searchKey: _self.searchKey,
+					materOperType: '10', //表示入库
+					materShowType: _self.materShowTypes[_self.current],
+					pageSize: _self.pageSize,
+					page: _self.page
 				}
 				console.log(dataIn);
 				this.$myCloud
-				.callFunction({
-							name: 'mater_main',
-							data:{
-								operType:_self.operType,
-								dataIn:dataIn
-							}
-						})
-						.then(res => {
-							
-							if(res.success){
-								var list = res.result.data.data;
-								if(falg){
-									if(list.length==0){
-										uni.hideLoading()
-										// uni.showModal({
-										// 	content: `已经没有更多数据了`,
-										// 	showCancel: false
-										// })
-									}		
-									_self.materials[_self.current].push(...list)
-									
-									console.log(1111111);
-									console.log(_self.materials);
-								}else{
-									console.log(2222222222);
-									this.$set(_self.materials,_self.current,list)
-									console.log(_self.materials);
+					.callFunction({
+						name: 'mater_main',
+						data: {
+							operType: _self.operType,
+							dataIn: dataIn
+						}
+					})
+					.then(res => {
+
+						if (res.success) {
+							var list = res.result.data.data;
+							if (falg) {
+								if (list.length == 0) {
+									uni.hideLoading()
+									uni.showModal({
+										content: `已经没有更多数据了`,
+										showCancel: false
+									})
 								}
-								uni.hideLoading()
-							}else{
-								uni.showModal({
-									content: `数据获取失败`,
-									showCancel: false
-								})
+								_self.materials[_self.current].push(...list)
+								console.log(1111111);
+								console.log(_self.materials);
+							} else {
+								console.log(2222222222);
+								this.$set(_self.materials, _self.current, list)
+								console.log(_self.materials);
 							}
-							
-						})
-						.catch(err => {
 							uni.hideLoading()
+						} else {
 							uni.showModal({
-								content: `数据获取失败，错误信息为：${err.message}`,
+								content: `数据获取失败`,
 								showCancel: false
 							})
-							console.error(err)
-						})		
+						}
+
+					})
+					.catch(err => {
+						uni.hideLoading()
+						uni.showModal({
+							content: `数据获取失败，错误信息为：${err.message}`,
+							showCancel: false
+						})
+						console.error(err)
+					})
 			},
 			//搜索
 			search(e) {
 				_self.searchKey = e.value;
 				_self.materialListGet(false);
-				
+
 			},
 			//取消搜索
-			cancelSearch(){
+			cancelSearch() {
 				_self.searchKey = '';
 				_self.materialListGet(false);
 			},
@@ -164,14 +168,14 @@
 				switch (e.index) {
 					case 0:
 						uni.navigateTo({
-							url: '/pages/enterMaterials/addEnter?id=add'
+							url: '/pages/enterMaterials/addEnter?id=add&type=' + 1
 						})
 						return;
 				}
 			},
 			onClickItem(e) {
 				this.current = e.currentIndex
-				this.page=1
+				this.page = 1
 				_self.materialListGet(false);
 			},
 
@@ -185,11 +189,11 @@
 			padding: 2vw;
 			font-size: 3.7vw;
 			border-top: 1rpx solid #BEBEBE;
-			
+
 			&:last-child {
 				border-bottom: 1rpx solid #BEBEBE;
 			}
-			
+
 			.title {
 				display: flex;
 				flex-wrap: nowrap;
@@ -230,6 +234,6 @@
 				}
 			}
 		}
-		
+
 	}
 </style>
