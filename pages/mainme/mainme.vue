@@ -10,9 +10,9 @@
 					</view>
 					<view class="headinfo u-f-column">
 						<view>{{userinfo.sname}}</view>
-						<view>单位:{{!userinfo.company||userinfo.company=='0'?'':userinfo.company.compname}}</view>
+						<view>单位:{{!userinfo.company||userinfo.company=='0'?'未设置':userinfo.company.compname}}</view>
 						<!-- <view>{{userinfo.regDate}}</view> -->
-						<view>部门:{{userinfo.section?userinfo.section.section:''}}</view>
+						<view>部门:{{!userinfo.section||userinfo.section=='0'?'未设置':userinfo.section.section}}</view>
 					</view>
 				</view>
 			</view>
@@ -48,7 +48,7 @@
 			return {
 				userinfo: {},
 				listinfo: [],
-				isLogin:false
+				isLogin: false
 			}
 		},
 		onLoad() {
@@ -125,7 +125,14 @@
 									listdata.splice(index, 1)
 								}
 							});
-
+							if(listdata.length < 1 )
+							{
+								listdata = [{
+									type: 'grzl',
+									title: '个人资料',
+									img: '../../static/icon/gwzl.png'
+								}]
+							}
 							_self.listinfo = listdata
 						}
 					} else {
@@ -163,8 +170,7 @@
 				}
 			},
 			showNoLogin(show) {
-				if(!_self.$util.checkLogin())
-				{
+				if (!_self.$util.checkLogin()) {
 					if (show) {
 						//可能未登陆
 						uni.showModal({
@@ -207,13 +213,12 @@
 								datas.sname = '未设置'
 							}
 							if (datas.company == '0') {
-								if(datas.company.compname)
-								{
-								datas.company.compname = '未设置'
+								if (datas.company.compname) {
+									datas.company.compname = '未设置'
 								}
 							}
 							if (datas.section == '0') {
-								if(datas.section.section){								
+								if (datas.section.section) {
 									datas.section.section = '未设置'
 								}
 							}
