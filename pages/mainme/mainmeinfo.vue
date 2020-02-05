@@ -69,6 +69,7 @@
 		</uni-list>
 		
 		<button class="btn" @click="savePage" type="primary">保存</button>
+		<button class="btn" @click="setPwd" type="primary">修改密码</button>
 		<!-- 弹窗 @input="onKeyInput" -->
 		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
 			<view class="uni-tip">
@@ -77,6 +78,22 @@
 				<view class="uni-tip-group-button">
 					<text class="uni-tip-button" @click="cancel()">取消</text>
 					<text class="uni-tip-button" @click="enter()">确定</text>
+				</view>
+			</view>
+		</uni-popup>
+		<!-- 弹窗 密码重置 -->
+		<uni-popup ref="showtipPwd" type="center" :mask-click="false" @change="changePwd">
+			<view class="uni-tip">
+				<text class="uni-tip-title">重置密码</text>
+				<text class="uni-single-title">输入旧密码</text>
+				<input class="uni-input-pwd" v-model="oldPwd" focus password />
+				<text class="uni-single-title">输入新密码</text>
+				<input class="uni-input-pwd" v-model="newPwd" password />
+				<text class="uni-single-title">确认新密码</text>
+				<input class="uni-input-pwd" v-model="comPwd" password />
+				<view class="uni-tip-group-button">
+					<text class="uni-tip-button" @click="cancelPwd()">取消</text>
+					<text class="uni-tip-button" @click="enterPwd()">确定</text>
 				</view>
 			</view>
 		</uni-popup>
@@ -105,8 +122,10 @@
 				popupTitle: '',
 				popupColumn: '',
 				popupValue: '',
-				
-				
+				//密码
+				oldPwd:'',
+				newPwd:'',
+				comPwd:'',
 				//头像
 				imgSrc: '../../static/logo.png',
 				sourceTypeIndex: 2,
@@ -168,6 +187,76 @@
 
 		},
 		methods: {
+			setPwd(){
+				_self.oldPwd =''
+				_self.newPwd =''
+				_self.comPwd =''
+				this.$nextTick(() => {
+					this.$refs['showtipPwd'].open()
+				})
+			},
+			cancelPwd() {
+				_self.oldPwd =''
+				_self.newPwd =''
+				_self.comPwd =''
+				this.$refs['showtipPwd'].close()
+			},
+			enterPwd() {
+				if(!_self.oldPwd)
+				{
+					uni.showModal({
+						content: '请输入旧密码',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
+				if(!_self.newPwd)
+				{
+					uni.showModal({
+						content: '请输入新密码',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
+				if(_self.newPwd != _self.comPwd)
+				{
+					uni.showModal({
+						content: '新密码与确认密码不一致',
+						showCancel: false,
+						confirmText: '确定'
+					});
+					return 
+				}
+				//远程校验 设置密码
+				console.log('设置密码')
+				_self.$request({
+					name: 'setpwd',
+					data: {
+						_id: _self.userinfo._id,
+						reset:false,
+						oldPwd:_self.oldPwd,
+						newPwd:_self.newPwd
+					}
+				}).then(res => {
+					console.log(res)
+					if (res.success) {
+						uni.showToast({
+							title: '修改密码成功'
+						});
+					}
+				})
+				//远程校验 设置密码
+				_self.oldPwd =''
+				_self.newPwd =''
+				_self.comPwd =''
+				this.$refs['showtipPwd'].close()
+			},
+			changePwd(e) {
+				console.log('是否打开:' + e.show)
+			},
+			
 			//保存
 			savePage() {
 				//普通保存
@@ -509,7 +598,14 @@
 		font-size: 14px;
 		color: #3b4144;
 	}
-
+	.uni-single-title {
+		margin-bottom: 10px;
+		font-size: 26upx;
+		color: #333;
+	}
+	.uni-input-pwd{
+		border-bottom: 1upx solid #EEEEEE;
+	}
 	//权限
 	.qxitem {
 		padding: 30rpx;
@@ -657,6 +753,6 @@
 		// background: #FFFFFF;
 		// color: #FF3333;
 		font-size: 32upx;
-		margin-bottom: 120upx;
+		// margin-bottom: 120upx;
 	}
 </style>

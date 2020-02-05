@@ -281,7 +281,8 @@
 							_self.$request({
 								name: 'setpwd',
 								data: {
-									_id: _self.userinfo._id
+									_id: _self.userinfo._id,
+									reset:true
 								}
 							}).then(res => {
 								console.log(res)

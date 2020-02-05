@@ -67,7 +67,7 @@
 			...mapMutations(['USER_LOGIN_OUT', 'UPDATE_USER_INFO']),
 			loadlistinit() {
 				console.log(userdata)
-				if (!_self.showNoLogin(true)) {
+				if (!_self.showNoLogin(false)) {
 					return
 				}
 				_self.getuserinfo(() => {

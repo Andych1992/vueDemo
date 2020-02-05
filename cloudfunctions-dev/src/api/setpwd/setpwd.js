@@ -19,9 +19,22 @@ async function setpwd(event) {
 	try {
 		// 获取参数_id,
 		const {
-			_id
+			_id,
+			reset,
+			oldPwd,
+			newPwd
 		} = event
 		var password = '123456'
+		if(reset)
+		{
+			//重置密码
+			password = '123456'
+		}
+		else
+		{
+			//新密码
+			password = newPwd
+		}
 		if (!password) {
 			return {
 				success: false,
@@ -39,6 +52,22 @@ async function setpwd(event) {
 				success: false,
 				code: -1,
 				msg: '用户不存在'
+			}
+		}
+		if(!reset)
+		{
+			//重置密码前的校验
+			// 校验密码
+			const flag = bcrypt.compareSync(oldPwd, userInDB.data[0].password)
+			if (flag) {
+				// 用户名和密码正确
+			}else{
+				// 密码错误
+				return {
+				  success: false,
+				  code: -1,
+				  msg: '旧密码错误'
+				}
 			}
 		}
 		const bcryptPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10))

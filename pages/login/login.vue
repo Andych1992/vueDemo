@@ -9,7 +9,7 @@
 			<form @submit="login">
 				<view class="uni-row inpus"><input type="text" name="username" value="13800138000" v-model="username" placeholder="手机号" /></view>
 
-				<view class="uni-row inpus"><input type="pass" name="password" value="123456" v-model="password" placeholder="密码" /></view>
+				<view class="uni-row inpus"><input type="pass" name="password"password value="123456" v-model="password" placeholder="密码" /></view>
 
 				<view class="uni-row"><button form-type="submit" type="primary">登陆</button></view>
 				<!-- <view class="uni-row"><button @click="register" type="primary">注册</button></view> -->
