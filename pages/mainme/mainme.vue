@@ -10,7 +10,7 @@
 					</view>
 					<view class="headinfo u-f-column">
 						<view>{{userinfo.sname}}</view>
-						<view>单位:{{userinfo.company?userinfo.company.compname:''}}</view>
+						<view>单位:{{!userinfo.company||userinfo.company=='0'?'':userinfo.company.compname}}</view>
 						<!-- <view>{{userinfo.regDate}}</view> -->
 						<view>部门:{{userinfo.section?userinfo.section.section:''}}</view>
 					</view>
@@ -207,10 +207,15 @@
 								datas.sname = '未设置'
 							}
 							if (datas.company == '0') {
+								if(datas.company.compname)
+								{
 								datas.company.compname = '未设置'
+								}
 							}
 							if (datas.section == '0') {
-								datas.section.section = '未设置'
+								if(datas.section.section){								
+									datas.section.section = '未设置'
+								}
 							}
 							_self.userinfo = datas
 							// {
