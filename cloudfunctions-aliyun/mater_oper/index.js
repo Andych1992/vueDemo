@@ -4,6 +4,9 @@
 'use strict';
 const db = uniCloud.database();
 const dbb = uniCloud.database();
+const db2b = uniCloud.database();
+const db3b = uniCloud.database();
+const $ = db2b.command.aggregate
 exports.main = async (event, context) => {
 	const {
 		operType,
@@ -83,7 +86,51 @@ exports.main = async (event, context) => {
 									if (!resDetail.id || resDetail.affectedDocs != 1) {
 										throw new Error(resDetail);
 									}
-								});
+								});								
+						});
+						//==更新库存
+						dataInDetail.forEach((currentValue, indexx, arr1) => {
+							db2b.collection('materDetail').aggregate()
+								.match({
+									materModel_id: $.eq(arr1[indexx].materModel_id)
+								 })
+								.group({
+									// 按 materModel_id 字段分组  * $detail_balance $.mul(10)
+									_id: '$materModel_id',
+									sumSales: $.sum('$calcNum')
+								})
+								.end()
+								.then((res) => {
+									console.log(res)
+									var dataList = res.data
+									try {
+										dataList.forEach((currentValue, index, arr) => {
+											var _id = arr[index]._id
+											var resDetail = db3b.collection('materModel').doc(_id).set({
+													mat_number:arr[index].sumSales
+												})
+											if (!resDetail.id || resDetail.affectedDocs != 1) {
+												throw new Error(resDetail);
+											}
+										})
+									} catch (error) {
+										return {
+											success: false,
+											code: 500,
+											msg: '计算库存失败' + error.message,
+											err: error.message
+										}
+									}
+									// return {
+									// 	success: true,
+									// 	code: 200,
+									// 	msg: '计算库存成功'
+									// }
+								})
+							.catch((err) => {
+								console.error(err)
+							})
+							//==更新库存
 						});
 					} catch (error) {
 						return {

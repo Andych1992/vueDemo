@@ -366,6 +366,7 @@
 							}).catch((err) => {
 								uni.hideLoading()
 								if (err.message !== 'Fail_Cancel') {
+									uni.hideLoading()
 									uni.showModal({
 										content: `图片上传失败，错误信息为：${err.message}`,
 										showCancel: false
@@ -386,37 +387,19 @@
 								}
 							})
 							.then(res => {
+								uni.hideLoading()
 								console.log(res)
 								// return 
 								if (res.result.success) {
-										_self.materials.forEach((item, index) => {
-											item.materMain_id = res.result.data.id
-											item.detail_balance = _self.grant.detail_balance
-											this.$myCloud
-												.callFunction({
-													name: 'mater_detail',
-													data: {
-														operType: 'add',
-														dataIn: item
-													}
-												}).then(res => {
-													if (res.result.success) {
-														console.log(res);
-													}
-												})
-										})
 									uni.removeStorageSync("materials_save")
-									uni.hideLoading()
 									uni.showToast({
 										title: res.result.msg,
 										duration: 1000
 									});
-									setTimeout(function() { 
-										uni.navigateBack({
-
-											})
+									setTimeout(function() {
+										uni.navigateBack({})
 									}, 1000);
-								} else {
+								}else {
 									uni.showModal({
 										content: res.result.msg,
 										showCancel: false

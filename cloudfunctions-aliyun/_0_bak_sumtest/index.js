@@ -18,16 +18,14 @@ exports.main = async (event, context) => {
 		var dataList = res.data
 		try {
 			dataList.forEach((currentValue, index, arr) => {
-					var _id = arr[index]._id
-					dbb.collection('materModel').doc(_id).set({
+				var _id = arr[index]._id
+				var resDetail = dbb.collection('materModel').doc(_id).set({
 						mat_number:arr[index].sumSales
 					})
-					.then((resDetail) => {
-						if (!resDetail.id || resDetail.affectedDocs != 1) {
-							throw new Error(resDetail);
-						}
-					});
-				})
+				if (!resDetail.id || resDetail.affectedDocs != 1) {
+					throw new Error(resDetail);
+				}
+			})
 		} catch (error) {
 			return {
 				success: false,
