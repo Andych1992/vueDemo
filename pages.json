@@ -71,7 +71,8 @@
 		{
 			"path": "pages/mainstroage/mainstroageList",
 			"style": {
-				"navigationBarTitleText": "物资库存"
+				"navigationBarTitleText": "物资库存",
+				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		},
 		{

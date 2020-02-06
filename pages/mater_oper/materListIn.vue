@@ -28,7 +28,9 @@
 			</view>
 		</view>
 		<view>
-			<uni-fab :pattern="pattern" vertical="bottom" horizontal="right" direction="vertical" :content="content" @trigger="trigger"></uni-fab>
+			<!-- :content="content" @trigger="trigger"-->
+			<uni-fab :pattern="pattern" vertical="bottom" horizontal="right" 
+				direction="vertical" :popMenu="false" @fabClick="operInfo('add')"></uni-fab>
 		</view>
 	</view>
 </template>
@@ -199,6 +201,7 @@
 				_self.materialListGet(false);
 			},
 			trigger(e) {
+				console.log(e)
 				switch (e.index) {
 					case 0:
 						this.operInfo('add')

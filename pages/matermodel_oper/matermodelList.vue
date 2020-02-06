@@ -3,8 +3,8 @@
 		<uni-search-bar placeholder="点击搜索..." @confirm="search" @input="inputSearch" class="searchs" @cancel="cancelSearch"></uni-search-bar>
 		<!-- tabList materTypeList -->
 		<wuc-tab :tab-list="materTypeList" :tabCur.sync="TabCur" @change="tabChange"></wuc-tab>
-		<swiper :current="TabCur" duration="300" @change="swiperChange">
-			<swiper-item v-for="(item,index) in materTypeList" :key="index">
+		<!-- <swiper :current="TabCur" duration="300" @change="swiperChange">
+			<swiper-item v-for="(item,index) in materTypeList" :key="index"> -->
 				<view class='part' >
 					<view class="partIn" v-for="(item2,index) in materModelList" :key="index" @click="operInfo(item2._id)">
 						<view class="group">
@@ -33,8 +33,8 @@
 						</view>
 					</view>
 				</view>
-			</swiper-item>
-		</swiper>
+			<!-- </swiper-item>
+		</swiper> -->
 		<view class="button">
 			<view class="b-t" @click='backPage'>
 				<uni-icons class="icon" type="undo" size="26"></uni-icons>
@@ -138,6 +138,14 @@
 				_self.listGet(true);
 			});
 		},
+		onReachBottom() {
+			_self.page = 1;
+			_self.listGet(true);
+		},
+		onPullDownRefresh() {
+			_self.page ++;
+			_self.listGet(false);
+		},
 		methods: {
 			//物资类别
 			typeListGet(fun) {
@@ -236,10 +244,10 @@
 			//tab
 			tabChange(index) {
 				this.TabCur = index;
+				_self.listGet(true);
 			},
 			swiperChange(e) {
 				this.TabCur = e.detail.current;
-				_self.listGet(true);
 			},
 			backPage() {
 				uni.navigateBack()

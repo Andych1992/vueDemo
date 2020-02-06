@@ -104,7 +104,7 @@ exports.main = async (event, context) => {
 									}
 								});								
 						});
-						//==更新库存
+						//==CALC
 						dataInDetail.forEach((currentValue, indexx, arr1) => {
 							db2b.collection('materDetail').aggregate()
 								.match({
@@ -133,14 +133,14 @@ exports.main = async (event, context) => {
 										return {
 											success: false,
 											code: 500,
-											msg: '计算库存失败' + error.message,
+											msg: '计算失败' + error.message,
 											err: error.message
 										}
 									}
 									// return {
 									// 	success: true,
 									// 	code: 200,
-									// 	msg: '计算库存成功'
+									// 	msg: '成功'
 									// }
 								})
 							.catch((err) => {

@@ -77,11 +77,11 @@
 		},
 		onLoad(options) {
 			_self = this;
-			var _id = options.id
+			var _idOper = options.id
 			_self.initData(
 				function() {
-					if (_id) {
-						if (_id == 'add') {
+					if (_idOper) {
+						if (_idOper == 'add') {
 							_self.operType = 'add'
 							uni.setNavigationBarTitle({
 								title: "部门资料-新增"
@@ -91,7 +91,7 @@
 							uni.setNavigationBarTitle({
 								title: "部门资料-编辑"
 							})
-							_self.departmentInfo._id = _id;
+							_self.departmentInfo._id = _idOper;
 							//获取资料
 							_self.infoGet();
 						}
@@ -345,15 +345,23 @@
 						if (res.success) {
 							console.log(res)
 							var info = res.result.data;
+							var comID = ''
 							//==单位 部门
-							_self.compTypeIndex = _self.compType.indexOf(_self.compType.filter((p) => {
-								return p._id == info[0].company._id;
-							})[0])
+							if(info[0].company){
+								comID = info[0].company._id;
+							}else{
+								comID = info[0].compid
+							}
+							_self.compTypeIndex = _self.compType.indexOf(
+								_self.compType.filter((p) => {
+									return p._id == comID;
+								})[0]
+							)
 							if (_self.compTypeIndex < 0) {
 								_self.compTypeIndex = 0
 							}
-							_self.departmentInfo.company = _self.compType[_self.compTypeIndex]
 							_self.departmentInfo = info[0];
+							_self.departmentInfo.company = _self.compType[_self.compTypeIndex]
 							console.log(_self.departmentInfo)
 						} else {
 							// uni.showModal({ content:"暂无部门资料信息", showCancel: false})
