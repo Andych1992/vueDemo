@@ -128,6 +128,7 @@
 				if(!_self.$util.showNoLogin(true))
 				{
 					uni.stopPullDownRefresh();
+					_self.materials = []
 					return 
 				}
 				uni.showLoading({
