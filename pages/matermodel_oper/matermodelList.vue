@@ -286,17 +286,17 @@
 			},
 		},
 		mounted() {
-			this.$nextTick(() => {
-				let uniswipers = document.getElementsByTagName('uni-swiper')[0]
-				var height = document.body.clientHeight -
-					document.getElementsByTagName('uni-page-head')[0].clientHeight -
-					document.getElementsByClassName('uni-scroll-view')[0].clientHeight -
-					document.getElementsByClassName('searchs')[0].clientHeight -
-					document.getElementsByClassName('button')[0].clientHeight
-				console.log(height + 'px')
-				uniswipers.style.height = height + 'px'
-				uniswipers.style.overflowY = 'auto'
-			})
+			// this.$nextTick(() => {
+			// 	let uniswipers = document.getElementsByTagName('uni-swiper')[0]
+			// 	var height = document.body.clientHeight -
+			// 		document.getElementsByTagName('uni-page-head')[0].clientHeight -
+			// 		document.getElementsByClassName('uni-scroll-view')[0].clientHeight -
+			// 		document.getElementsByClassName('searchs')[0].clientHeight -
+			// 		document.getElementsByClassName('button')[0].clientHeight
+			// 	console.log(height + 'px')
+			// 	uniswipers.style.height = height + 'px'
+			// 	uniswipers.style.overflowY = 'auto'
+			// })
 		}
 	}
 </script>
