@@ -174,10 +174,10 @@
 					.then(res => {
 						uni.hideLoading()
 						uni.stopPullDownRefresh();
-						console.log(res)
-						if (res.success) {
+						// console.log(JSON.stringify(res))
+						if (res.result.success) {
 							var list = res.result.data;
-							console.log(list)
+							// console.log(JSON.stringify(list))
 							// var datafilter = types_id?res.data.filter(item => item.types_id=types_id):res.data
 							// list = list.filter(item => item.types_id==current_types_id)
 							// let dataList = list.filter(item => item.types_id === current_types_id)
@@ -203,6 +203,7 @@
 								_self.materModelList.push(...list)
 							}
 						} else {
+							_self.materModelList = []
 							// uni.showModal({ content:"暂无人员信息", showCancel: false})
 						}
 

@@ -111,7 +111,6 @@
 					if (res.success) {
 						uni.showToast({
 							title: '登陆成功',
-							icon: 'none',
 							duration: 1000,
 							success() {
 								// Update token

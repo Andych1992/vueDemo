@@ -92,8 +92,10 @@
 				]
 			}
 		},
-		onShow() {
+		onLoad() {
 			_self = this;
+		},
+		onShow() {
 			_self.materialListGet(true,false);
 		},
 		onReachBottom() {
@@ -205,10 +207,11 @@
 							// }
 							// uni.hideLoading()
 						} else {
-							uni.showModal({
-								content: `数据获取失败`,
-								showCancel: false
-							})
+							_self.materialsList = []
+							// uni.showModal({
+							// 	content: `数据获取失败`,
+							// 	showCancel: false
+							// })
 						}
 
 					})

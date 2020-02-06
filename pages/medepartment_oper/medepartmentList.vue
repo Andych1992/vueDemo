@@ -36,6 +36,8 @@
 		},
 		onLoad() {
 			_self=this;
+		},
+		onShow() {
 			_self.listGet(true);
 		},
 		onPullDownRefresh() {
@@ -91,6 +93,7 @@
 									_self.departmentList.push(...list)
 								}
 							}else{
+								_self.departmentList = [];
 								// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
 							}
 							

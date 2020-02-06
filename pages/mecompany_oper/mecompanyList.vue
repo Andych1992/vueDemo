@@ -38,6 +38,8 @@
 		},
 		onLoad() {
 			_self=this;
+		},
+		onShow() {
 			_self.listGet(true);
 		},
 		onPullDownRefresh() {
@@ -93,6 +95,7 @@
 									_self.companyList.push(...list)
 								}
 							}else{
+								_self.companyList = []
 								// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
 							}
 							

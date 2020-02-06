@@ -12,7 +12,7 @@ exports.main = async (event, context) => {
 		length
 	} = event
   const collection = db.collection('department')
-  const res = await collection.field({'_ids': true }).orderBy(fields, "desc").limit(1).get()
+  const res = await collection.field({'_ids': true }).orderBy('_ids', "desc").limit(1).get()
 	if (res.id || res.affectedDocs >= 1) {
 		if(res.data[0]._ids)
 		{

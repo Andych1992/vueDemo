@@ -1,6 +1,7 @@
 // 物资类别增删改 我是群员(常州-_陈默 565036413)
 'use strict';
 const db = uniCloud.database();
+const dbb = uniCloud.database();
 exports.main = async (event, context) => {
 	const {
 		operType,
@@ -100,6 +101,17 @@ exports.main = async (event, context) => {
 					success: false,
 					code: 2,
 					msg: '物资类别不存在'
+				}
+			}
+			//检查
+			let resCheck = await dbb.collection('materModel').where({
+						types_id:_id
+					}).get()
+			if (resCheck.affectedDocs != 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '物资类别已使用'
 				}
 			}
 			res = await collection.doc(_id).remove()

@@ -41,6 +41,42 @@ export default {
 		}
 		return true
 	},
+	checkPower(ppower){
+		var userinfodata = uni.getStorageSync('userinfodata')
+		if(!userinfodata)
+		{
+			uni.showToast({
+				title: '暂无权限',
+				icon:'none'
+			});
+			return false
+		}
+		userinfodata = JSON.parse(userinfodata)
+		if(userinfodata.permission == 9)
+		{
+			return true
+		}
+		if(!userinfodata.power || userinfodata.power == '0')
+		{
+			uni.showToast({
+				title: '暂无权限',
+				icon:'none'
+			});
+			return false
+		}
+		var powerIndex = userinfodata.power.indexOf(userinfodata.power.filter((p) => {
+			return p.value == ppower;
+			})[0]);
+		if(!powerIndex || powerIndex < 1 || userinfodata.power[powerIndex].checked==false )
+		{
+			uni.showToast({
+				title: '暂无权限',
+				icon:'none'
+			});
+			return false
+		}
+		return true
+	},
 	/**
 	 * @name 页面跳转
 	 * @param {Object} url 跳转的地址
@@ -54,50 +90,55 @@ export default {
 			});
 			return
 		}
+		if(!this.checkPower(ppower)){
+			return 
+		}
 		//权限判断
-		var userinfodata = uni.getStorageSync('userinfodata')
-		if(!userinfodata)
-		{
-			uni.showToast({
-				title: '暂无权限'
-			});
-			return 
-		}
-		userinfodata = JSON.parse(userinfodata)
-		if(userinfodata.permission == 9)
-		{
-			if(switchTab)
-			{
-				uni.switchTab({
-					url: url
-				})
-				return 
-			}
-			uni.navigateTo({
-				url: url,
-				success: res => {},
-				fail: () => {},
-				complete: () => {}
-			});
-		}
-		console.log(ppower)
-		if(!userinfodata.power || userinfodata.power == '0')
-		{
-			uni.showToast({
-				title: '暂无权限'
-			});
-			return 
-		}
-		var powerIndex = userinfodata.power.indexOf(userinfodata.power.filter((p) => {
-			return p.value == ppower && p.checked == true;
-			})[0]);
-		if(!powerIndex || powerIndex < 1)
-		{
-			uni.showToast({
-				title: '暂无权限'
-			});
-			return 
-		}
+		// var userinfodata = uni.getStorageSync('userinfodata')
+		// console.log(userinfodata)
+		// if(!userinfodata)
+		// {
+		// 	uni.showToast({
+		// 		title: '暂无权限1'
+		// 	});
+		// 	return 
+		// }
+		// userinfodata = JSON.parse(userinfodata)
+		// if(userinfodata.permission == 9)
+		// {
+		// 	if(switchTab)
+		// 	{
+		// 		uni.switchTab({
+		// 			url: url
+		// 		})
+		// 		return 
+		// 	}
+		// 	uni.navigateTo({
+		// 		url: url,
+		// 		success: res => {},
+		// 		fail: () => {},
+		// 		complete: () => {}
+		// 	});
+		// 	return 
+		// }
+		// console.log(ppower)
+		// if(!userinfodata.power || userinfodata.power == '0')
+		// {
+		// 	uni.showToast({
+		// 		title: '暂无权限2'
+		// 	});
+		// 	return 
+		// }
+		// var powerIndex = userinfodata.power.indexOf(userinfodata.power.filter((p) => {
+		// 	return p.value == ppower && p.checked == true;
+		// 	})[0]);
+		// if(!powerIndex || powerIndex < 1)
+		// {
+		// 	uni.showToast({
+		// 		title: '暂无权限3'
+		// 	});
+		// 	return 
+		// }
 		if(switchTab)
 		{
 			uni.switchTab({

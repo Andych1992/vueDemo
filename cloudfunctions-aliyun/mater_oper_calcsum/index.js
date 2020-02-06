@@ -3,8 +3,6 @@ const db = uniCloud.database();
 const dbb = uniCloud.database();
 const $ = db.command.aggregate
 exports.main = async (event, context) => {
-	//加个计算标识符 有需要计算的根据标识 可以继续下面两次停止标识
-	//加个计算标识符
 	db.collection('materDetail').aggregate()
 	// .match({
 	// 	materModel_id: $.eq("5e3a8632b4f646004e8880c1")
@@ -32,14 +30,14 @@ exports.main = async (event, context) => {
 			return {
 				success: false,
 				code: 500,
-				msg: '计算库存失败' + error.message,
+				msg: '失败' + error.message,
 				err: error.message
 			}
 		}
 		return {
 			success: true,
 			code: 200,
-			msg: '计算库存成功'
+			msg: '成功'
 		}
 	})
 	.catch((err) => {

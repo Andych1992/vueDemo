@@ -61,6 +61,8 @@
 		},
 		onLoad() {
 			_self=this;
+		},
+		onShow() {
 			_self.userListGet(true);
 		},
 		onPullDownRefresh() {
@@ -112,7 +114,7 @@
 							uni.hideLoading()
 							uni.stopPullDownRefresh();
 							console.log(res)
-							if(res.success){
+							if(res.result.success){
 								var list = res.result.data;
 								console.log(list)
 								// _self.userList = list;
@@ -131,6 +133,7 @@
 									_self.userList.push(...list)
 								}
 							}else{
+								_self.userList = []
 								// uni.showModal({ content:"暂无人员信息", showCancel: false})
 							}
 							

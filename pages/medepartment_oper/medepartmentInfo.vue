@@ -20,7 +20,8 @@
 					</view>
 				</picker>
 			</view>
-			<uni-list-item :show-arrow="true" title="部门名称" :rightText="departmentInfo.section?departmentInfo.section:'暂无设置'" @click="togglePopup('section','部门名称',departmentInfo.section)" />
+			<uni-list-item :show-arrow="true" title="部门名称" :rightText="departmentInfo.section?departmentInfo.section:'暂无设置'"
+			 @click="togglePopup('section','部门名称',departmentInfo.section)" />
 			<uni-list-item :show-arrow="true" title="备注信息" :rightText="departmentInfo.desc?departmentInfo.desc:'暂无设置'" @click="togglePopup('desc','备注信息',departmentInfo.desc)" />
 			<uni-list-item :show-arrow="true" title="排序" :rightText="departmentInfo.indexs?departmentInfo.indexs:'0'" @click="togglePopup('indexs','排序',departmentInfo.indexs)" />
 
@@ -64,14 +65,14 @@
 				compType: [],
 				compTypeIndex: 0,
 				//基本信息
-				departmentInfo:{
+				departmentInfo: {
 					_id: "", // string，自生成
-					_ids:"", // string 编号
-					company:"",//JSon
+					_ids: "", // string 编号
+					company: "", //JSon
 					compid: "", // string 单位ID
-					section:"",//部门名称
-					desc:"",//备注
-					indexs:""//顺序	
+					section: "", //部门名称
+					desc: "", //备注
+					indexs: "" //顺序	
 				}
 			}
 		},
@@ -109,34 +110,33 @@
 					}
 				}
 			);
-			
+
 		},
 		methods: {
 			//初始化下来部门选择
-			initData(fun){
+			initData(fun) {
 				this.$myCloud
 					.callFunction({
-							name: 'mecompany_oper',
-							data:{
-								operType: 'list',
-								dataIn:{},
-								searchKey:'',
-								pageSize:999,
-								page:1
-							}
-						})
-						.then(res => {
-							console.log(res)
-							if(res.result.success){
-								var list = res.result.data;
-								_self.compType = list;
-							}else{
-							}
-							fun();
-						})
-						.catch(err => {
-							console.error(err)
-						})
+						name: 'mecompany_oper',
+						data: {
+							operType: 'list',
+							dataIn: {},
+							searchKey: '',
+							pageSize: 999,
+							page: 1
+						}
+					})
+					.then(res => {
+						console.log(res)
+						if (res.result.success) {
+							var list = res.result.data;
+							_self.compType = list;
+						} else {}
+						fun();
+					})
+					.catch(err => {
+						console.error(err)
+					})
 			},
 			//物资类型
 			chooseCompany(e) {
@@ -172,81 +172,81 @@
 					cancelText: '取消',
 					confirmText: '确定',
 					success: res => {
-						_self.$myCloud
-							.callFunction({
-								name: 'medepartment_oper',
-								data: {
-									operType: 'del',
-									dataIn: _self.departmentInfo
-								}
-							})
-							.then(res => {
-								uni.hideLoading()
-								console.log(res);
-								if (res.result.success) {
-									uni.showToast({
-										title: res.result.msg,
-										duration: 1000
-									});
-									setTimeout(function() {
-										uni.navigateBack({
-											delta: 1
+						if (res.confirm) {
+							_self.$myCloud
+								.callFunction({
+									name: 'medepartment_oper',
+									data: {
+										operType: 'del',
+										dataIn: _self.departmentInfo
+									}
+								})
+								.then(res => {
+									uni.hideLoading()
+									console.log(res);
+									if (res.result.success) {
+										uni.showToast({
+											title: res.result.msg,
+											duration: 1000
 										});
-									}, 1000);
-			
-								} else {
-									uni.showModal({
-										content: res.result.msg,
-										showCancel: false
-									})
-								}
-							})
-							.catch(err => {
-								uni.hideLoading()
-								console.error(err)
-							})
-					},
+										setTimeout(function() {
+											// var pages = getCurrentPages();
+											// var currPage = pages[pages.length - 1];   //当前页面
+											// var prevPage = pages[pages.length - 2];  //上一个页面
+											// prevPage.listGet(true);
+											uni.navigateBack({
+												delta: 1
+											});
+										}, 1000);
+
+									} else {
+										uni.showModal({
+											content: res.result.msg,
+											showCancel: false
+										})
+									}
+								})
+								.catch(err => {
+									uni.hideLoading()
+									console.error(err)
+								})
+						}
+					}
 				});
 			},
 			//保存
 			savePage() {
-				if(_self.operType == 'add')
-				{
+				if (_self.operType == 'add') {
 					//新增 自动生成编号
-					_self.getMaxCode((e)=>{
-							console.log(e)
-							_self.departmentInfo._ids = e;
-							_self.saveInfo()
-						}
-					)
-				}
-				else
-				{
+					_self.getMaxCode((e) => {
+						console.log(e)
+						_self.departmentInfo._ids = e;
+						_self.saveInfo()
+					})
+				} else {
 					//普通保存
 					_self.saveInfo()
 				}
 			},
-			saveInfo(){
+			saveInfo() {
 				console.log(_self.departmentInfo)
-				if(!_self.departmentInfo.section)
-				{
+				if (!_self.departmentInfo.section) {
 					uni.showModal({
 						title: '警告',
 						content: '请输入部门名称',
 						showCancel: false,
 						confirmText: '确定'
 					});
-					return 
+					return
 				}
-				if(!_self.departmentInfo.company)
-				{
+				if (!_self.departmentInfo.company) {
 					uni.showModal({
 						title: '警告',
 						content: '请选择所属单位',
 						showCancel: false,
 						confirmText: '确定'
 					});
-					return 
+					return
 				}
 				this.$myCloud
 					.callFunction({
@@ -272,7 +272,7 @@
 									delta: 1
 								});
 							}, 1000);
-			
+
 							// uni.navigateBack({
 							// 	delta: 1
 							// });
@@ -329,16 +329,16 @@
 				console.log(e.detail.value)
 			},
 			//信息获取
-			infoGet(){
+			infoGet() {
 				uni.showLoading({
 					title: '加载中...'
 				})
 				this.$myCloud
 					.callFunction({
 						name: 'medepartment_oper',
-						data:{
+						data: {
 							operType: 'get',
-							dataIn:{
+							dataIn: {
 								_id: _self.departmentInfo._id
 							}
 						}
@@ -350,9 +350,9 @@
 							var info = res.result.data;
 							var comID = ''
 							//==单位 部门
-							if(info[0].company){
+							if (info[0].company) {
 								comID = info[0].company._id;
-							}else{
+							} else {
 								comID = info[0].compid
 							}
 							_self.compTypeIndex = _self.compType.indexOf(
@@ -369,7 +369,7 @@
 						} else {
 							// uni.showModal({ content:"暂无部门资料信息", showCancel: false})
 						}
-				
+
 					})
 					.catch(err => {
 						uni.hideLoading()
@@ -456,6 +456,7 @@
 		font-size: 14px;
 		color: #3b4144;
 	}
+
 	//基本信息
 	.uni-row {
 		border-bottom: #BEBEBE solid 1rpx;
@@ -465,7 +466,7 @@
 		font-size: 28upx;
 		padding-left: 20upx;
 	}
-	
+
 	/* ======基本信息======== */
 	.list-item {
 		font-size: 32rpx;
@@ -474,11 +475,11 @@
 		justify-content: space-between;
 		padding-left: 30rpx;
 	}
-	
+
 	.list-item--hover {
 		background-color: #f1f1f1;
 	}
-	
+
 	.list-item__container {
 		position: relative;
 		/* #ifndef APP-NVUE */
@@ -492,7 +493,7 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-	
+
 	.list-item--bottom {
 		/* #ifdef APP-PLUS || H5*/
 		border-bottom-color: #e5e5e5;
@@ -500,7 +501,7 @@
 		border-bottom-width: 0.5px;
 		/* #endif */
 	}
-	
+
 	/* #ifndef APP-NVUE */
 	.list-item__container:after {
 		position: absolute;
@@ -513,11 +514,11 @@
 		transform: scaleY(.5);
 		background-color: #e5e5e5;
 	}
-	
+
 	.list-item--bottom:after {
 		height: 0px;
 	}
-	
+
 	/* #endif */
 	.list-item__content {
 		/* #ifndef APP-NVUE */
@@ -527,15 +528,15 @@
 		overflow: hidden;
 		flex-direction: column;
 		color: #3b4144;
-	
+
 	}
-	
+
 	.list-item__content-title {
 		font-size: 28rpx;
 		color: #3b4144;
 		overflow: hidden;
 	}
-	
+
 	.list-item__extra {
 		/* width: 25%;*/
 		/* #ifndef APP-NVUE */
@@ -545,12 +546,13 @@
 		justify-content: flex-end;
 		align-items: center;
 	}
-	
+
 	.list-item__img {
 		width: 130upx;
 		height: 130upx;
 		border-radius: 50%;
 	}
+
 	.list-item__extra-text {
 		color: #999;
 		font-size: 24rpx;

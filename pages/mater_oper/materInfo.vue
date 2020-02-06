@@ -111,7 +111,7 @@
 			 @click="togglePopup('relationPhone','联系人方式',grant.relationPhone)" />
 			
 			<!-- 拍照附件 @click="chooseImage" -->
-			<uni-list-item :show-arrow="true" title="拍照附件" :rightText="grant.fj_img.length+'/9'" />
+			<uni-list-item :show-arrow="true" title="拍照附件" :rightText="grant.fj_imgTemp.length+'/9'" />
 			<view class="proof">
 				<view class="images">
 					<view v-for="(image,index) in grant.fj_imgTemp" :key="index">

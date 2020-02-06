@@ -106,6 +106,7 @@ exports.main = async (event, context) => {
 					msg: '部门信息不存在'
 				}
 			}
+			
 			res = await collection.doc(_id).remove()
 			if (res.id || res.affectedDocs === 1) {
 				return {

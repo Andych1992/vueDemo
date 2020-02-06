@@ -120,8 +120,8 @@ exports.main = async (event, context) => {
 					msg: '单位组织不存在'
 				}
 			}
-			const dept = db.collection('department')
 			//单条获取
+			const dept = db.collection('department')
 			var resDept = await dept.where({
 				compid: _id
 			}).get()
@@ -131,6 +131,32 @@ exports.main = async (event, context) => {
 					success: false,
 					code: 2,
 					msg: '单位组织下存在部门信息'
+				}
+			}
+			const materDD = db.collection('materMain')
+			var resMaterDD = await materDD.where({
+				relationComJson:{
+					_id:_id
+				}
+			}).get()
+			if (resMaterDD.data.length > 0 || resMaterDD.affectedDocs > 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '单位组织下存在出入库订单'
+				}
+			}
+			const userC = db.collection('user')
+			var resUserC = await userC.where({
+				company:{
+					_id:_id
+				}
+			}).get()
+			if (resUserC.data.length > 0 || resUserC.affectedDocs > 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '单位组织下存在员工'
 				}
 			}
 			res = await collection.doc(_id).remove()

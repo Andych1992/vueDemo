@@ -76,13 +76,15 @@
 					},
 					{
 						color: "#F76260",
-						name: "待发"
+						name: "已发"
 					}
 				]
 			}
 		},
-		onShow() {
+		onLoad() {
 			_self = this;
+		},
+		onShow() {
 			_self.materialListGet(true,false);
 		},
 		onReachBottom() {
@@ -102,12 +104,13 @@
 				switch (type) {
 					case 'add':
 						//新增
-						uni.navigateTo({
-							url: '/pages/mater_oper/materInfo?id=add&type=2'
-						})
+						this.$util.navigateTo('wzff','/pages/mater_oper/materInfo?id=add&type=2',false)
+						// uni.navigateTo({
+						// 	url: '/pages/mater_oper/materInfo?id=add&type=2'
+						// })
 						break;
 					default:
-						//编辑
+						//编辑-查看
 						uni.navigateTo({
 							url: '/pages/mater_oper/materInfo?id='+type+'&type=2'
 						});
@@ -132,10 +135,10 @@
 			},
 			//==获取数据
 			materialListGet(refresh,falg) {
-				if(!_self.$util.showNoLogin(true))
+				if(!_self.$util.showNoLogin(true) || !_self.$util.checkPower('wzff'))
 				{
 					uni.stopPullDownRefresh();
-					_self.materials = []
+					_self.materialsList = []
 					return 
 				}
 				uni.showLoading({
@@ -198,10 +201,11 @@
 							// 	console.log(_self.materials);
 							// }
 						} else {
-							uni.showModal({
-								content: `数据获取失败`,
-								showCancel: false
-							})
+							_self.materialsList = []
+							// uni.showModal({
+							// 	content: `数据获取失败`,
+							// 	showCancel: false
+							// })
 						}
 
 					})

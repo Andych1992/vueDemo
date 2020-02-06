@@ -26,7 +26,7 @@
 				<picker @change="chooseMaterType" :value="materTypeIndex" :range="materType" range-key="titles">
 					<view class="list-item__container">
 						<view class="list-item__content">
-							<text class="list-item__content-title">物资类型</text>
+							<text class="list-item__content-title">物资类别</text>
 						</view>
 						<view class="list-item__extra">
 							<text class="list-item__extra-text">{{materModelInfo.materType && materModelInfo.types_id?materModelInfo.materType.titles:''}}</text>
@@ -151,7 +151,7 @@
 				materModelInfo: {
 					_id: "", // string，自生成
 					_ids: "", //string 物资显示编号
-					materType:"",
+					materType: "",
 					types_id: "", //物资类型ID materialtype 里的_id
 					mat_title: "", //物资名称
 					mat_img: "", //物资图片
@@ -180,7 +180,7 @@
 							_self.materTypeIndex = 0
 							_self.materModelInfo.materType = _self.materType[_self.materTypeIndex]
 							//==
-		
+
 						} else {
 							_self.operType = 'save'
 							uni.setNavigationBarTitle({
@@ -201,41 +201,41 @@
 						// 		url: './matermodelList'
 						// 	});
 						// }, 1000);
-		
+
 					}
 				}
 			);
-		
+
 		},
 		methods: {
-			initData(fun){
+			initData(fun) {
 				this.$myCloud
 					.callFunction({
-							name: 'materialtype_oper',
-							data:{
-								operType: 'list',
-								dataIn:{},
-								searchKey:'',
-								pageSize:999,
-								page:1
-							}
-						})
-						.then(res => {
-							console.log(res)
-							if(res.result.success){
-								var list = res.result.data;
-								_self.materType = list;
-							}else{
-								// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
-							}
-							fun();
-						})
-						.catch(err => {
-							console.error(err)
-						})
+						name: 'materialtype_oper',
+						data: {
+							operType: 'list',
+							dataIn: {},
+							searchKey: '',
+							pageSize: 999,
+							page: 1
+						}
+					})
+					.then(res => {
+						console.log(res)
+						if (res.result.success) {
+							var list = res.result.data;
+							_self.materType = list;
+						} else {
+							// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
+						}
+						fun();
+					})
+					.catch(err => {
+						console.error(err)
+					})
 			},
 			//获取信息
-			infoGet(){
+			infoGet() {
 				uni.showLoading({
 					title: '加载中...'
 				})
@@ -253,8 +253,7 @@
 							var info = res.result.data;
 							console.log(info);
 							//==物资类型
-							if(info[0].materType && info[0].types_id)
-							{
+							if (info[0].materType && info[0].types_id) {
 								_self.materTypeIndex = _self.materType.indexOf(_self.materType.filter((p) => {
 									return p._id == info[0].materType._id;
 								})[0])
@@ -281,7 +280,7 @@
 						} else {
 							// uni.showModal({ content:"暂无人员信息", showCancel: false})
 						}
-				
+
 					})
 					.catch(err => {
 						uni.hideLoading()
@@ -297,71 +296,73 @@
 					cancelText: '取消',
 					confirmText: '确定',
 					success: res => {
-						_self.$myCloud
-							.callFunction({
-								name: 'matermodel_oper',
-								data: {
-									operType: 'del',
-									dataIn: _self.materModelInfo
-								}
-							})
-							.then(res => {
-								uni.hideLoading()
-								console.log(res);
-								if (res.result.success) {
-									uni.showToast({
-										title: res.result.msg,
-										duration: 1000
-									});
-									setTimeout(function() {
-										// uni.navigateTo({
-										// 	url: './matermodelList'
-										// });
-										uni.navigateBack({
-											delta: 1
+						if (res.confirm) {
+							_self.$myCloud
+								.callFunction({
+									name: 'matermodel_oper',
+									data: {
+										operType: 'del',
+										dataIn: _self.materModelInfo
+									}
+								})
+								.then(res => {
+									uni.hideLoading()
+									console.log(res);
+									if (res.result.success) {
+										uni.showToast({
+											title: res.result.msg,
+											duration: 1000
 										});
-									}, 1000);
-			
-								} else {
-									uni.showModal({
-										content: res.result.msg,
-										showCancel: false
-									})
-								}
-							})
-							.catch(err => {
-								uni.hideLoading()
-								console.error(err)
-							})
+										setTimeout(function() {
+											// uni.navigateTo({
+											// 	url: './matermodelList'
+											// });
+											uni.navigateBack({
+												delta: 1
+											});
+										}, 1000);
+
+									} else {
+										uni.showModal({
+											content: res.result.msg,
+											showCancel: false
+										})
+									}
+								})
+								.catch(err => {
+									uni.hideLoading()
+									console.error(err)
+								})
+						}
 					},
 				});
 			},
 			//保存
 			savePage() {
-				if(!_self.materModelInfo.mat_title)
-				{
+				if (!_self.materModelInfo.mat_title) {
 					uni.showModal({
 						title: '提示',
 						content: '请输入物资名称',
 						showCancel: false,
 						confirmText: '确定'
 					});
-					return 
+					return
 				}
-				if(!_self.materModelInfo.materType || !_self.materModelInfo.types_id)
-				{
+				if (!_self.materModelInfo.materType || !_self.materModelInfo.types_id) {
 					uni.showModal({
 						title: '提示',
-						content: '请选择物资类型',
+						content: '请选择物资类别',
 						showCancel: false,
 						confirmText: '确定'
 					});
-					return 
+					return
 				}
 				//物资类型ID 单独补充上去
-				if(_self.materType && _self.materType.length > 0)
-				{
-					_self.materModelInfo.types_id = _self.materType[_self.materTypeIndex]._id
+				if (_self.materType && _self.materType.length > 0) {
+					if(_self.materTypeIndex > 0 && _self.materTypeIndex < _self.materType.length)
+					{
+						_self.materModelInfo.types_id = _self.materType[_self.materTypeIndex]._id
+					}
 				}
 				this.$myCloud
 					.callFunction({
@@ -387,7 +388,7 @@
 									delta: 1
 								});
 							}, 1000);
-			
+
 							// uni.navigateBack({
 							// 	delta: 1
 							// });
@@ -446,7 +447,7 @@
 					case 'bar_code_number':
 						this.materModelInfo.bar_code_number = this.popupValue
 						break;
-					
+
 					case 'desc':
 						this.materModelInfo.desc = this.popupValue
 						console.log(this.materModelInfo.desc);
@@ -486,7 +487,7 @@
 					console.log(res);
 					uni.showToast({
 						title: '图片上传成功',
-						icon:'none'
+						icon: 'none'
 					});
 					this.materModelInfo.mat_img = res.fileID
 				}).catch((err) => {
@@ -714,10 +715,12 @@
 		height: 130upx;
 		border-radius: 50%;
 	}
+
 	.list-item__extra-text {
-			color: #999;
-			font-size: 24rpx;
-		}
+		color: #999;
+		font-size: 24rpx;
+	}
+
 	/* * {
 		box-sizing: border-box;
 	} */

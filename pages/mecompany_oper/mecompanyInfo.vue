@@ -102,9 +102,7 @@
 		},
 		methods: {
 			deptPage(){
-				uni.navigateTo({
-					url: '../medepartment_oper/medepartmentList'
-				});
+				this.$util.navigateTo('bmgl','../medepartment_oper/medepartmentList')
 			},
 			//自动生成最大编号
 			getMaxCode(fun) {

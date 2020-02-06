@@ -134,10 +134,13 @@
 		},
 		onLoad() {
 			_self=this;
+		},
+		onShow() {
 			_self.typeListGet(()=>{
 				console.log('全部')
 				_self.listGet(true);
 			});
+			
 		},
 		onReachBottom() {
 			if(_self.canPage)
@@ -183,6 +186,7 @@
 							_self.materTypeList = list;
 							fun();
 						} else {
+							_self.materTypeList = [];
 							// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
 						}
 
@@ -219,7 +223,7 @@
 						uni.hideLoading()
 						uni.stopPullDownRefresh();
 						console.log(res)
-						if (res.success) {
+						if (res.result.success) {
 							var list = res.result.data;
 							console.log(list)
 							// var datafilter = types_id?res.data.filter(item => item.types_id=types_id):res.data
@@ -247,6 +251,7 @@
 								_self.materModelList.push(...list)
 							}
 						} else {
+							_self.materModelList = [];
 							// uni.showModal({ content:"暂无人员信息", showCancel: false})
 						}
 
