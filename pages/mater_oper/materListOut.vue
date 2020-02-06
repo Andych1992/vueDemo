@@ -6,7 +6,7 @@
 			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="text" active-color="#1296db"></uni-segmented-control>
 			<view class="content">
 				<view>
-					<view class="details" v-for="(item, index) in materials[current]" :key="index" @click="operInfo(item._id)">
+					<view class="details" v-for="(item, index) in materialsList " :key="index" @click="operInfo(item._id)">
 						<view class="title">
 							<view class="t-biao"><text :style="{color:item.materShowType!='2001'?'#007AFF':'#4CD964'}">{{item.materShowType=='2001'?'直接 ':'申请  '}}</text>
 								{{item.serialNumber}}</view>
@@ -66,6 +66,7 @@
 					[],
 					[]
 				],
+				materialsList:[],
 				//1003代表采购入库1004采购退货
 				materShowTypes: ["", "2001", "2002"],
 				mater: [{},
@@ -173,10 +174,12 @@
 							}
 							if(refresh)
 							{
-								_self.materials[_self.current] = list;
+								// _self.materials[_self.current] = list;
+								_self.materialsList = list;
 							}
 							else{
-								_self.materials[_self.current].push(...list)
+								// _self.materials[_self.current].push(...list)
+								_self.materialsList.push(...list)
 							}
 							// if (falg) {
 							// 	if (list.length == 0) {
