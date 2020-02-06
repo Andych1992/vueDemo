@@ -1,7 +1,7 @@
 <!-- 这个文件我在做 我是群员(道长 1459347320) -->
 <template>
 	<view>
-		<uni-search-bar placeholder="点击搜索..." @confirm="search"></uni-search-bar>
+		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
 		<view>
 			<uni-segmented-control :current="current" :values="items" @clickItem="onClickItem" style-type="text" active-color="#1296db"></uni-segmented-control>
 			<view class="content">
