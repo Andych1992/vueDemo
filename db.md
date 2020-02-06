@@ -198,11 +198,18 @@ materMain
 	relationUser:"", //sting 关联人
 	relationCom:"", //sting 关联单位
 	relationDept:"", //sting 关联部门
+	relationPhone:"",
 	fj_img:"", //数组 附件照片 9张内
 	create_time: 0,// 时间戳 GMT
 	check_time: 0,// 时间戳 GMT审核完成时间
 	status:"", //状态  入库 1001 申请 1002 驳回 1099 完成
-					   出库 2001 申请 2002 驳回 2099 发放
+	total_Nums:""//总数
+	materOperUerJson:'',//sting 操作人
+	materOperComJson:'',//sting 操作单位
+	materOperDeptJson:'',//sting 操作部门
+	relationUserJson:"", //sting 关联人
+	relationComJson:"", //sting 关联单位
+	relationDeptJson:"", //sting 关联部门
 }
 materDetail
 {

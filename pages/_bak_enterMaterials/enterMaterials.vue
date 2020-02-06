@@ -10,14 +10,14 @@
 						<view class="title">
 							<view class="t-biao"><text :style="{color:item.detail_balance>0?'#007AFF':'#4CD964'}">{{item.detail_balance>0?'入库 ':'退货  '}}</text>
 								{{item.serialNumber}}</view>
-							<view class="t-time">{{item.create_time}}</view>
+							<view class="t-time">{{formatDate(item.create_time)}}</view>
 						</view>
 						<view class="cont">
-							<view class="t-sum">发放物资数 55</view>
+							<view class="t-sum">物资总数 {{item.total_Nums}}</view>
 							<view class="t-status" :style="{background:mater[materShowTypes.indexOf(item.materShowType)].color}">{{mater[materShowTypes.indexOf(item.materShowType)].name}}</view>
 						</view>
 						<view class="title">
-							<view class="t-biao">来往单位 {{item.relationCom}}</view>
+							<view class="t-biao">往来单位 {{item.relationCom}}</view>
 							<view class="t-time">联系人 {{item.relationUser}}</view>
 						</view>
 					</view>
@@ -94,7 +94,22 @@
 			_self.materialListGet(true);
 		},
 		methods: {
-
+			// 时间戳转换成时间格式
+			formatDate(date){
+				date = new Date(date);
+				var y=date.getFullYear();
+				var m=date.getMonth()+1;
+				var d=date.getDate();
+				var h=date.getHours();
+				var m1=date.getMinutes();
+				var s=date.getSeconds();
+				m = m<10?("0"+m):m;
+				d = d<10?("0"+d):d;
+				h = h<10?("0"+h):h;
+				m1 = m1<10?("0"+m1):m1;
+				s = s<10?("0"+s):s;
+				return y+"-"+m+"-"+d+" "+h+":"+m1+":"+s;
+			},
 			materialListGet(falg) {
 				uni.showLoading({
 					title: '加载数据中...'
@@ -116,16 +131,15 @@
 						}
 					})
 					.then(res => {
-
 						if (res.success) {
 							var list = res.result.data.data;
 							if (falg) {
 								if (list.length == 0) {
 									uni.hideLoading()
-									uni.showModal({
-										content: `已经没有更多数据了`,
-										showCancel: false
-									})
+									// uni.showModal({
+									// 	content: `已经没有更多数据了`,
+									// 	showCancel: false
+									// })
 								}
 								_self.materials[_self.current].push(...list)
 								console.log(1111111);
@@ -185,6 +199,7 @@
 
 <style lang="scss">
 	.content {
+		padding: 2vw 0 0 0;
 		.details {
 			padding: 2vw;
 			font-size: 3.7vw;

@@ -7,7 +7,7 @@
 			}
 		},
 		{
-			"path": "pages/mainstroage/mainstroage",
+			"path": "pages/mater_oper/materListOut",
 			"style": {
 				"navigationBarTitleText": "发放管理",
 				// "navigationStyle": "custom" ,//导航栏样式自定义
@@ -44,10 +44,9 @@
 			"style": {
 				"navigationBarTitleText": "编辑资料"
 			}
-		}
-	    ,{
-            "path" : "pages/mainuser_oper/mainuserList",
-            "style" : {
+		}, {
+			"path": "pages/mainuser_oper/mainuserList",
+			"style": {
 				"navigationBarTitleText": "人员管理",
 				"enablePullDownRefresh": true //开启下拉刷新
 			}
@@ -55,16 +54,6 @@
 			"path": "pages/mainuser_oper/mainuserinfo",
 			"style": {
 				"navigationBarTitleText": "人员管理-新增"
-			}
-		}, {
-			"path": "pages/mainstroage/addGrant",
-			"style": {
-				"navigationBarTitleText": "物资发放"
-			}
-		},  {
-			"path": "pages/mainstroage/saveGrant",
-			"style": {
-				"navigationBarTitleText": "新增发放物资"
 			}
 		},
 		{
@@ -97,19 +86,7 @@
 			"style": {
 				"navigationBarTitleText": "物资类别"
 			}
-		}
-	    ,{
-            "path" : "pages/enterMaterials/enterMaterials",
-            "style" : {
-				"navigationBarTitleText": "入库管理"
-			}
-        }
-        ,{
-            "path" : "pages/enterMaterials/addEnter",
-            "style" : {
-				"navigationBarTitleText": "新增入库"
-			}
-        },
+		},
 		{
 			"path": "pages/mecompany_oper/mecompanyList",
 			"style": {
@@ -135,8 +112,23 @@
 			"style": {
 				"navigationBarTitleText": "部门资料"
 			}
+		},{
+			"path": "pages/mater_oper/materListIn",
+			"style": {
+				"navigationBarTitleText": "物资入库管理"
+			}
+		}, {
+			"path": "pages/mater_oper/materInfo",
+			"style": {
+				"navigationBarTitleText": "物资入库-新增"
+			}
+		}, {
+			"path": "pages/mater_oper/materInfoDetail",
+			"style": {
+				"navigationBarTitleText": "添加物资明细"
+			}
 		}
-    ],
+	],
 	"easycom": {
 		"autoscan": true
 	},
@@ -158,7 +150,7 @@
 				"selectedIconPath": "static/tabbar/indexpage_fill.png"
 			},
 			{
-				"pagePath": "pages/mainstroage/mainstroage",
+				"pagePath": "pages/mater_oper/materListOut",
 				"text": "发放",
 				"iconPath": "static/tabbar/add.png",
 				"selectedIconPath": "static/tabbar/add_fill.png"

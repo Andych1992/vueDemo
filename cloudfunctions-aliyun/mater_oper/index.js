@@ -24,17 +24,25 @@ exports.main = async (event, context) => {
 		relationUser,
 		relationCom,
 		relationDept,
+		relationPhone,
 		fj_img,
 		create_time,
 		check_time,
 		status,
+		total_Nums,
+		materOperUerJson,
+		materOperComJson,
+		materOperDeptJson,
+		relationUserJson,
+		relationComJson,
+		relationDeptJson,
 		page,
 		pageSize,
 		searchKey
 	} = dataIn
 	const collection = db.collection('materMain')
 	let res;
-	var serialNumber = 'Z' + Date.parse(new Date());
+	var serialNumber = (materOperType=='10'?'R':'C') + Date.parse(new Date());
 	switch (operType) {
 		case 'add':
 			if (!_id) {
@@ -50,10 +58,18 @@ exports.main = async (event, context) => {
 					relationUser,
 					relationCom,
 					relationDept,
+					relationPhone,
 					fj_img,
 					create_time,
 					check_time,
-					status
+					status,
+					total_Nums,
+					materOperUerJson,//sting 操作人
+					materOperComJson,//sting 操作单位
+					materOperDeptJson,//sting 操作部门
+					relationUserJson, //sting 关联人
+					relationComJson, //sting 关联单位
+					relationDeptJson //sting 关联部门
 				});
 				if (res.id || res.affectedDocs === 1) {
 					var main_ID = res.id;
@@ -186,29 +202,37 @@ exports.main = async (event, context) => {
 
 			}
 			break;
-		case 'get':
-			if (searchKey && !materShowType) {
-				res = await collection.where({
-					materOperType: materOperType,
-					relationDept: new RegExp(searchKey)
-				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
-			} else if (!searchKey && materShowType) {
-				res = await collection.where({
-					materOperType: materOperType,
-					materShowType: materShowType
-				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
-			} else if (!searchKey && !materShowType) {
-				res = await collection.where({
-					materOperType: materOperType
-				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
-			} else if (searchKey && materShowType) {
-				res = await collection.where({
-					materOperType: materOperType,
-					relationDept: new RegExp(searchKey),
-					materShowType: materShowType
-				}).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+		case 'list':
+			const dbCmd = db.command;
+			let where = {
+				materOperType:dbCmd.eq(materOperType)
 			}
-
+			if(materShowType)
+			{
+				where = {
+					materOperType:dbCmd.eq(materOperType),
+					materShowType:dbCmd.eq(materShowType)
+				}
+			}
+			if (searchKey != '') {
+				res = await collection.where(
+					dbCmd.or({
+						relationCom: new RegExp(searchKey)
+					}, {
+						relationDept: new RegExp(searchKey)
+					}, {
+						relationUser: new RegExp(searchKey)
+					}, {
+						relationPhone: new RegExp(searchKey)
+					}).and(
+						where
+					)
+				).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+			}else{
+				res = await collection.where(
+						where
+					).orderBy("create_time", "desc").skip((page - 1) * pageSize).limit(pageSize).get();
+			}
 			if (res) {
 				return {
 					success: true,
@@ -247,6 +271,29 @@ exports.main = async (event, context) => {
 				success: false,
 				code: 500,
 				msg: '服务器内部错误'
+			}
+			break;
+		case 'get':
+			//单条获取
+			res = await collection.doc(_id).get()
+			if (res.data.length == 0) {
+				return {
+					success: false,
+					code: 2,
+					msg: '物资订单不存在'
+				}
+			}
+			var resDetail = await dbb.collection('materDetail').where({
+					materMain_id:_id
+				}).get()
+			return {
+				success: true,
+				code: 200,
+				msg: '成功',
+				data: {
+					grant:res.data,
+					materials:resDetail.data
+				}
 			}
 			break;
 	}

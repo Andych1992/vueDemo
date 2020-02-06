@@ -5,7 +5,7 @@
 		<uni-list>
 			<block v-for="(item,index) in materialtypeList" :key='index'>
 				<uni-list-item :show-arrow="true" :title="item._ids +'-'+ item.titles" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
-				 @click="operUserInfo(item._id)" />
+				 @click="operInfo(item._id)" />
 			</block>
 		</uni-list>
 		<view class="button">
@@ -94,7 +94,7 @@
 				_self.listGet(true);
 			},
 			//点击
-			operUserInfo(type) {
+			operInfo(type) {
 				switch (type) {
 					case 'add':
 						//新增
@@ -119,7 +119,7 @@
 			},
 			//新增
 			addPage(){
-				this.operUserInfo('add')
+				this.operInfo('add')
 			}
 		}
 	}

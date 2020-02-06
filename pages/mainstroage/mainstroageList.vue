@@ -90,7 +90,7 @@
 				//干库存
 				this.$myCloud
 					.callFunction({
-						name: '_0_bak_sumtest',
+						name: 'mater_oper_calcsum',
 						data: {}
 					})
 					.then(res => {

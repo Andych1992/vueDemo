@@ -5,9 +5,13 @@
 			{{page_type==1?'入库信息':'发放信息'}}
 		</view>
 		<uni-list>
-			<uni-list-item :show-arrow="true" title="经办人" :rightText="grant.materOperUer?grant.materOperUer:'暂无设置'" @click="togglePopup('materOperUer','经办人',grant.materOperUer)" />
+			<uni-list-item :show-arrow="true" title="操作人员" 
+							:rightText="(grant.materOperCom?(grant.materOperCom+'-'):'')
+									   +(grant.materOperDept?(grant.materOperDept+'-'):'')
+									   +(grant.materOperUer?(grant.materOperUer):'')"/>
+<!-- 			<uni-list-item :show-arrow="true" title="经办人" :rightText="grant.materOperUer?grant.materOperUer:'暂无设置'" @click="togglePopup('materOperUer','经办人',grant.materOperUer)" />
 			<uni-list-item :show-arrow="true" title="接收单位" :rightText="grant.materOperCom?grant.materOperCom:'暂无设置'" @click="togglePopup('materOperCom','接收单位',grant.materOperCom)" />
-			<uni-list-item :show-arrow="true" title="接收部门" :rightText="grant.materOperDept?grant.materOperDept:'暂无设置'" @click="togglePopup('materOperDept','接收部门',grant.materOperDept)" />
+			<uni-list-item :show-arrow="true" title="接收部门" :rightText="grant.materOperDept?grant.materOperDept:'暂无设置'" @click="togglePopup('materOperDept','接收部门',grant.materOperDept)" /> -->
 			<view v-if="page_type==2">
 				<view class="list-item" hover-class='list-item--hover'>
 					<picker @change="chooseComp" :value="compTypeIndex" :range="compType" range-key="compname">
@@ -54,9 +58,9 @@
 			<view v-else>
 				<uni-list-item :show-arrow="true" title="联系人" :rightText="grant.relationUser.sname?grant.relationUser.sname:'暂无设置'"
 				 @click="togglePopup('relationUser','联系人',grant.relationUser)" />
-				<uni-list-item :show-arrow="true" title="来往单位" :rightText="grant.relationCom.snam?grant.relationCom.snam:'暂无设置'"
-				 @click="togglePopup('relationCom','来往单位',grant.relationCom)" />
-				<uni-list-item :show-arrow="true" title="来往部门" :rightText="grant.relationDept.snam?grant.relationDept.snam:'暂无设置'"
+				<uni-list-item :show-arrow="true" title="往来单位" :rightText="grant.relationCom.snam?grant.relationCom.snam:'暂无设置'"
+				 @click="togglePopup('relationCom','往来单位',grant.relationCom)" />
+				<uni-list-item :show-arrow="true" title="往来部门" :rightText="grant.relationDept.snam?grant.relationDept.snam:'暂无设置'"
 				 @click="togglePopup('relationDept','来往部门',grant.relationDept)" />
 			</view>
 			<view class="list-item" hover-class='list-item--hover'>

@@ -99,11 +99,12 @@
 			tabClick(type){
 				switch (type){
 					case 'wzrk':
-						this.$util.navigateTo('wzrk','../enterMaterials/enterMaterials')
+						console.log('物资发放');
+						this.$util.navigateTo('wzrk','../mater_oper/materListIn')
 						break;
 					case 'wzff':
 						console.log('物资发放');
-						this.$util.navigateTo('wzff','../mainstroage/mainstroage',true)
+						this.$util.navigateTo('wzff','../mater_oper/materListOut',true)
 						break;
 					case 'wzkc':
 						console.log('物资库存');
