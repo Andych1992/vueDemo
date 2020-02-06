@@ -2,7 +2,7 @@
 <template>
 	<view>
 		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
-		<uni-list>
+		<uni-list class="scrollview">
 			<block v-for="(item,index) in userList" :key='index'>
 				<uni-list-item :show-arrow="true" 
 					:title="((!item.company||item.company=='0')?'':(item.company.compname+'-'))+
@@ -38,6 +38,8 @@
 				searchKey:'',
 				pageSize:10,
 				page:1,
+				canPage:true,
+				//==
 				userList: [],
 				// directionStr: '垂直',
 				// horizontal: 'right',
@@ -63,6 +65,13 @@
 		},
 		onPullDownRefresh() {
 			_self.userListGet(true);
+		},
+		onReachBottom() {
+			if(_self.canPage)
+			 {
+				_self.page ++;
+				_self.userListGet(false);
+			 }
 		},
 		methods: {
 			//获取用户数据
@@ -106,7 +115,21 @@
 							if(res.success){
 								var list = res.result.data;
 								console.log(list)
-								_self.userList = list;
+								// _self.userList = list;
+								if(list.length < _self.pageSize)
+								{
+									_self.canPage = false;
+								}
+								else{
+									_self.canPage = true;
+								}
+								if(refresh)
+								{
+									_self.userList = list;
+								}
+								else{
+									_self.userList.push(...list)
+								}
 							}else{
 								// uni.showModal({ content:"暂无人员信息", showCancel: false})
 							}
@@ -180,6 +203,10 @@
 </script>
 
 <style lang="scss">
+	.scrollview {
+	    flex: 1;
+		padding: 0 0 100upx 0;
+	}
 	.button {
 		position: fixed;
 		bottom: 0vw;

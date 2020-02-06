@@ -2,7 +2,7 @@
 <template>
 	<view>
 		<uni-search-bar placeholder="点击搜索..." @confirm="search" @cancel="cancelSearch"></uni-search-bar>
-		<uni-list>
+		<uni-list class="scrollview">
 			<block v-for="(item,index) in departmentList" :key='index'>
 				<uni-list-item :show-arrow="true" :title="(item._ids?(item._ids +'-'):'')+ item.section" thumb="https://img-cdn-qiniu.dcloud.net.cn/new-page/uni.png"
 				 @click="operUserInfo(item._id)" />
@@ -41,6 +41,13 @@
 		onPullDownRefresh() {
 			_self.listGet(true);
 		},
+		onReachBottom() {
+			if(_self.canPage)
+			 {
+				_self.page ++;
+				_self.listGet(false);
+			 }
+		},
 		methods: {
 			//获取数据
 			listGet(refresh){
@@ -68,7 +75,21 @@
 							console.log(res)
 							if(res.result.success){
 								var list = res.result.data;
-								_self.departmentList = list;
+								// _self.departmentList = list;
+								if(list.length < _self.pageSize)
+								{
+									_self.canPage = false;
+								}
+								else{
+									_self.canPage = true;
+								}
+								if(refresh)
+								{
+									_self.departmentList = list;
+								}
+								else{
+									_self.departmentList.push(...list)
+								}
 							}else{
 								// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
 							}
@@ -124,6 +145,10 @@
 </script>
 
 <style lang="scss">
+	.scrollview {
+	    flex: 1;
+		padding: 0 0 100upx 0;
+	}
 	.button {
 		position: fixed;
 		bottom: 0vw;
