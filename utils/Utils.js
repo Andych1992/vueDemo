@@ -18,6 +18,20 @@ export default {
 		}, options));
 	},
 	
+	showNoLogin(show) {
+		if (!this.checkLogin()) {
+			if (show) {
+				//可能未登陆
+				uni.showModal({
+					content: '未登陆',
+					showCancel: false
+				})
+			}
+			return false
+		}
+		return true
+	},
+	
 	checkLogin(){
 		const userInfo = uni.getStorageSync('USER_INFO')
 		// var userinfodata = uni.getStorageSync('userinfodata')

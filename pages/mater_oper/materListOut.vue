@@ -79,13 +79,17 @@
 		},
 		onShow() {
 			_self = this;
-			_self.materialListGet(false);
+			_self.materialListGet(true,false);
 		},
 		onReachBottom() {
 			_self.page = _self.page + 1
-			_self.materialListGet(true);
+			_self.materialListGet(false,true);
+		},
+		onPullDownRefresh() {			
+			_self.materialListGet(true,false);
 		},
 		methods: {
+			
 			//点击
 			operInfo(type) {
 				switch (type) {
@@ -120,10 +124,19 @@
 				return y+"-"+m+"-"+d+" "+h+":"+m1+":"+s;
 			},
 			//==获取数据
-			materialListGet(falg) {
+			materialListGet(refresh,falg) {
+				if(!_self.$util.showNoLogin(true))
+				{
+					uni.stopPullDownRefresh();
+					return 
+				}
 				uni.showLoading({
 					title: '加载数据中...'
 				})
+				if(refresh)
+				{
+					_self.page = 1;
+				}
 				var dataIn = {
 					searchKey: _self.searchKey,
 					materOperType: '20', //表示出库
@@ -140,11 +153,12 @@
 						}
 					})
 					.then(res => {
+						uni.hideLoading()
+						uni.stopPullDownRefresh();
 						if (res.success) {
 							var list = res.result.data.data;
 							if (falg) {
 								if (list.length == 0) {
-									uni.hideLoading()
 									uni.showModal({
 										content: `已经没有更多数据了`,
 										showCancel: false
@@ -159,7 +173,6 @@
 								this.$set(_self.materials, _self.current, list)
 								console.log(_self.materials);
 							}
-							uni.hideLoading()
 						} else {
 							uni.showModal({
 								content: `数据获取失败`,
@@ -170,6 +183,7 @@
 					})
 					.catch(err => {
 						uni.hideLoading()
+						uni.stopPullDownRefresh();
 						uni.showModal({
 							content: `数据获取失败，错误信息为：${err.message}`,
 							showCancel: false
