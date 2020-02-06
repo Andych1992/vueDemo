@@ -66,6 +66,7 @@
 				searchKey: '',
 				pageSize: 10,
 				page: 1,
+				canPage:true,
 				//Tab
 				TabCur: 0,
 				materTypeList: [],
@@ -83,8 +84,11 @@
 			});
 		},
 		onReachBottom() {
-			_self.page ++;
-			_self.listGet(false);
+			if(_self.canPage)
+			 {
+				_self.page ++;
+				_self.listGet(false);
+			 }
 		},
 		onPullDownRefresh() {
 			_self.listGet(true);
@@ -184,7 +188,20 @@
 							//     return item.types_id===current_types_id
 							// });
 							// console.log(dataList)
-							_self.materModelList = list;
+							if(list.length < _self.pageSize)
+							{
+								_self.canPage = false;
+							}
+							else{
+								_self.canPage = true;
+							}
+							if(refresh)
+							{
+								_self.materModelList = list;
+							}
+							else{
+								_self.materModelList.push(...list)
+							}
 						} else {
 							// uni.showModal({ content:"暂无人员信息", showCancel: false})
 						}
@@ -272,7 +289,7 @@
 			height: 100%;
 			overflow-y: auto;
 			font-size: 26rpx;
-			padding: 0rpx 20rpx;
+			padding: 0rpx 20rpx 30rpx 20rpx;
 
 			.uni-swiper-wrapper {
 				overflow-y: auto !important;
