@@ -60,6 +60,8 @@
 				page: 1,
 				pageSize: 10,
 				searchKey: '',
+				canPage:true,
+				//==
 				materials: [
 					[],
 					[],
@@ -91,11 +93,17 @@
 		},
 		onShow() {
 			_self = this;
-			_self.materialListGet(false);
+			_self.materialListGet(true,false);
 		},
 		onReachBottom() {
-			_self.page = _self.page + 1
-			_self.materialListGet(true);
+			if(_self.canPage)
+			 {
+				_self.page ++;
+				_self.materialListGet(false,true);
+			 }
+		},
+		onPullDownRefresh() {
+			_self.materialListGet(true,false);
 		},
 		methods: {
 			//点击
@@ -132,7 +140,7 @@
 				return y+"-"+m+"-"+d+" "+h+":"+m1+":"+s;
 			},
 			//==获取数据
-			materialListGet(falg) {
+			materialListGet(refresh,falg) {
 				uni.showLoading({
 					title: '加载数据中...'
 				})
@@ -153,25 +161,41 @@
 						}
 					})
 					.then(res => {
+						uni.hideLoading()
+						uni.stopPullDownRefresh();
 						if (res.success) {
 							var list = res.result.data.data;
-							if (falg) {
-								if (list.length == 0) {
-									uni.hideLoading()
-									// uni.showModal({
-									// 	content: `已经没有更多数据了`,
-									// 	showCancel: false
-									// })
-								}
-								_self.materials[_self.current].push(...list)
-								console.log(1111111);
-								console.log(_self.materials);
-							} else {
-								console.log(2222222222);
-								this.$set(_self.materials, _self.current, list)
-								console.log(_self.materials);
+							if(list.length < _self.pageSize)
+							{
+								_self.canPage = false;
 							}
-							uni.hideLoading()
+							else{
+								_self.canPage = true;
+							}
+							if(refresh)
+							{
+								_self.materials[_self.current] = list;
+							}
+							else{
+								_self.materials[_self.current].push(...list)
+							}
+							// if (falg) {
+							// 	if (list.length == 0) {
+							// 		uni.hideLoading()
+							// 		// uni.showModal({
+							// 		// 	content: `已经没有更多数据了`,
+							// 		// 	showCancel: false
+							// 		// })
+							// 	}
+							// 	_self.materials[_self.current].push(...list)
+							// 	console.log(1111111);
+							// 	console.log(_self.materials);
+							// } else {
+							// 	console.log(2222222222);
+							// 	this.$set(_self.materials, _self.current, list)
+							// 	console.log(_self.materials);
+							// }
+							// uni.hideLoading()
 						} else {
 							uni.showModal({
 								content: `数据获取失败`,

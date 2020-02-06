@@ -59,6 +59,8 @@
 				page: 1,
 				pageSize: 10,
 				searchKey: '',
+				canPage:true,
+				//==
 				materials: [
 					[],
 					[],
@@ -83,8 +85,11 @@
 			_self.materialListGet(true,false);
 		},
 		onReachBottom() {
-			_self.page = _self.page + 1
-			_self.materialListGet(false,true);
+			if(_self.canPage)
+			 {
+				_self.page ++;
+				_self.materialListGet(false,true);
+			 }
 		},
 		onPullDownRefresh() {			
 			_self.materialListGet(true,false);
@@ -159,22 +164,36 @@
 						uni.stopPullDownRefresh();
 						if (res.success) {
 							var list = res.result.data.data;
-							if (falg) {
-								if (list.length == 0) {
-									uni.showModal({
-										content: `已经没有更多数据了`,
-										showCancel: false
-									})
-								}
-								_self.materials[_self.current].push(...list)
-
-								console.log(1111111);
-								console.log(_self.materials);
-							} else {
-								console.log(2222222222);
-								this.$set(_self.materials, _self.current, list)
-								console.log(_self.materials);
+							if(list.length < _self.pageSize)
+							{
+								_self.canPage = false;
 							}
+							else{
+								_self.canPage = true;
+							}
+							if(refresh)
+							{
+								_self.materials[_self.current] = list;
+							}
+							else{
+								_self.materials[_self.current].push(...list)
+							}
+							// if (falg) {
+							// 	if (list.length == 0) {
+							// 		uni.showModal({
+							// 			content: `已经没有更多数据了`,
+							// 			showCancel: false
+							// 		})
+							// 	}
+							// 	_self.materials[_self.current].push(...list)
+
+							// 	console.log(1111111);
+							// 	console.log(_self.materials);
+							// } else {
+							// 	console.log(2222222222);
+							// 	this.$set(_self.materials, _self.current, list)
+							// 	console.log(_self.materials);
+							// }
 						} else {
 							uni.showModal({
 								content: `数据获取失败`,
@@ -196,13 +215,13 @@
 			//搜索
 			search(e) {
 				_self.searchKey = e.value;
-				_self.materialListGet(false);
+				_self.materialListGet(true,false);
 
 			},
 			//取消搜索
 			cancelSearch() {
 				_self.searchKey = '';
-				_self.materialListGet(false);
+				_self.materialListGet(true,false);
 			},
 			//新增
 			trigger(e) {
@@ -215,7 +234,7 @@
 			onClickItem(e) {
 				this.current = e.currentIndex
 				this.page = 1
-				_self.materialListGet(false);
+				_self.materialListGet(true,false);
 			},
 
 		}

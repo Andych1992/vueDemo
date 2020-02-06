@@ -117,7 +117,8 @@
 		},{
 			"path": "pages/mater_oper/materListIn",
 			"style": {
-				"navigationBarTitleText": "物资入库管理"
+				"navigationBarTitleText": "物资入库管理",
+				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		}, {
 			"path": "pages/mater_oper/materInfo",
