@@ -216,13 +216,13 @@
 			//搜索
 			search(e) {
 				_self.searchKey = e.value;
-				_self.materialListGet(false);
+				_self.materialListGet(true,false);
 
 			},
 			//取消搜索
 			cancelSearch() {
 				_self.searchKey = '';
-				_self.materialListGet(false);
+				_self.materialListGet(true,false);
 			},
 			trigger(e) {
 				console.log(e)
@@ -235,7 +235,7 @@
 			onClickItem(e) {
 				this.current = e.currentIndex
 				this.page = 1
-				_self.materialListGet(false);
+				_self.materialListGet(true,false);
 			},
 
 		}
