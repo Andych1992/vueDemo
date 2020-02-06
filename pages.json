@@ -59,7 +59,8 @@
 		{
 			"path": "pages/matermodel_oper/matermodelList",
 			"style": {
-				"navigationBarTitleText": "物资资料"
+				"navigationBarTitleText": "物资资料",
+				"enablePullDownRefresh": true //开启下拉刷新
 			}
 		},
 		{
