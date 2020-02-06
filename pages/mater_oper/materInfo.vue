@@ -61,7 +61,7 @@
 								<text class="list-item__content-title">领取部门</text>
 							</view>
 							<template v-if="_self.operType=='add'"> <!-- deptType.filter(item=>item.compid===compType[compTypeIndex]._id)-->
-								<picker @change="chooseDept" :value="deptTypeIndex" :range="deptType" range-key="section">
+								<picker @change="chooseDept" :value="deptTypeIndex" :range="compType[compTypeIndex]?deptType.filter(item=>item.compid===compType[compTypeIndex]._id):deptType" range-key="section">
 									<view class="list-item__extra">
 										<text class="list-item__extra-text">{{grant.relationDept?grant.relationDept:'暂无设置'}}</text>
 										<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
@@ -82,7 +82,7 @@
 								<text class="list-item__content-title">领取人员</text>
 							</view>
 							<template v-if="_self.operType=='add'">	<!-- userList.filter(item=>item.section._id===deptType[deptTypeIndex]._id)-->
-								<picker @change="chooseUser" :value="userTypeIndex" :range="userList" range-key="sname">
+								<picker @change="chooseUser" :value="userTypeIndex" :range="deptType[deptTypeIndex]?userList.filter(item=>item.section._id===deptType[deptTypeIndex]._id):userList" range-key="sname">
 									<view class="list-item__extra">
 										<text class="list-item__extra-text">{{grant.relationUser?grant.relationUser:'暂无设置'}}</text>
 										<uni-icons :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
@@ -710,8 +710,9 @@
 				}
 				//人员
 				_self.userTypeIndex = e.target.value
-				var userL = _self.userList.filter(item => item.section._id === _self.deptType[_self.deptTypeIndex]._id)
+				var userL = _self.deptType[_self.deptTypeIndex]?_self.userList.filter(item => item.section._id === _self.deptType[_self.deptTypeIndex]._id):_self.userList
 				if (userL.length > 0) {
+					
 					_self.grant.relationUser = userL[_self.userTypeIndex].sname
 					_self.grant.relationUserJson = {
 													 _id:userL[_self.userTypeIndex]._id,
