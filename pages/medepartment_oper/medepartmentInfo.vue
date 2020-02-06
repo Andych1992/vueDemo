@@ -189,8 +189,8 @@
 										duration: 1000
 									});
 									setTimeout(function() {
-										uni.navigateTo({
-											url: './medepartmentList'
+										uni.navigateBack({
+											delta: 1
 										});
 									}, 1000);
 			
@@ -265,8 +265,11 @@
 								duration: 1000
 							});
 							setTimeout(function() {
-								uni.navigateTo({
-									url: './medepartmentList'
+								// uni.navigateTo({
+								// 	url: './medepartmentList'
+								// });
+								uni.navigateBack({
+									delta: 1
 								});
 							}, 1000);
 			

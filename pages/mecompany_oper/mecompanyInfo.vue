@@ -151,8 +151,11 @@
 										duration: 1000
 									});
 									setTimeout(function() {
-										uni.navigateTo({
-											url: './mecompanyList'
+										// uni.navigateTo({
+										// 	url: './mecompanyList'
+										// });
+										uni.navigateBack({
+											delta: 1
 										});
 									}, 1000);
 			
@@ -216,8 +219,11 @@
 								duration: 1000
 							});
 							setTimeout(function() {
-								uni.navigateTo({
-									url: './mecompanyList'
+								// uni.navigateTo({
+								// 	url: './mecompanyList'
+								// });
+								uni.navigateBack({
+									delta: 1
 								});
 							}, 1000);
 			

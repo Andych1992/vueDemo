@@ -360,8 +360,11 @@
 										duration: 1000
 									});
 									setTimeout(function() {
-										uni.navigateTo({
-											url: './mainuserList'
+										// uni.navigateTo({
+										// 	url: './mainuserList'
+										// });
+										uni.navigateBack({
+											delta: 1
 										});
 									}, 1000);
 
@@ -427,8 +430,11 @@
 								duration: 1000
 							});
 							setTimeout(function() {
-								uni.navigateTo({
-									url: './mainuserList'
+								// uni.navigateTo({
+								// 	url: './mainuserList'
+								// });
+								uni.navigateBack({
+									delta: 1
 								});
 							}, 1000);
 
