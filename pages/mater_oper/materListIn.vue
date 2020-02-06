@@ -144,6 +144,10 @@
 				uni.showLoading({
 					title: '加载数据中...'
 				})
+				if(refresh)
+				{
+					_self.page = 1;
+				}
 				var dataIn = {
 					searchKey: _self.searchKey,
 					materOperType: '10', //表示入库
@@ -163,6 +167,7 @@
 					.then(res => {
 						uni.hideLoading()
 						uni.stopPullDownRefresh();
+						console.log(res)
 						if (res.success) {
 							var list = res.result.data.data;
 							if(list.length < _self.pageSize)
