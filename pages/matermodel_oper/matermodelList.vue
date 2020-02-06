@@ -139,11 +139,11 @@
 			});
 		},
 		onReachBottom() {
-			_self.page = 1;
+			_self.page ++;
 			_self.listGet(true);
 		},
 		onPullDownRefresh() {
-			_self.page ++;
+			_self.page = 1;
 			_self.listGet(false);
 		},
 		methods: {
