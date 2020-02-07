@@ -1,4 +1,7 @@
 // 物资类别增删改 我是群员(常州-_陈默 565036413)
+function PrefixZero(num, n) {
+    return (Array(n).join(0) + num).slice(-n);
+}
 'use strict';
 const db = uniCloud.database();
 const dbb = uniCloud.database();
@@ -58,8 +61,21 @@ exports.main = async (event, context) => {
 			}
 			break;
 		case 'add':
+			//==编号
+			let maxCode = _ids
+			if(maxCode=='1001' ){
+				const resCode = await collection.field({'_ids': true }).orderBy('_ids', "desc").limit(1).get()
+					if (resCode.id || resCode.affectedDocs >= 1) {
+						let currentcode = parseInt(resCode.data[0]._ids) + 1
+						maxCode = PrefixZero(currentcode,4)
+					}else if(res.affectedDocs ==0)
+					{
+						maxCode = PrefixZero(1,4)
+					}
+			}
+			//==编号
 			res = await collection.add({
-				_ids,
+				_ids:maxCode,
 				titles,
 				desc,
 				indexs

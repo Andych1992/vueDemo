@@ -343,6 +343,7 @@
 					cancelText: '取消',
 					confirmText: '确定',
 					success: res => {
+						if(res.confirm){
 						_self.$myCloud
 							.callFunction({
 								name: 'mainuser_oper',
@@ -379,6 +380,7 @@
 								uni.hideLoading()
 								console.error(err)
 							})
+						}
 					},
 				});
 			},

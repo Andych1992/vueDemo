@@ -6,9 +6,12 @@
 		</view>
 		<uni-list>
 			<uni-list-item :show-arrow="true" title="类别编号" :rightText="materialtypeInfo._ids" @click="togglePopup('_ids','类别编号',materialtypeInfo._ids)" />
-			<uni-list-item :show-arrow="true" title="类别名称" :rightText="materialtypeInfo.titles?materialtypeInfo.titles:'暂无设置'" @click="togglePopup('titles','类别名称',materialtypeInfo.titles)" />
-			<uni-list-item :show-arrow="true" title="备注信息" :rightText="materialtypeInfo.desc?materialtypeInfo.desc:'暂无设置'" @click="togglePopup('desc','备注信息',materialtypeInfo.desc)" />
-			<uni-list-item :show-arrow="true" title="类别顺序" :rightText="materialtypeInfo.indexs?materialtypeInfo.indexs:'0'" @click="togglePopup('indexs','类别顺序',materialtypeInfo.indexs)" />
+			<uni-list-item :show-arrow="true" title="类别名称" :rightText="materialtypeInfo.titles?materialtypeInfo.titles:'暂无设置'"
+			 @click="togglePopup('titles','类别名称',materialtypeInfo.titles)" />
+			<uni-list-item :show-arrow="true" title="备注信息" :rightText="materialtypeInfo.desc?materialtypeInfo.desc:'暂无设置'"
+			 @click="togglePopup('desc','备注信息',materialtypeInfo.desc)" />
+			<uni-list-item :show-arrow="true" title="类别顺序" :rightText="materialtypeInfo.indexs?materialtypeInfo.indexs:'0'"
+			 @click="togglePopup('indexs','类别顺序',materialtypeInfo.indexs)" />
 
 		</uni-list>
 		<view class="button">
@@ -47,12 +50,12 @@
 				popupColumn: '',
 				popupValue: '',
 				//基本信息
-				materialtypeInfo:{
-					_id:'',
-					_ids:'1001',
-					titles:'',
-					desc:'',
-					indexs:0
+				materialtypeInfo: {
+					_id: '',
+					_ids: '1001',
+					titles: '',
+					desc: '',
+					indexs: 0
 				}
 			}
 		},
@@ -85,9 +88,9 @@
 				// 		url: './mainuser'
 				// 	});
 				// }, 1000);
-			
+
 			}
-			
+
 		},
 		methods: {
 			//删除
@@ -99,57 +102,59 @@
 					cancelText: '取消',
 					confirmText: '确定',
 					success: res => {
-						_self.$myCloud
-							.callFunction({
-								name: 'materialtype_oper',
-								data: {
-									operType: 'del',
-									dataIn: _self.materialtypeInfo
-								}
-							})
-							.then(res => {
-								uni.hideLoading()
-								console.log(res);
-								if (res.result.success) {
-									uni.showToast({
-										title: res.result.msg,
-										duration: 1000
-									});
-									setTimeout(function() {
-										// uni.navigateTo({
-										// 	url: './materialtypeList'
-										// });
-										uni.navigateBack({
-											delta: 1
+						if (res.confirm) 
+						{
+							_self.$myCloud
+								.callFunction({
+									name: 'materialtype_oper',
+									data: {
+										operType: 'del',
+										dataIn: _self.materialtypeInfo
+									}
+								})
+								.then(res => {
+									uni.hideLoading()
+									console.log(res);
+									if (res.result.success) {
+										uni.showToast({
+											title: res.result.msg,
+											duration: 1000
 										});
-									}, 1000);
-			
-								} else {
-									uni.showModal({
-										content: res.result.msg,
-										showCancel: false
-									})
-								}
-							})
-							.catch(err => {
-								uni.hideLoading()
-								console.error(err)
-							})
+										setTimeout(function() {
+											// uni.navigateTo({
+											// 	url: './materialtypeList'
+											// });
+											uni.navigateBack({
+												delta: 1
+											});
+										}, 1000);
+
+									} else {
+										uni.showModal({
+											content: res.result.msg,
+											showCancel: false
+										})
+									}
+								})
+								.catch(err => {
+									uni.hideLoading()
+									console.error(err)
+								})
+						}
 					},
 				});
 			},
 			//保存
 			savePage() {
 				console.log(_self.materialtypeInfo)
-				if(!_self.materialtypeInfo.titles)
-				{
+				if (!_self.materialtypeInfo.titles) {
 					uni.showModal({
 						title: '警告',
 						content: '请输入类别名称',
 						showCancel: false,
 						confirmText: '确定'
 					});
-					return 
+					return
 				}
 				this.$myCloud
 					.callFunction({
@@ -175,7 +180,7 @@
 									delta: 1
 								});
 							}, 1000);
-			
+
 							// uni.navigateBack({
 							// 	delta: 1
 							// });
@@ -232,16 +237,16 @@
 				console.log(e.detail.value)
 			},
 			//信息获取
-			infoGet(){
+			infoGet() {
 				uni.showLoading({
 					title: '加载中...'
 				})
 				this.$myCloud
 					.callFunction({
 						name: 'materialtype_oper',
-						data:{
+						data: {
 							operType: 'get',
-							dataIn:{
+							dataIn: {
 								_id: _self.materialtypeInfo._id
 							}
 						}
@@ -256,7 +261,7 @@
 						} else {
 							// uni.showModal({ content:"暂无物资类别信息", showCancel: false})
 						}
-				
+
 					})
 					.catch(err => {
 						uni.hideLoading()
@@ -343,6 +348,7 @@
 		font-size: 14px;
 		color: #3b4144;
 	}
+
 	//基本信息
 	.uni-row {
 		border-bottom: #BEBEBE solid 1rpx;

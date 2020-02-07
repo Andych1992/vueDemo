@@ -225,10 +225,10 @@
 								_self.materModelList = list;
 							} else {
 								if (list.length == 0) {
-									uni.showModal({
-										content: `已经没有更多数据了`,
-										showCancel: false
-									})
+									// uni.showModal({
+									// 	content: `已经没有更多数据了`,
+									// 	showCancel: false
+									// })
 								}
 								list.forEach(item => {
 									item.addSum = 0
@@ -238,7 +238,7 @@
 							console.log(_self.materModelList);
 						} else {
 							_self.materModelList=[]
-						 uni.showModal({ content:"没有更多数据", showCancel: false})
+						 // uni.showModal({ content:"没有更多数据", showCancel: false})
 						}
 						fun();
 					})
