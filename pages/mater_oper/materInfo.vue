@@ -155,14 +155,15 @@
 		</view>
 		<view style="height: 14vw;"></view>
 		<view class="button" v-if="_self.operType=='add'">
-			<view class="b-t" @click="toSaveGrant()">
+			<button class="b-t" @click="toSaveGrant()">
 				<uni-icons class="icon" type="plus" size="26"></uni-icons>
 				<view class="wz">添加明细</view>
-			</view>
-			<view class="b-t" @click="saveOrupdate()">
+			</button>
+			<button class="b-t" @click="saveOrupdate()" :disabled="saveLoading">
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
 				<view class="wz">确定保存</view>
-			</view>
+			</button>
+			
 		</view>
 		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
 			<view class="uni-tip">
@@ -202,6 +203,8 @@
 				imgSrc: '../../static/logo.png',
 				//请求类型
 				operType: 'add',
+				saveLoading:false,
+				
 				//==
 				page_type:1, //1入库 //2出库 page_typeTitle[page_type]
 				page_typeTitle:['入库','发放'],
@@ -452,7 +455,7 @@
 				uni.showLoading({
 					title: '数据上传中...'
 				})
-				
+				_self.saveLoading=true;
 				//==AAA
 				let promiseArr = []
 				_self.grant.fj_imgTemp.forEach((item, index) => {
@@ -485,6 +488,7 @@
 						})
 						.then(res => {
 							uni.hideLoading()
+							_self.saveLoading=false;
 							if (res.result.success) {
 								uni.removeStorageSync("materials_save")
 								uni.showToast({
@@ -1042,6 +1046,8 @@
 				justify-content: center;
 				width: 28vw;
 				height: 10vw;
+				margin: 0px;
+				padding: 0px;
 				border-radius: 1vw;
 				border: 1rpx solid #BEBEBE;
 				background: #F1F1F1;

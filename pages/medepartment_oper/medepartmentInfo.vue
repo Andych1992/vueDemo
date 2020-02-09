@@ -27,14 +27,14 @@
 
 		</uni-list>
 		<view class="button">
-			<view class="b-t" @click='delPage'>
+			<button class="b-t" @click='delPage'>
 				<uni-icons class="icon" type="minus" size="26"></uni-icons>
 				<view class="wz">删除</view>
-			</view>
-			<view class="b-t" @click='savePage'>
+			</button>
+			<button class="b-t" @click='savePage' :disabled="saveLoading">
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
 				<view class="wz">保存</view>
-			</view>
+			</button>
 		</view>
 		<!-- 弹窗 @input="onKeyInput" -->
 		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
@@ -57,6 +57,7 @@
 			return {
 				//进入类型
 				operType: 'add',
+				saveLoading:false,
 				//Popup
 				popupTitle: '',
 				popupColumn: '',
@@ -248,6 +249,7 @@
 					});
 					return
 				}
+				_self.saveLoading=true;
 				this.$myCloud
 					.callFunction({
 						name: 'medepartment_oper',
@@ -257,6 +259,7 @@
 						}
 					})
 					.then(res => {
+						_self.saveLoading=false;
 						uni.hideLoading()
 						console.log(res);
 						if (res.result.success) {
@@ -288,6 +291,7 @@
 					})
 					.catch(err => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.error(err)
 					})
 			},
@@ -398,6 +402,8 @@
 			justify-content: center;
 			width: 22vw;
 			height: 10vw;
+			margin: 0px;
+			padding:0px;
 			border-radius: 1vw;
 			border: 1rpx solid #BEBEBE;
 			background: #F1F1F1;

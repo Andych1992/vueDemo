@@ -45,14 +45,14 @@
 			<uni-list-item :show-arrow="true" title="物资库存" disabled="true" :rightText="(materModelInfo.mat_number).toString()" />
 		</uni-list>
 		<view class="button">
-			<view class="b-t" @click='delPage'>
+			<button class="b-t" @click='delPage'>
 				<uni-icons class="icon" type="minus" size="26"></uni-icons>
 				<view class="wz">删除</view>
-			</view>
-			<view class="b-t" @click='savePage'>
+			</button>
+			<button class="b-t" @click='savePage'>
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
 				<view class="wz">保存</view>
-			</view>
+			</button>
 		</view>
 
 		<!-- 弹窗 @input="onKeyInput" -->
@@ -571,6 +571,8 @@
 			justify-content: center;
 			width: 22vw;
 			height: 10vw;
+			margin:0px;
+			padding:0px;
 			border-radius: 1vw;
 			border: 1rpx solid #BEBEBE;
 			background: #F1F1F1;
