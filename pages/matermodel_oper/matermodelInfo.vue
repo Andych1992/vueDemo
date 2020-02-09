@@ -49,7 +49,7 @@
 				<uni-icons class="icon" type="minus" size="26"></uni-icons>
 				<view class="wz">删除</view>
 			</button>
-			<button class="b-t" @click='savePage'>
+			<button class="b-t" @click='savePage' :disabled="saveLoading">
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
 				<view class="wz">保存</view>
 			</button>
@@ -139,6 +139,7 @@
 			return {
 				//进入类型
 				operType: 'add',
+				saveLoading:false,
 				//Popup
 				popupTitle: '',
 				popupColumn: '',
@@ -364,6 +365,7 @@
 						_self.materModelInfo.types_id = _self.materType[_self.materTypeIndex]._id
 					}
 				}
+				_self.saveLoading=true;
 				this.$myCloud
 					.callFunction({
 						name: 'matermodel_oper',
@@ -374,6 +376,7 @@
 					})
 					.then(res => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.log(res);
 						if (res.result.success) {
 							uni.showToast({
@@ -404,6 +407,7 @@
 					})
 					.catch(err => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.error(err)
 					})
 			},
