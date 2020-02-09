@@ -87,14 +87,14 @@
 			<button class="btn" @click="exitbtn">重置密码</button>
 		</template>
 		<view class="button">
-			<view class="b-t" @click='delPage' v-if="!(operType =='get' || userinfo.permission ==9)">
+			<button class="b-t" @click='delPage' v-if="!(operType =='get' || userinfo.permission ==9)">
 				<uni-icons class="icon" type="minus" size="26"></uni-icons>
 				<view class="wz">删除</view>
-			</view>
-			<view class="b-t" @click='savePage'>
+			</button>
+			<button class="b-t" @click='savePage' :disabled="saveLoading">
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
 				<view class="wz">保存</view>
-			</view>
+			</button>
 		</view>
 
 		<!-- 弹窗 @input="onKeyInput" -->
@@ -129,6 +129,7 @@
 			return {
 				//进入类型
 				operType: 'add',
+				saveLoading:false,
 				//Popup
 				popupTitle: '',
 				popupColumn: '',
@@ -414,6 +415,7 @@
 					console.log(_self.userinfo);
 				}
 				_self.userinfo.power = _self.qxList;
+				_self.saveLoading=true;
 				// return 
 				this.$myCloud
 					.callFunction({
@@ -425,6 +427,7 @@
 					})
 					.then(res => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.log(res);
 						if (res.result.success) {
 							uni.showToast({
@@ -455,6 +458,7 @@
 					})
 					.catch(err => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.error(err)
 					})
 			},
@@ -782,6 +786,8 @@
 			justify-content: center;
 			width: 22vw;
 			height: 10vw;
+			margin: 0px;
+			padding: 0px;
 			border-radius: 1vw;
 			border: 1rpx solid #BEBEBE;
 			background: #F1F1F1;

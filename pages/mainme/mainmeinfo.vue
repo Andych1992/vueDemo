@@ -68,8 +68,8 @@
 
 		</uni-list>
 		
-		<button class="btn" @click="savePage" type="primary">保存</button>
-		<button class="btn" @click="setPwd" type="primary">修改密码</button>
+		<button class="btn" @click="savePage"  :disabled="saveLoading" type="primary">保存</button>
+		<button class="btn" @click="setPwd"  type="primary">修改密码</button>
 		<!-- 弹窗 @input="onKeyInput" -->
 		<uni-popup ref="showtip" type="center" :mask-click="false" @change="change">
 			<view class="uni-tip">
@@ -118,6 +118,7 @@
 			return {
 				//进入类型
 				operType: 'get',
+				saveLoading:false,
 				//Popup
 				popupTitle: '',
 				popupColumn: '',
@@ -271,6 +272,7 @@
 				delete _self.userinfo.status
 				delete _self.userinfo.permission
 				console.log(_self.userinfo);
+				_self.saveLoading=true;
 				// return 
 				this.$myCloud
 					.callFunction({
@@ -282,6 +284,7 @@
 					})
 					.then(res => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.log(res);
 						if (res.result.success) {
 							uni.showToast({
@@ -309,6 +312,7 @@
 					})
 					.catch(err => {
 						uni.hideLoading()
+						_self.saveLoading=false;
 						console.error(err)
 					})
 			},
