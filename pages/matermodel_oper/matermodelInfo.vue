@@ -49,7 +49,9 @@
 				<uni-icons class="icon" type="minus" size="26"></uni-icons>
 				<view class="wz">删除</view>
 			</button>
+
 			<button class="b-t" @click='savePage' :disabled="saveLoading">
+
 				<uni-icons class="icon" type="cloud-upload" size="26"></uni-icons>
 				<view class="wz">保存</view>
 			</button>
