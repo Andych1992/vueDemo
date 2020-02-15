@@ -53,7 +53,7 @@ HBuilderX是绿色的，Windows版解压后直接运行里的HBuilderX.exe即可
 
 具体操作方式为打开项目下的manifest.json文件，在右边点击申请appid。 
 
-![输入图片说明](https://images.gitee.com/uploads/images/2020/0215/102459_9a1b2258_5529724.png "获取APPID.png")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0215/153918_b1f62e5a_5529724.png "获取APPID.png")
 
 
 5. 申请和绑定服务空间
