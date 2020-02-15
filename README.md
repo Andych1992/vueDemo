@@ -3,6 +3,8 @@
 
 项目预览地址：[wuzi.m3w.cn](https://wuzi.m3w.cn) 
 
+安卓APP地址： [https://pan.baidu.com/s/1G21VzFDPCKXb8NslxsyejQ](https://pan.baidu.com/s/1G21VzFDPCKXb8NslxsyejQ) 提取码: wvja 
+
 体验账户用户名：13800138000；密码：123456。此地址为测试体验地址，具体某单位上线时，需要单独部署。
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0215/101737_9fb331ec_5529724.png "物资管理系统.png")
