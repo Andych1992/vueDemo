@@ -3,7 +3,9 @@
 
 项目预览地址：[wuzi.m3w.cn](https://wuzi.m3w.cn) 
 
-安卓APP地址： [https://pan.baidu.com/s/1G21VzFDPCKXb8NslxsyejQ](https://pan.baidu.com/s/1G21VzFDPCKXb8NslxsyejQ) 提取码: wvja 
+安卓APP地址： [https://pan.baidu.com/s/1F-pP4TONQtUnjthaLT6msA](https://pan.baidu.com/s/1F-pP4TONQtUnjthaLT6msA) 提取码: jkdd
+
+兰奏云下载：[https://edjoke.lanzous.com/icab06j](https://edjoke.lanzous.com/icab06j) 密码:dojg
 
 体验账户用户名：13800138000；密码：123456。此地址为测试体验地址，具体某单位上线时，需要单独部署。
 
